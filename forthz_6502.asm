@@ -12,19 +12,14 @@ L8003	JMP	SERVENT		; SERVICE ENTRY
 L8006	.BYTE	$E8		; ROM TYPE - 11100010b - service entry, language entry, 2nd proc reloc, z80, soft key exps
 L8007	.BYTE	COPYR-L8000	; COPYRIGHT OFFSET
 L8008	.BYTE	1		; BINARY VERSION NUMBER
-TITLE	.BYTE	'FORTHx'	; TITLE STRING
+TITLE	.BYTE	'Z80FORTH'	; TITLE STRING
 	.BYTE	0
 VERS	.BYTE	'1.03'		; VERSION STRING
 COPYR	.BYTE	0,'(C)'		; COPYRIGHT IDENT
 	.BYTE	' Acornsoft Ltd. 1983'
 	.BYTE	0
         .WORD	L8000		; TUBE RELOC ADDRESS 
-/*        .WORD   LANGENT*/
-
 	.WORD	0
-	
-CWMSG	.BYTE	$A,$D,'COLD or WARM start (C/W)? ',0
-	.BYTE	0
 	
 WRSTR	LDA	#>L8000
 	STA	$13
@@ -121,15 +116,4 @@ L80B5	PHA                     ; save A and Y registers on stack
 
 ;	LANGUAGE ENTRY
 
-OLANGENT	CMP	#1              ; should always be 1
-	BEQ	HERE
-	RTS
-HERE
-	CLI
-	LDA	#<CWMSG         ; ask if cold or warm start
-	STA	$12
-	JSR	WRSTR
-	JSR	OSRDCH
-
-LANGENT BRK
-        BRK
+LANGENT                         ; Z80 code follows
