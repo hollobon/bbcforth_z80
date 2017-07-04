@@ -1,9 +1,51 @@
+PI:     dw DOCON
+        dw $3141
 
+CAFE:   dw DOCON
+        dw $CAFE
+
+PABOR:  
+START:  dw DOCOL
 IW:     defw SHOWA
+
+        ;; test 0BRANCH
+        dw LITERAL
+        dw 6
+        dw LITERAL
+        dw 1
+        dw ZBRAN
+        
         defw LITERAL
         defw 'f'
         defw EMIT
         defw SHOWA
+        ;; read line from keyboard
+        dw LITERAL
+        dw 20
+        dw LITERAL
+        dw $eb10
+        defw PEXPEC             
+        dw DOTHEX
+        dw LITERAL
+        dw '/'
+        dw EMIT
+        ;; show first character read
+        dw LITERAL
+        dw $eb40
+        dw AT
+        dw EMIT
+        dw LITERAL
+        dw $41
+        dw LITERAL
+        dw $eb40
+        dw STORE
+        dw LITERAL
+        dw $eb40
+        dw AT
+        dw EMIT
+        dw LITERAL
+        dw '/'
+        dw EMIT
         defw TESTW
         defw SHOWA
         defw SHOWA
@@ -11,12 +53,13 @@ IW:     defw SHOWA
         defw SHOWA
         defw SHOWB
 
-	
+	;; display an A
 SHOWA:  defw $+2
         ld a, 65
         call $ffee
         jp NEXT
 
+        ;; display a B then loop infinitely
 SHOWB:  defw $+2
         ld a, 66
         call $ffee
@@ -39,8 +82,9 @@ TESTW:  dw DOCOL
         dw LITERAL
         dw '.'
         dw EMIT
-        dw LITERAL
-        dw $CAFE
+        ;; dw LITERAL
+        ;; dw $CAFE
+        dw CAFE
         dw DOTHEX
         dw SP
         dw LITERAL

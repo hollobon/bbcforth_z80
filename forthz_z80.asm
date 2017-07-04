@@ -1,19 +1,19 @@
-include "oscalls.asm"
+        include "oscalls.asm"
 
-BOS: equ $10		; BOTTOM OF DATA STACK
-TOS: equ $58		; TOP OF DATA STACK
-N:   equ $60		; SCRATCH WORKSPACE
-UP:  equ $68		; USER AREA POINTER
+BOS: equ $10                    ; BOTTOM OF DATA STACK
+TOS: equ $58                    ; TOP OF DATA STACK
+N:   equ $60                    ; SCRATCH WORKSPACE
+UP:  equ $8                     ; USER AREA POINTER
 
-WBSIZ: equ 1+255+2      ; WORD BUFFER SIZE
+WBSIZ: equ 1+255+2              ; WORD BUFFER SIZE
 
-UAREA:  equ $400     ; USER AREA
-WORDBU: equ UAREA+64 ; WORD BUFFER
-TIBB:   equ WORDBU+WBSIZ	; TERMINAL INPUT BUFFER
+UAREA:  equ $400                ; USER AREA
+WORDBU: equ UAREA+64            ; WORD BUFFER
+TIBB:   equ WORDBU+WBSIZ        ; TERMINAL INPUT BUFFER
 PADD:   equ TIBB+126            ; PAD
-RAM:    equ PADD+80 ; RAM RELOCATION ADDR
+RAM:    equ PADD+80             ; RAM RELOCATION ADDR
 
-EM: equ $7C00		; END OF MEMORY+1
+EM: equ $7C00                   ; END OF MEMORY+1
 BLKSIZ: equ 1024
 HDBT: equ BLKSIZ+4
 NOBUF: equ 2
@@ -21,17 +21,69 @@ BUFS: equ NOBUF*HDBT
 BUF1: equ EM-BUFS		; FIRST BLOCK BUFFER
 
         org $8000
+
         incbin 'forthz_6502.a'
+        
+;;; this has to be immediately after the 6502 code
+        
 LANGENT:
         cp $1
         jp z, LVALID
         ret
 LVALID:
-;        ld hl, SP
+        ;; Ask if cold / warm start and jump appropriately
+CWQ:    ld hl, CWMSG
+        call WRSTR
+	call OSRDCH
+	cp $1B ; escape
+	jp nz, L80F0
+	push af
+	ld a, $7E ; ack escape
+	call OSBYTE
+	pop af
+L80F0:  cp 'W'
+	jp z, WARM+2
+	cp 'C'
+	jp nz, CWQ
+	jp COLD+2
+
+OLDSTARTUP:
+        dw $+2
+        ;; ld hl, SP
+        ;; ld (TOS), hl
         ld iy, IW
         jp NEXT
 
-RSP:    defw $a000
+        ;; 
+RSP:    defw $a000 ; return stack pointer
+CWMSG:  dm '\r\nCOLD or WARM start (C/W)?',0
+COLDST: dw START
+WARMST: dw PABOR
+
+	
+; BOOT-UP LITERALS
+
+BOOTLITERALS:   
+	dw	TOPNFA		; TOP NFA
+	dw	$7F		; BACKSPACE CHARACTER
+UAVALUE:
+        dw	UAREA		; Initial user area
+	dw	TOS		; Initial top of stack
+	dw	$1FF		; Initial top of return stack
+	dw	TIBB		; Initial terminal input buffer
+	dw	31		; Initial width
+	dw	0		; Initial warning    -- WARM $E/$F
+	dw	TOPDP		; Initial fence
+	dw	TOPDP		; Initial dp
+	dw	0 ;VL0-REL		; Initial VOC-LINK   -- COLD $14/$15
+	dw	1
+
+WRSTR:  ld a, (hl)
+        inc hl
+        call OSWRCH
+        cp 0
+        jp nz, WRSTR
+        ret
 
 ;; push following word onto stack
 LITERAL: defw $+2
@@ -43,7 +95,7 @@ LITERAL: defw $+2
         jp NEXT
 
 NEXT:
-;;; IP is address of current words code field pointer
+;;; On entry, IY holds address of word
 ;;; Code field pointer is address of code to execute
 ;;; jp ((ip))
         ;; dereference IY into BC (BC has address of CFP)
@@ -83,6 +135,21 @@ DOCOL:
         ld iyh, b
         jp NEXT
 
+;	CONSTANT
+
+	db	'CONSTANT'
+;; CONST:  dw	DOCOL
+;; 	dw	CREAT
+;; 	dw	COMMA
+;; 	dw	PSCOD
+DOCON:  inc bc
+        ld a, (bc)
+        ld l, a
+        inc bc
+        ld a, (bc)
+        ld h, a
+        push hl
+        jp NEXT
 	
 ;; 	;	USER
 
@@ -100,7 +167,28 @@ DOCOL:
 	;; ADC	UP+1
 	;; JMP	PUSH
 
+include "constants.asm"
 
+;	BRANCH
+        ;; unconditional branch, next word is IP offset in bytes from word following IP
+L81D4:	db	$86,'BRANC',$C8
+	dw	$0 ;L81B4
+BRAN:	dw	$+2
+        pop bc
+        add iy, bc
+        jp NEXT
+
+;	0BRANCH
+        ;; conditional branch, only taken if top of stack is zero
+L81F4:	db	$87,'0BRANC',$C8
+	dw	L81D4
+ZBRAN:	dw	$+2
+        pop bc
+        ld a, c
+        cp b
+        jp z, BRAN
+        pop bc
+        jp NEXT
 
         db 4
         db 'EMIT'
@@ -111,43 +199,9 @@ EMIT:   defw $+2
         jp NEXT
 
 
-        db 1
-        db 'PLUS'
-PLUS:   dw $+2
-        pop hl
-        pop bc
-        add hl, bc
-        push hl
-        jp NEXT
+include "arith.asm"
 
-
-SWAP:   dw $+2
-        ld ix, 0
-        add ix, sp
-        ld l, (ix+0)
-        ld h, (ix+1)
-        ld d, (ix+2)
-        ld e, (ix+3)
-        ld (ix+0), d
-        ld (ix+1), c
-        ld (ix+2), l
-        ld (ix+3), h
-        jp NEXT
-
-OVER:   dw $+2
-        ld ix, 0
-        add ix, sp
-        ld l, (ix+2)
-        ld h, (ix+3)
-        push hl
-        jp NEXT
-	
-NIP:    dw $+2
-        pop hl
-        inc sp
-        inc sp
-        push hl
-        jp NEXT
+include "stack.asm"	
 
         ;; output byte as hex
 DOTCHEX:dw $+2
@@ -214,45 +268,46 @@ SP:     defw DOCOL
         dw EMIT
         dw EXIT
 
+;; On exit,
+;;  C=0 if a carriage return terminated input.
+;;  C=1 if an ESCAPE condition terminated input.
+;;  Y contains line length, including carriage return if used
 
 ;; ;	(EXPECT)
 
 ;; L8EC8	.BYTE	$88,'(EXPECT',$A9
-;; 	.WORD	L8E8B
-;; PEXPEC	.WORD	*+2
-;; 	STX	XSAVE
-;; 	DEX
-;; 	LDA	3,X
-;; 	STA	0,X
-;; 	LDA	1,X
-;; 	STA	2,X
-;; 	LDA	4,X
-;; 	STA	1,X
-;; 	LDA	#$20
-;; 	STA	3,X
-;; 	LDA	#$FF
-;; 	STA	4,X
-;; 	LDA	#0
-;; 	JSR	$FFF1
-;; 	LDX	XSAVE
-;; 	STY	2,X
-;; 	LDA	#0
-;; 	STA	3,X
-;; 	JMP	POP
+        ;; 	.WORD	L8E8B
+PEXPEC: dw $+2
+        call OSNEWL
+        ld ix, $eb00
+        pop bc                  ; address to write input
+        ld (ix+0), $40
+        ld (ix+1), $eb
+        pop bc                  ; number of characters to read
+        ld (ix+2), c            
+        ld (ix+3), $20          ; min ASCII value
+        ld (ix+4), $FF          ; max ASCII value
+        ld hl, $eb00
+        ld a, $0
+        call OSWORD
+        ld l, h                 ; h contains number of characters read
+        ld h, 0
+        push hl
+        jp NEXT
 
 ;; ;	EXPECT
 
 ;; L8EFC	.BYTE	$86,'EXPEC',$D4
 ;; 	.WORD	L8EC8
-;; EXPECT	.WORD	DOCOL
-;; 	.WORD	OVER
-;; 	.WORD	SWAP
-;; 	.WORD	PEXPEC
-;; 	.WORD	PLUS
-;; 	.WORD	ZERO
-;; 	.WORD	SWAP
-;; 	.WORD	STORE
-;; 	.WORD	EXIT
+EXPECT: dw	DOCOL
+	dw	OVER
+	dw	SWAP
+	dw	PEXPEC
+	dw	PLUS
+	dw	ZERO
+	dw	SWAP
+;	dw	STORE
+	dw	EXIT
 	
 ;; 	;	QUERY
 
@@ -269,6 +324,72 @@ SP:     defw DOCOL
 ;; 	dw	STORE
 ;; 	dw	EXIT
 
+;	COLD
+
+;; L9510	.BYTE	$84,'COL',$C4
+;; 	.WORD	L94A7
+COLD:   dw $+2
+	;; LDA	L812A+1		; SET BRKVEC
+	;; STA	$203
+	;; LDA	L812A
+	;; STA	$202
+        ld iy, COLDST
+	ld bc, $15
+	jp COPYLITERALS
+
+;	WARM
+
+;; L9534	.BYTE	$84,'WAR',$CD
+;; 	.WORD	L9510
+WARM:   dw $+2
+        ld iy, WARMST
+	;; LDA	L812A+1  ; brkvec
+	;; STA	$203
+	;; LDA	L812A
+	;; STA	$202
+	ld bc, $F
+        jp COPYLITERALS
+
+COPYLITERALS:
+        ;; ld hl, UP
+        ;; ld (UAVALUE), hl ; Set user area address
+
+; a is $15 for cold start, $F for warm start
+; copy literals up to and including WARNING (for warm start) or VOC-LINK (for cold start)
+        ld hl, BOOTLITERALS
+        ld de, UP
+        ldir 
+	jp NEXT
+;	jp RPSTO+2		; Reset return pointer and RUN FORTH
 
 
-include "tests.asm"
+;	! (n\addr ...) -- Stores the value at n at the address addr
+
+L88B7:  db	$81,$A1
+	dw	$0 ;L88A9
+STORE:  dw	$+2
+        pop ix
+        pop bc
+        ld (ix+0), c
+        ld (ix+1), b
+        jp NEXT
+
+        
+L8895:  db	$81,$C0
+	dw	$0 ;L8885
+AT:     dw $+2
+        pop hl
+        ld c, (hl)
+        inc hl
+        ld b, (hl)
+        push bc
+        jp NEXT
+
+        
+        include "tests.asm"
+
+TOPDP: equ $	; TOP OF DICTIONARY
+	
+TOPNFA:  equ 0 ; top non-forth area?
+
+;include "messages.asm"
