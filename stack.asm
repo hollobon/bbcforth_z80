@@ -51,3 +51,29 @@ QDUP:
         jp z, NEXT
         push hl
         jp NEXT
+
+;;	ROT
+
+L87FF:  db $83,'RO',$D4
+	dw $0
+ROT:    dw $+2
+        ld ix, 0
+        add ix, sp
+
+        ld c, (ix+4)
+        ld b, (ix+5)
+
+        ld a, (ix+3)
+        ld (ix+5), a
+        ld a, (ix+2)
+        ld (ix+4), a
+
+        ld a, (ix+1)
+        ld (ix+3), a
+        ld a, (ix+0)
+        ld (ix+2), a
+
+        ld (ix+0), c
+        ld (ix+1), b
+
+        jp NEXT

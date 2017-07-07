@@ -7,7 +7,7 @@ emitchr:macro char
         lit 'char'
         dw EMIT
         endm
-
+	
 exit:   macro
         dw EXIT
         endm
@@ -50,6 +50,7 @@ TESTFIND: dw DOCOL
 PABOR:  
 START:  dw DOCOL
 IW:     dw SHOWA
+        dw TESTROT
         dw TESTFIND
         emitchr -
 
@@ -174,6 +175,19 @@ TESTW:  dw DOCOL
         dw EMIT
         dw EMIT
 
+        dw EXIT
+
+        ;; test ROT - expect cab
+TESTROT:        dw DOCOL
+        nl
+        lit 'c'
+        lit 'b'
+        lit 'a'
+        dw ROT
+        dw EMIT
+        dw EMIT
+        dw EMIT
+        nl
         dw EXIT
         
 PETE3:  dw DOCOL
