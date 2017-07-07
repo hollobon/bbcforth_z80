@@ -1,141 +1,190 @@
+lit:    macro value
+        dw LITERAL
+        dw value
+        endm
+        
+emitchr:macro char
+        lit 'char'
+        dw EMIT
+        endm
+
+exit:   macro
+        dw EXIT
+        endm
+
+ok:     macro
+        emitchr O
+        emitchr K
+        endm
+
+nl:     macro
+        emitchr \r
+        emitchr \n
+        endm
+        
+word:   macro name length label link code
+        db length,name
+        dw link
+label:  dw code
+        endm
+        
 PI:     dw DOCON
         dw $3141
 
 CAFE:   dw DOCON
         dw $CAFE
 
+TSTNAME:db $6,'(FIN1)'
+;TSTNAME:db $7,'0BRANCH'
+
+         ;; word 'TESTFIN\0114' 88 TESTFIND $0 DOCOL
+        db 88,'TESTFIN',$4C
+        dw $0
+TESTFIND: dw DOCOL
+        nl
+        ok
+        ok
+        nl
+        exit
+        
 PABOR:  
 START:  dw DOCOL
-IW:     defw SHOWA
+IW:     dw SHOWA
+        dw TESTFIND
+        emitchr -
 
-        ;; test 0BRANCH
-        dw LITERAL
-        dw 6
-        dw LITERAL
-        dw 1
-        dw ZBRAN
-        
-        defw LITERAL
-        defw 'f'
-        defw EMIT
-        defw SHOWA
-        ;; read line from keyboard
-        dw LITERAL
-        dw 20
-        dw LITERAL
-        dw $eb10
-        defw PEXPEC             
+        lit TSTNAME
+        lit L834F
+        dw PFIND
         dw DOTHEX
-        dw LITERAL
-        dw '/'
-        dw EMIT
+        emitchr .
+        dw DOTHEX
+        emitchr .
+        dw DOTHEX
+
+        emitchr -
+
+        dw WIDTH
+        dw DOTHEX ; expect $1F
+
+        ;; nl
+        ;; ;; test 0BRANCH - expect t
+        ;; lit 6
+        ;; lit 0
+        ;; dw ZBRAN
+
+        ;; emitchr f
+        ;; emitchr t
+
+        ;; test 0BRANCH and BRANCH - expect t
+        ;; nl
+        ;; lit 6
+        ;; lit 1
+        ;; dw ZBRAN
+        ;; emitchr t
+        ;; lit 6
+        ;; dw BRAN
+        ;; emitchr f
+        
+        nl
+        ;; read line from keyboard
+        lit 20
+        lit $eb10
+        dw PEXPEC             
+        dw DOTHEX
+        emitchr /
         ;; show first character read
-        dw LITERAL
-        dw $eb40
+        lit $eb40
         dw AT
         dw EMIT
-        dw LITERAL
-        dw $41
-        dw LITERAL
-        dw $eb40
+        lit $41
+        lit $eb40
         dw STORE
-        dw LITERAL
-        dw $eb40
+        lit $eb40
         dw AT
         dw EMIT
-        dw LITERAL
-        dw '/'
-        dw EMIT
-        defw TESTW
-        defw SHOWA
-        defw SHOWA
-        defw SHOWA
-        defw SHOWA
-        defw SHOWB
+        emitchr /
+        dw TESTW
+        dw SHOWA
+        dw SHOWA
+        dw SHOWA
+        dw SHOWA
+        dw SHOWB
 
 	;; display an A
-SHOWA:  defw $+2
+SHOWA:  dw $+2
         ld a, 65
         call $ffee
         jp NEXT
 
         ;; display a B then loop infinitely
-SHOWB:  defw $+2
+SHOWB:  dw $+2
         ld a, 66
         call $ffee
 HERE:
         jp HERE
 
 TESTW:  dw DOCOL
-        dw LITERAL
-        dw '.'
-        dw EMIT
-        dw LITERAL
-        dw $c
+        emitchr .
+        lit $c
         dw DOTCHEX
-        dw LITERAL
-        dw '.'
-        dw EMIT
-        dw LITERAL
-        dw $9C
+        emitchr .
+
+        ;; test .CHEX - expect '9C' to be output
+        lit $9C
         dw DOTCHEX
-        dw LITERAL
-        dw '.'
-        dw EMIT
-        ;; dw LITERAL
-        ;; dw $CAFE
+        emitchr .
+
+        ;; test .HEX - expect 'BEEF' to be output
+        lit $BEEF
+        dw DOTHEX
+        dw SP
+        
+        ;; test DOCON - expect 'CAFE' to be output
         dw CAFE
         dw DOTHEX
         dw SP
-        dw LITERAL
-        dw 'l'
-        dw LITERAL
-        dw 'n'
+
+        ;; test OVER - expect 'lnl  ' to be output
+        lit 'l'
+        lit 'n'
         dw OVER
         dw EMIT
         dw EMIT
         dw EMIT
         dw SP
         dw SP
-        
+
+        ;; test SP and EXIT - expect 'petepetepete petepetepete '
         dw PETE3
         dw SP
         dw PETE3
         dw SP
-        dw LITERAL
-        dw 65
-        dw LITERAL
-        dw 20
+
+        ;; test + - expect 'U' to be output
+        lit 65
+        lit 20
         dw PLUS
         dw EMIT
-        
-        dw LITERAL
-        dw 'd'
-        dw LITERAL
-        dw 'x'
+
+        ;; test SWAP - expect 'dx' to be output
+        lit 'd'
+        lit 'x'
         dw SWAP 
         dw EMIT
         dw EMIT
 
         dw EXIT
         
-PETE3:  defw DOCOL
-        defw PETE
-        defw PETE
-        defw PETE
-        defw EXIT
+PETE3:  dw DOCOL
+        dw PETE
+        dw PETE
+        dw PETE
+        dw EXIT
         
-PETE:   defw DOCOL
-        defw LITERAL
-        defw 'P'
-        defw EMIT
-        defw LITERAL
-        defw 'e'
-        defw EMIT
-        defw LITERAL
-        defw 't'
-        defw EMIT
-        defw LITERAL
-        defw 'e'
-        defw EMIT
-        defw EXIT
+PETE:   dw DOCOL
+        emitchr p
+        emitchr e
+        emitchr t
+        emitchr e
+        dw EXIT

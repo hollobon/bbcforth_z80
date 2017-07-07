@@ -1,9 +1,9 @@
-        include "oscalls.asm"
+include "oscalls.asm"
 
 BOS: equ $10                    ; BOTTOM OF DATA STACK
 TOS: equ $58                    ; TOP OF DATA STACK
 N:   equ $60                    ; SCRATCH WORKSPACE
-UP:  equ $8                     ; USER AREA POINTER
+UP:  equ $A008                  ; USER AREA POINTER
 
 WBSIZ: equ 1+255+2              ; WORD BUFFER SIZE
 
@@ -142,33 +142,36 @@ DOCOL:
 ;; 	dw	CREAT
 ;; 	dw	COMMA
 ;; 	dw	PSCOD
-DOCON:  inc bc
+DOCON:  inc bc                  ; load word from PFA into hl
         ld a, (bc)
         ld l, a
         inc bc
         ld a, (bc)
         ld h, a
-        push hl
+        push hl                 ; push onto forth stack
         jp NEXT
 	
 ;; 	;	USER
 
-;; L897D	.BYTE	$84,'USE',$D2
-;; 	.WORD	L895C
-;; USER	.WORD	DOCOL
-;; 	.WORD	CONST
-;; 	.WORD	PSCOD
-;; DOUSE:  LDY	#2
-	;; CLC
-	;; LDA	(W),Y
-	;; ADC	UP
-	;; PHA
-	;; LDA	#0
-	;; ADC	UP+1
-	;; JMP	PUSH
+L897D:  db	$84,'USE',$D2
+	dw	$0 ;L895C
+;; USER:   dw	DOCOL
+;; 	dw	CONST
+;; 	dw	PSCOD
+DOUSE:  inc bc
+        ld a, (bc)
+        ld c, a
+        ld b, 0
+        ld ix, (UAVALUE)
+        add ix, bc
+        ld l, (ix+0)
+        ld h, (ix+1)
+        push hl
+        jp NEXT
 
 include "constants.asm"
-
+include "user.asm"
+        
 ;	BRANCH
         ;; unconditional branch, next word is IP offset in bytes from word following IP
 L81D4:	db	$86,'BRANC',$C8
@@ -181,7 +184,7 @@ BRAN:	dw	$+2
 ;	0BRANCH
         ;; conditional branch, only taken if top of stack is zero
 L81F4:	db	$87,'0BRANC',$C8
-	dw	L81D4
+	dw	$0
 ZBRAN:	dw	$+2
         pop bc
         ld a, c
@@ -199,6 +202,103 @@ EMIT:   defw $+2
         jp NEXT
 
 
+;; Pronounced:      bracket-find
+;;         Stack Action: (addr1\addr2 ... cfa\b\tf) [found]
+;;         Uses/Leaves: 2 3
+;;         Stact Action: (addrl\addr2 ... ff) [not found]
+;;         Uses/Leaves: 2 1
+;; Status:
+;; Description:     Searches the dictionary starting at the
+;;         name field address addr2 for a match with the text
+;;         starting at addrl. For a successful match the code
+;;         field execution! address and length byte of the name
+
+;	(FIND)
+
+L834F:  db	$86,'(FIND',$A9
+	dw	L81F4
+PFIND:  dw	$+2
+        pop ix                  ; pop dict name field address
+        pop hl                  ; pop name address
+        push hl
+_CPNAME:ld a, (ix+0)            ; test if lower 6 bit of length byte the same
+        and $3f
+        ld e, a                 ; save length in e
+        xor (hl)
+        ld d, 0
+        jp nz, _FNDEND
+_CPCHAR:inc ix                  ; point to next byte of each name
+        inc hl
+        inc d
+        ld a, (ix+0)            ; compare lower 7 bits
+        xor (hl)
+        sla a
+        jp nz, _NXTWRD
+        jp nc, _CPCHAR          ; if bit 7 was set, we've reached end of dict name
+
+        inc ix                  ; point to cfa
+        inc ix
+        inc ix
+        push ix                 ; push cfa
+        push de                 ; push length
+        ld de, 1
+        push de                 ; push true flag
+        jp NEXT
+
+_NXTWRD:jp c, _NW2
+
+_FNDEND:
+        inc ix
+        ld a, (ix+0)
+        cp 0
+        jp p, _FNDEND
+
+_NW2:   ld c, (ix+1)            ; load link address
+        ld b, (ix+2)
+        ld a, b                 ; check if zero
+        cp c
+        ld ixh, b               ; load back into ix
+        ld ixl, c
+        pop hl                  ; restore address of search string
+        push hl
+        jp nz, _CPNAME          ; if valid, compare strings
+        
+        ld hl, $AA5E            ; not valid, 
+        push hl
+        ld hl, $0      
+        push hl
+        jp NEXT
+
+;include "word.asm"
+
+
+;	-FIND
+
+;; L90B1:  db	$85,'-FIN',$C4
+;; 	dw	$0
+        
+;; DFIND:  dw	DOCOL
+;; 	dw	BLL
+;; 	dw	ONEWRD
+;; 	dw	SWAP
+;; 	dw	PFIND
+;; 	dw	EXIT
+
+;	FIND
+
+;; L90C5:  db	$84,'FIN',$C4
+;; 	dw	$0
+;; FIND:   dw	DOCOL
+;; 	dw	CONT
+;; 	dw	AT
+;; 	dw	AT
+;; 	dw	DFIND
+;; 	dw	ZBRAN,8
+;; 	dw	DROP
+;; 	dw	BRAN,4
+;; 	dw	ZERO
+;; 	dw	EXIT
+        
 include "arith.asm"
 
 include "stack.asm"	
@@ -230,9 +330,9 @@ _DOTCHEX:
         cp 10
         jp p, ALPHA
         or 48
-        jp OUT
+        jp .OUT
 ALPHA:  add 55
-OUT:    call OSWRCH
+.OUT:   call OSWRCH
 
 	ld a, c
         and $f
@@ -351,13 +451,13 @@ WARM:   dw $+2
         jp COPYLITERALS
 
 COPYLITERALS:
-        ;; ld hl, UP
-        ;; ld (UAVALUE), hl ; Set user area address
+        ;; ld ix, (UAVALUE)
+        ;; ld (UP), ix ; Set user area address
 
 ; a is $15 for cold start, $F for warm start
 ; copy literals up to and including WARNING (for warm start) or VOC-LINK (for cold start)
         ld hl, BOOTLITERALS
-        ld de, UP
+        ld de, (UAVALUE)
         ldir 
 	jp NEXT
 ;	jp RPSTO+2		; Reset return pointer and RUN FORTH
@@ -392,4 +492,5 @@ TOPDP: equ $	; TOP OF DICTIONARY
 	
 TOPNFA:  equ 0 ; top non-forth area?
 
+       
 ;include "messages.asm"
