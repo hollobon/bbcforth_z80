@@ -269,7 +269,7 @@ _NW2:   ld c, (ix+1)            ; load link address
         push hl
         jp NEXT
 
-;include "word.asm"
+include "word.asm"
 
 
 ;	-FIND

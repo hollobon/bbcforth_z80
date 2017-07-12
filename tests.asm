@@ -46,10 +46,37 @@ TESTFIND: dw DOCOL
         ok
         nl
         exit
+
+        ;; expect mll
+TESTLESS:
+        dw DOCOL
+        lit 3
+        lit 2
+        dw LESS
+        lit 'l'
+        dw PLUS
+        dw EMIT
+
+        lit 2
+        lit 3
+        dw LESS
+        lit 'l'
+        dw PLUS
+        dw EMIT
+
+        lit 2
+        lit 2
+        dw LESS
+        lit 'l'
+        dw PLUS
+        dw EMIT
         
+        dw EXIT
+                
 PABOR:  
 START:  dw DOCOL
 IW:     dw SHOWA
+        dw TESTLESS
         dw TESTROT
         dw TESTFIND
         emitchr -

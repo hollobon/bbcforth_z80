@@ -13,6 +13,22 @@ NIP:    dw $+2
         push hl
         jp NEXT
 	
+;	2DUP
+
+L8770:	db	$84,'2DU',$D0
+	dw	$0
+TDUP:	dw	$+2
+        ld ix, 0
+	add ix, sp
+        ld l, (ix+0)
+        ld h, (ix+1)
+        ld d, (ix+2)
+        ld e, (ix+3)
+        push hl
+        push de
+        jp NEXT
+
+
 SWAP:   dw $+2
         ld ix, 0
         add ix, sp
@@ -32,8 +48,8 @@ DROP:   dw $+2
 
 ;	DUP
 
-;; L874E	.BYTE	$83,'DU',$D0
-;; 	.WORD	L8744
+;; L874E	db	$83,'DU',$D0
+;; 	dw	L8744
 DUP:    dw $+2
         pop hl
         push hl
@@ -42,8 +58,8 @@ DUP:    dw $+2
 	
 ;	?DUP
 
-;; L875E	.BYTE	$84,'?DU',$D0
-;; 	.WORD	L874E
+;; L875E	db	$84,'?DU',$D0
+;; 	dw	L874E
 QDUP:
         dw $+2
         pop hl
