@@ -58,6 +58,9 @@ class Word(object):
             except KeyError as e:
                 print(e)
 
+        elif self.cfa == 'DOCON':
+            result = '\n{} CONSTANT {}'.format(self.words[0], self.name)
+
         return result
 
 
@@ -140,6 +143,8 @@ def main():
             print('No link to label found: {} -- {}'.format(word.label, word))
 
     print(words_by_name['INTERPRET'])
+    print(words_by_name['COMPILE'])
+    print(words_by_name['BL'])
             
     print({cfa: len(list(values)) for cfa, values in itertools.groupby(sorted(cfas))})
 
