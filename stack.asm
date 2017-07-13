@@ -35,7 +35,7 @@ SWAP:   dw $+2
         ld l, (ix+0)
         ld h, (ix+1)
         ld d, (ix+2)
-        ld e, (ix+3)
+        ld c, (ix+3)
         ld (ix+0), d
         ld (ix+1), c
         ld (ix+2), l
