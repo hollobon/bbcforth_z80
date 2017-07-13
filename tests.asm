@@ -2,12 +2,12 @@ lit:    macro value
         dw LITERAL
         dw value
         endm
-        
+
 emitchr:macro char
         lit 'char'
         dw EMIT
         endm
-	
+
 exit:   macro
         dw EXIT
         endm
@@ -21,13 +21,114 @@ nl:     macro
         emitchr \r
         emitchr \n
         endm
-        
+
+bl:     macro
+        lit $20
+        dw EMIT
+        endm
+
+test:   macro number
+        dw DOCOL
+        nl
+        emitchr T
+        emitchr E
+        emitchr S
+        emitchr T
+        lit number
+        bl
+        dw DOTHEX
+        emitchr :
+        endm
+
+_test_0:
+        test    0
+
+        emitchr 0
+        exit
+
+_test_plus: ; expect U
+        test 4
+
+        lit 65
+        lit 20
+        dw PLUS
+        dw EMIT
+        dw EXIT
+
+_test_swap: ; expect 'dx'
+        test 3
+
+        lit 'd'
+        lit 'x'
+        dw SWAP
+        dw EMIT
+        dw EMIT
+        dw EXIT
+
+_test_less: ;; expect 100
+        test 1
+
+        ;; 2<3 -> true
+        lit 3
+        lit 2
+        dw LESS
+        lit '0'
+        dw PLUS
+        dw EMIT
+
+        ;; 3<2 -> false
+        lit 2
+        lit 3
+        dw LESS
+        lit '0'
+        dw PLUS
+        dw EMIT
+
+        ;; 2<2 -> false
+        lit 2
+        lit 2
+        dw LESS
+        lit '0'
+        dw PLUS
+        dw EMIT
+
+        dw EXIT
+
+_test_great: ;; expect 010
+        test 2
+
+        ;; 2>3 -> false
+        lit 3
+        lit 2
+        dw GREAT
+        lit '0'
+        dw PLUS
+        dw EMIT
+
+        ;; 3>2 -> true
+        lit 2
+        lit 3
+        dw GREAT
+        lit '0'
+        dw PLUS
+        dw EMIT
+
+        ;; 2>2 -> false
+        lit 2
+        lit 2
+        dw GREAT
+        lit '0'
+        dw PLUS
+        dw EMIT
+
+        dw EXIT
+
 word:   macro name length label link code
         db length,name
         dw link
 label:  dw code
         endm
-        
+
 PI:     dw DOCON
         dw $3141
 
@@ -47,36 +148,15 @@ TESTFIND: dw DOCOL
         nl
         exit
 
-        ;; expect mll
-TESTLESS:
-        dw DOCOL
-        lit 3
-        lit 2
-        dw LESS
-        lit 'l'
-        dw PLUS
-        dw EMIT
 
-        lit 2
-        lit 3
-        dw LESS
-        lit 'l'
-        dw PLUS
-        dw EMIT
-
-        lit 2
-        lit 2
-        dw LESS
-        lit 'l'
-        dw PLUS
-        dw EMIT
-        
-        dw EXIT
-                
-PABOR:  
+PABOR:
 START:  dw DOCOL
+        dw _test_0
+        dw _test_swap
+        dw _test_less
+        dw _test_great
+        nl
 IW:     dw SHOWA
-        dw TESTLESS
         dw TESTROT
         dw TESTFIND
         emitchr -
@@ -113,12 +193,12 @@ IW:     dw SHOWA
         ;; lit 6
         ;; dw BRAN
         ;; emitchr f
-        
+
         nl
         ;; read line from keyboard
         lit 20
         lit $eb10
-        dw PEXPEC             
+        dw PEXPEC
         dw DOTHEX
         emitchr /
         ;; show first character read
@@ -139,7 +219,7 @@ IW:     dw SHOWA
         dw SHOWA
         dw SHOWB
 
-	;; display an A
+        ;; display an A
 SHOWA:  dw $+2
         ld a, 65
         call $ffee
@@ -167,7 +247,7 @@ TESTW:  dw DOCOL
         lit $BEEF
         dw DOTHEX
         dw SP
-        
+
         ;; test DOCON - expect 'CAFE' to be output
         dw CAFE
         dw DOTHEX
@@ -189,18 +269,6 @@ TESTW:  dw DOCOL
         dw PETE3
         dw SP
 
-        ;; test + - expect 'U' to be output
-        lit 65
-        lit 20
-        dw PLUS
-        dw EMIT
-
-        ;; test SWAP - expect 'dx' to be output
-        lit 'd'
-        lit 'x'
-        dw SWAP 
-        dw EMIT
-        dw EMIT
 
         dw EXIT
 
@@ -216,13 +284,13 @@ TESTROT:        dw DOCOL
         dw EMIT
         nl
         dw EXIT
-        
+
 PETE3:  dw DOCOL
         dw PETE
         dw PETE
         dw PETE
         dw EXIT
-        
+
 PETE:   dw DOCOL
         emitchr p
         emitchr e
