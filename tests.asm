@@ -41,13 +41,13 @@ test:   macro number
         endm
 
 _test_0:
-        test    0
+        test 0 ; expect 0
 
         emitchr 0
         exit
 
-_test_plus: ; expect U
-        test 4
+_test_PLUS:
+        test 1 ; expect U
 
         lit 65
         lit 20
@@ -55,8 +55,8 @@ _test_plus: ; expect U
         dw EMIT
         dw EXIT
 
-_test_swap: ; expect 'dx'
-        test 3
+_test_SWAP:
+        test 2 ; expect dx
 
         lit 'd'
         lit 'x'
@@ -65,8 +65,8 @@ _test_swap: ; expect 'dx'
         dw EMIT
         dw EXIT
 
-_test_less: ;; expect 100
-        test 1
+_test_LESS:
+        test 3 ; expect 100
 
         ;; 2<3 -> true
         lit 3
@@ -94,8 +94,8 @@ _test_less: ;; expect 100
 
         dw EXIT
 
-_test_great: ;; expect 010
-        test 2
+_test_GREAT:
+        test 4 ; expect 010
 
         ;; 2>3 -> false
         lit 3
@@ -123,6 +123,17 @@ _test_great: ;; expect 010
 
         dw EXIT
 
+_test_ROT:
+        test 5 ; expect cab
+        lit 'c'
+        lit 'b'
+        lit 'a'
+        dw ROT
+        dw EMIT
+        dw EMIT
+        dw EMIT
+        dw EXIT
+
 word:   macro name length label link code
         db length,name
         dw link
@@ -148,16 +159,16 @@ TESTFIND: dw DOCOL
         nl
         exit
 
+RUNTESTS:
+        dw DOCOL
+        include "runtests.asm"
+        dw EXIT
 
 PABOR:
 START:  dw DOCOL
-        dw _test_0
-        dw _test_swap
-        dw _test_less
-        dw _test_great
+        dw RUNTESTS
         nl
 IW:     dw SHOWA
-        dw TESTROT
         dw TESTFIND
         emitchr -
 
@@ -171,9 +182,6 @@ IW:     dw SHOWA
         dw DOTHEX
 
         emitchr -
-
-        dw WIDTH
-        dw DOTHEX ; expect $1F
 
         ;; nl
         ;; ;; test 0BRANCH - expect t
@@ -217,6 +225,7 @@ IW:     dw SHOWA
         dw SHOWA
         dw SHOWA
         dw SHOWA
+        nl
         dw SHOWB
 
         ;; display an A
@@ -272,18 +281,6 @@ TESTW:  dw DOCOL
 
         dw EXIT
 
-        ;; test ROT - expect cab
-TESTROT:        dw DOCOL
-        nl
-        lit 'c'
-        lit 'b'
-        lit 'a'
-        dw ROT
-        dw EMIT
-        dw EMIT
-        dw EMIT
-        nl
-        dw EXIT
 
 PETE3:  dw DOCOL
         dw PETE
