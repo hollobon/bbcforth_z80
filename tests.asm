@@ -40,11 +40,15 @@ test:   macro number
         emitchr :
         endm
 
+;;; --------------------------------------------------------------------------------
+
 _test_0:
         test 0 ; expect 0
 
         emitchr 0
         exit
+
+;;; --------------------------------------------------------------------------------
 
 _test_PLUS:
         test 1 ; expect U
@@ -55,6 +59,8 @@ _test_PLUS:
         dw EMIT
         dw EXIT
 
+;;; --------------------------------------------------------------------------------
+
 _test_SWAP:
         test 2 ; expect dx
 
@@ -64,6 +70,8 @@ _test_SWAP:
         dw EMIT
         dw EMIT
         dw EXIT
+
+;;; --------------------------------------------------------------------------------
 
 _test_LESS:
         test 3 ; expect 100
@@ -94,6 +102,8 @@ _test_LESS:
 
         dw EXIT
 
+;;; --------------------------------------------------------------------------------
+
 _test_GREAT:
         test 4 ; expect 010
 
@@ -123,6 +133,8 @@ _test_GREAT:
 
         dw EXIT
 
+;;; --------------------------------------------------------------------------------
+
 _test_ROT:
         test 5 ; expect cab
         lit 'c'
@@ -133,6 +145,70 @@ _test_ROT:
         dw EMIT
         dw EMIT
         dw EXIT
+
+;;; --------------------------------------------------------------------------------
+
+_test_DOTCHEX:
+        test 6 ; expect 9C
+        lit $9C
+        dw DOTCHEX
+        dw EXIT
+
+;;; --------------------------------------------------------------------------------
+
+_test_DOTHEX:
+        test 7 ; expect BEEF
+        lit $BEEF
+        dw DOTHEX
+        dw SP
+        dw EXIT
+
+;;; --------------------------------------------------------------------------------
+
+_test_DOCON:
+        test 8 ; expect CAFE
+        dw CAFE
+        dw DOTHEX
+        dw SP
+        dw EXIT
+
+;;; --------------------------------------------------------------------------------
+
+_test_OVER:
+        test 9 ; expect lnl
+        lit 'l'
+        lit 'n'
+        dw OVER
+        dw EMIT
+        dw EMIT
+        dw EMIT
+        dw EXIT
+
+;;; --------------------------------------------------------------------------------
+
+_test_words:
+        test 10 ; expect petepetepete petepetepete
+
+        ;; test SP and EXIT -
+        dw PETE3
+        dw SP
+        dw PETE3
+        dw EXIT
+
+
+PETE3:  dw DOCOL
+        dw PETE
+        dw PETE
+        dw PETE
+        dw EXIT
+
+PETE:   dw DOCOL
+        emitchr p
+        emitchr e
+        emitchr t
+        emitchr e
+        dw EXIT
+
 
 word:   macro name length label link code
         db length,name
@@ -220,7 +296,6 @@ IW:     dw SHOWA
         dw AT
         dw EMIT
         emitchr /
-        dw TESTW
         dw SHOWA
         dw SHOWA
         dw SHOWA
@@ -240,57 +315,3 @@ SHOWB:  dw $+2
         call $ffee
 HERE:
         jp HERE
-
-TESTW:  dw DOCOL
-        emitchr .
-        lit $c
-        dw DOTCHEX
-        emitchr .
-
-        ;; test .CHEX - expect '9C' to be output
-        lit $9C
-        dw DOTCHEX
-        emitchr .
-
-        ;; test .HEX - expect 'BEEF' to be output
-        lit $BEEF
-        dw DOTHEX
-        dw SP
-
-        ;; test DOCON - expect 'CAFE' to be output
-        dw CAFE
-        dw DOTHEX
-        dw SP
-
-        ;; test OVER - expect 'lnl  ' to be output
-        lit 'l'
-        lit 'n'
-        dw OVER
-        dw EMIT
-        dw EMIT
-        dw EMIT
-        dw SP
-        dw SP
-
-        ;; test SP and EXIT - expect 'petepetepete petepetepete '
-        dw PETE3
-        dw SP
-        dw PETE3
-        dw SP
-
-
-        dw EXIT
-
-
-PETE3:  dw DOCOL
-        dw PETE
-        dw PETE
-        dw PETE
-        dw EXIT
-
-PETE:   dw DOCOL
-        emitchr p
-        emitchr e
-        emitchr t
-        emitchr e
-        dw EXIT

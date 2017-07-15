@@ -15,7 +15,7 @@ class ZForthTestHandler(socketserver.BaseRequestHandler):
         self.expected = {}
         with open('expect.txt') as expect_file:
             for line in expect_file:
-                test_number, expected_value = line.strip().split()
+                test_number, expected_value = line.strip().split(maxsplit=1)
                 self.expected[int(test_number)] = expected_value
                 
     def lines(self):
@@ -35,7 +35,7 @@ class ZForthTestHandler(socketserver.BaseRequestHandler):
             self.request.sendall(b'\r')
             self.request.sendall(b'FORTH\r')
         else:
-            print('Unexpected response: {}'.format(self.data.decode('utf8')))
+            print('Unexpected response: {}'.format(self.data.decode('ascii')))
             sys.exit(1)
 
         for line in l:
@@ -45,10 +45,10 @@ class ZForthTestHandler(socketserver.BaseRequestHandler):
 
         for line in l:
             line = line.strip()
-            match = re.match(r'^TEST (\d{4,4}):(.*)$', line.decode('utf8'))
+            match = re.match(r'^TEST ([A-F\d]{4,4}):(.*)$', line.decode('ascii'))
             if match:
                 test_number, result = match.groups()
-                expect = self.expected[int(test_number)]
+                expect = self.expected[int(test_number, 16)]
                 if result != expect:
                     print('Test {} failed: expected {}, got {}'.format(test_number, expect, result))
                 else:

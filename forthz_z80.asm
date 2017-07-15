@@ -55,7 +55,7 @@ OLDSTARTUP:
         jp NEXT
 
         ;; 
-RSP:    defw $a000 ; return stack pointer
+RSP:    defw $c200 ; return stack pointer
 CWMSG:  dm '\r\nCOLD or WARM start (C/W)?',0
 COLDST: dw START
 WARMST: dw PABOR
