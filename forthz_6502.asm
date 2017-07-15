@@ -3,6 +3,8 @@ OSRDCH = $FFE0
 OSNEWL = $FFE7
 OSBYTE = $FFF4
 	
+XSAVE	=	$68		; TEMPORARY FOR X REGISTER
+
 ;	ROM HEADER
 	*=	$8000		; ROM ADDRESS
 
@@ -34,8 +36,10 @@ L805E	RTS
 ;	SERVICE ENTRY
 
 SERVENT	CMP	#4              ; unrecognised comand
-	BNE	L80B0
-	PHA
+	BEQ     _UNREC
+	JMP     L80B0
+
+_UNREC  PHA
 	TYA
 	PHA
         ;; compare to "FORTH", case-insensitive
@@ -43,7 +47,7 @@ SERVENT	CMP	#4              ; unrecognised comand
 	CMP	#'F'
 	BEQ	L8070
 	CMP	#'f'
-	BNE	L80AC
+	BNE	_CTEST
 L8070	INY
 	LDA	($F2),Y
 	CMP	#'O'
@@ -87,7 +91,41 @@ L809C	INY
 
 L80A8	CMP	#'.'            ; abbreviated command - *FOR. etc.
 	BEQ	L809C
-L80AC	PLA                     ; restore Y and A registers
+	
+_CTEST	LDA	($F2),Y
+	CMP	#'T'
+	BNE	_RESTOR
+	INY
+	LDA	($F2),Y
+	CMP	#'E'
+	BNE	_RESTOR
+	INY
+	LDA	($F2),Y
+	CMP	#'S'
+	BNE	_RESTOR
+	INY
+	LDA	($F2),Y
+	CMP	#'T'
+	BNE	_RESTOR
+
+        STX     XSAVE
+	LDA     #3
+        LDX     #1
+        JSR    OSBYTE
+        LDA     #2
+        LDX     #1
+        JSR    OSBYTE
+        LDA     #7
+        LDX     #8
+        JSR    OSBYTE
+        LDA     #8
+        LDX     #8
+        JSR    OSBYTE
+	LDA	#$8E            ; Enter language ROM
+        LDX     XSAVE
+        JMP     OSBYTE
+
+_RESTOR	PLA                     ; restore Y and A registers
 	TAY
 	PLA
 	RTS

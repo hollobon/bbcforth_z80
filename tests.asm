@@ -237,7 +237,7 @@ TESTFIND: dw DOCOL
         nl
         exit
 
-_test_PFIND:
+N_test_PFIND:
         test 12 ; expect 0000.5123
         lit TSTNAME
         lit L834F
@@ -269,8 +269,15 @@ PABOR:
 START:  dw DOCOL
         dw RUNTESTS
         nl
+        emitchr D
+        emitchr O
+        emitchr N
+        emitchr E
+        nl
+        dw SHOWB
 IW:     dw SHOWA
         dw TESTFIND
+
         emitchr -
 
 

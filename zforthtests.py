@@ -31,28 +31,30 @@ class ZForthTestHandler(socketserver.BaseRequestHandler):
     def handle(self):
         l = self.lines()
         line = next(l)
-        if line.startswith(b'*'):
-            self.request.sendall(b'\r')
-            self.request.sendall(b'FORTH\r')
+
+        if line.startswith(b'Z80FORTH'):
+            self.request.sendall(b'C\r')
         else:
-            print('Unexpected response: {}'.format(self.data.decode('ascii')))
+            print('Unexpected response: {}'.format(line.decode('unicode_escape')))
             sys.exit(1)
 
-        for line in l:
-            if line.startswith(b'Z80FORTH'):
-                self.request.sendall(b'C\r')
-                break
-
+        fail = count = 0
         for line in l:
             line = line.strip()
-            match = re.match(r'^TEST ([A-F\d]{4,4}):(.*)$', line.decode('ascii'))
+            match = re.match(r'^TEST ([A-F\d]{4,4}):(.*)$', line.decode('unicode_escape'))
             if match:
                 test_number, result = match.groups()
                 expect = self.expected[int(test_number, 16)]
                 if result != expect:
                     print('Test {} failed: expected {}, got {}'.format(test_number, expect, result))
+                    fail += 1
                 else:
                     print('Test {} ok'.format(test_number))
+                count += 1
+            else:
+                if line.startswith(b'DONE'):
+                    break
+        print('{} tests, {} failures'.format(count, fail))
 
 
 if __name__ == "__main__":
