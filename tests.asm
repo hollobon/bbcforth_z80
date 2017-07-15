@@ -195,7 +195,6 @@ _test_words:
         dw PETE3
         dw EXIT
 
-
 PETE3:  dw DOCOL
         dw PETE
         dw PETE
@@ -209,6 +208,23 @@ PETE:   dw DOCOL
         emitchr e
         dw EXIT
 
+;;; --------------------------------------------------------------------------------
+
+_test_0BRANCH:
+        test 11 ; expect tft
+        lit 6
+        lit 0
+        dw ZBRAN
+        emitchr f
+        emitchr t
+        lit 6
+        lit 1
+        dw ZBRAN
+        emitchr f
+        emitchr t
+        dw EXIT
+
+;;; --------------------------------------------------------------------------------
 
 word:   macro name length label link code
         db length,name
@@ -258,15 +274,6 @@ IW:     dw SHOWA
         dw DOTHEX
 
         emitchr -
-
-        ;; nl
-        ;; ;; test 0BRANCH - expect t
-        ;; lit 6
-        ;; lit 0
-        ;; dw ZBRAN
-
-        ;; emitchr f
-        ;; emitchr t
 
         ;; test 0BRANCH and BRANCH - expect t
         ;; nl
