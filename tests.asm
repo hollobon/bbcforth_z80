@@ -226,6 +226,27 @@ _test_0BRANCH:
 
 ;;; --------------------------------------------------------------------------------
 
+TSTNAME:db $6,'(FIN1)'
+        db 88,'TESTFIN',$4C
+        dw $0
+
+TESTFIND: dw DOCOL
+        nl
+        ok
+        ok
+        nl
+        exit
+
+_test_PFIND:
+        test 12 ; expect 0000.5123
+        lit TSTNAME
+        lit L834F
+        dw PFIND
+        dw DOTHEX
+        emitchr .
+        dw DOTHEX
+
+
 word:   macro name length label link code
         db length,name
         dw link
@@ -238,18 +259,6 @@ PI:     dw DOCON
 CAFE:   dw DOCON
         dw $CAFE
 
-TSTNAME:db $6,'(FIN1)'
-;TSTNAME:db $7,'0BRANCH'
-
-         ;; word 'TESTFIN\0114' 88 TESTFIND $0 DOCOL
-        db 88,'TESTFIN',$4C
-        dw $0
-TESTFIND: dw DOCOL
-        nl
-        ok
-        ok
-        nl
-        exit
 
 RUNTESTS:
         dw DOCOL
@@ -264,14 +273,6 @@ IW:     dw SHOWA
         dw TESTFIND
         emitchr -
 
-        lit TSTNAME
-        lit L834F
-        dw PFIND
-        dw DOTHEX
-        emitchr .
-        dw DOTHEX
-        emitchr .
-        dw DOTHEX
 
         emitchr -
 

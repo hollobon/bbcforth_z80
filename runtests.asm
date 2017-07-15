@@ -10,3 +10,4 @@
 	dw _test_OVER
 	dw _test_words
 	dw _test_0BRANCH
+	dw _test_PFIND
