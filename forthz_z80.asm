@@ -487,7 +487,7 @@ AT:     dw $+2
         jp NEXT
 
         
-        include "tests.asm"
+        include "tests.asm.gen"
 
 TOPDP: equ $	; TOP OF DICTIONARY
 	
