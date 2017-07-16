@@ -240,8 +240,9 @@ _CPCHAR:inc ix                  ; point to next byte of each name
         inc ix
         inc ix
         push ix                 ; push cfa
+        ld d, 0
         push de                 ; push length
-        ld de, 1
+        ld e, 1
         push de                 ; push true flag
         jp NEXT
 
