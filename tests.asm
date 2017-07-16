@@ -318,7 +318,6 @@ START:  dw DOCOL
         dw RUNTESTS
         dw SHOWB
 IW:     dw SHOWA
-;        dw TESTFIND
 
         emitchr -
 
