@@ -232,21 +232,57 @@ _test_0BRANCH:
 
 ;;; --------------------------------------------------------------------------------
 
-TSTNAME:db $7,'0BRANCH'
-        db 88,'TESTFIN',$4C
+TSTNAME:db $5,'FIRST'
+TSTNAME2:db $8,'-FOURTH!'
+
+_WORDA: db $5,'FIRS',$D4
+        dw $0
+_CFAA:  dw $0
         dw $0
 
-TESTFIND: dw DOCOL
-        nl
-        ok
-        ok
-        nl
-        exit
+_WORDB: db $6,'SECON',$C4
+        dw _WORDA
+        dw $0
+        dw $0
+
+_WORDC: db $7,'(THIRD',$A9
+        dw _WORDB
+        dw $0
+        dw $0
+
+_WORDD: db $8,'-FOURTH',$A1
+        dw _WORDC
+_CFAD:  dw $0
+        dw $0
 
 _test_PFIND:
-        test 12 ; expect 0001.0007.{label_ZBRAN}
+        test 12 ; expect 0001.0005.{label__CFAA}
         lit TSTNAME
-        lit L834F
+        lit _WORDA
+        dw PFIND
+        dw DOTHEX
+        emitchr .
+        dw DOTHEX
+        emitchr .
+        dw DOTHEX
+        dw EXIT
+
+_test_PFIND2:
+        test 13 ; expect 0001.0005.{label__CFAA}
+        lit TSTNAME
+        lit _WORDB
+        dw PFIND
+        dw DOTHEX
+        emitchr .
+        dw DOTHEX
+        emitchr .
+        dw DOTHEX
+        dw EXIT
+
+_test_PFIN3:
+        test 14 ; expect 0001.0008.{label__CFAD}
+        lit TSTNAME2
+        lit _WORDD
         dw PFIND
         dw DOTHEX
         emitchr .
@@ -273,7 +309,7 @@ START:  dw DOCOL
         dw RUNTESTS
         dw SHOWB
 IW:     dw SHOWA
-        dw TESTFIND
+;        dw TESTFIND
 
         emitchr -
 

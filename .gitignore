@@ -1,5 +1,7 @@
 *.a
 *.ROM
 *.bin
+*.gen
 *.LST
+*.LABEL
 expect.txt

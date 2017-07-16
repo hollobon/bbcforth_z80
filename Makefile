@@ -1,12 +1,10 @@
-.PHONY: renumber_tests
+.PHONY: test clean
 
-forthz.ROM: forthz_z80.asm arith.asm stack.asm tests.asm forthz_6502.a renumber_tests
+forthz.ROM: forthz_z80.asm arith.asm stack.asm tests.asm.gen forthz_6502.a
 	z80asm --list=$@.LST --label=$@.LABEL $< -o $@ 
 
-renumber_tests: tests.asm
-	./renumber_tests.py
-# mv tests.asm.new tests.asm
-	cp tests.asm.new tests.asm
+tests.asm.gen: tests.asm
+	./renumber_tests.py $< $<.gen
 
 forthz_6502.a: forthz_6502.asm
 	xa $< -o $@
@@ -15,3 +13,5 @@ test: forthz.ROM
 	@echo 'Set RS423 to IP: localhost:25232 then issue *TEST'
 	./zforthtests.py
 
+clean:
+	rm *.gen *.ROM *.LABEL *.LST *.a

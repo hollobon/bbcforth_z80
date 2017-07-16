@@ -6,16 +6,17 @@ Renumber tests and generate expected test outcome file.
 
 import os
 import re
+import sys
 
 
 def main():
     counter = 0
     state = 'find_label'
-    with open('tests.asm') as tests_in, \
-         open('tests.asm.new', 'w') as tests_out, \
+    with open(sys.argv[1]) as in_file, \
+         open(sys.argv[2], 'w') as out_file, \
          open('expect.txt', 'w') as expect_file, \
          open('runtests.asm', 'w') as runtests_file:
-        for line in tests_in:
+        for line in in_file:
             line = line.rstrip()
             if state == 'find_label':
                 match = re.match(r'^(_test_\S+):\s*$', line)
@@ -32,7 +33,7 @@ def main():
                     runtests_file.write('\tdw {}\n'.format(label))
                     counter += 1
                     state = 'find_label'
-            tests_out.write(line + '\n')
+            out_file.write(line + '\n')
 
 
 if __name__ == '__main__':

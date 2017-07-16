@@ -11,3 +11,5 @@
 	dw _test_words
 	dw _test_0BRANCH
 	dw _test_PFIND
+	dw _test_PFIND2
+	dw _test_PFIN3
