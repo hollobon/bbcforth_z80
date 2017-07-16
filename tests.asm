@@ -165,6 +165,12 @@ _test_DOTHEX:
 
 ;;; --------------------------------------------------------------------------------
 
+PI:     dw DOCON
+        dw $3141
+
+CAFE:   dw DOCON
+        dw $CAFE
+
 _test_DOCON:
         test 8 ; expect CAFE
         dw CAFE
@@ -226,7 +232,7 @@ _test_0BRANCH:
 
 ;;; --------------------------------------------------------------------------------
 
-TSTNAME:db $6,'(FIN1)'
+TSTNAME:db $7,'0BRANCH'
         db 88,'TESTFIN',$4C
         dw $0
 
@@ -237,49 +243,37 @@ TESTFIND: dw DOCOL
         nl
         exit
 
-N_test_PFIND:
-        test 12 ; expect 0000.5123
+_test_PFIND:
+        test 12 ; expect 0001.0007.{label_ZBRAN}
         lit TSTNAME
         lit L834F
         dw PFIND
         dw DOTHEX
         emitchr .
         dw DOTHEX
+        emitchr .
+        dw DOTHEX
+        dw EXIT
 
-
-word:   macro name length label link code
-        db length,name
-        dw link
-label:  dw code
-        endm
-
-PI:     dw DOCON
-        dw $3141
-
-CAFE:   dw DOCON
-        dw $CAFE
-
+;;; --------------------------------------------------------------------------------
 
 RUNTESTS:
         dw DOCOL
         include "runtests.asm"
-        dw EXIT
-
-PABOR:
-START:  dw DOCOL
-        dw RUNTESTS
         nl
         emitchr D
         emitchr O
         emitchr N
         emitchr E
         nl
+        dw EXIT
+
+PABOR:
+START:  dw DOCOL
+        dw RUNTESTS
         dw SHOWB
 IW:     dw SHOWA
         dw TESTFIND
-
-        emitchr -
-
 
         emitchr -
 

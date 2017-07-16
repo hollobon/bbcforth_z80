@@ -13,10 +13,16 @@ class ZForthTestHandler(socketserver.BaseRequestHandler):
     def setup(self):
         self.buffer = b''
         self.expected = {}
+        labels = {}
+        with open('forthz.ROM.LABEL') as label_file:
+            for line in label_file:
+                match = re.match(r'^([^:]+):\s+equ\s+\$([\da-f]+)', line)
+                if match:
+                    labels['label_' + match.groups()[0]] = match.groups()[1].upper()
         with open('expect.txt') as expect_file:
             for line in expect_file:
                 test_number, expected_value = line.strip().split(maxsplit=1)
-                self.expected[int(test_number)] = expected_value
+                self.expected[int(test_number)] = expected_value.format(**labels)
                 
     def lines(self):
         while True:
