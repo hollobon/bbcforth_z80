@@ -234,6 +234,7 @@ _test_0BRANCH:
 
 TSTNAME:db $5,'FIRST'
 TSTNAME2:db $8,'-FOURTH!'
+TSTNAME3:db $7,'nothing'
 
 _WORDA: db $5,'FIRS',$D4
         dw $0
@@ -279,7 +280,7 @@ _test_PFIND2:
         dw DOTHEX
         dw EXIT
 
-_test_PFIN3:
+_test_PFIND3:
         test 14 ; expect 0001.0008.{label__CFAD}
         lit TSTNAME2
         lit _WORDD
@@ -288,6 +289,14 @@ _test_PFIN3:
         emitchr .
         dw DOTHEX
         emitchr .
+        dw DOTHEX
+        dw EXIT
+	
+_test_PFIND_NOTFOUND:
+        test 14 ; expect 0000
+        lit TSTNAME3
+        lit _WORDD
+        dw PFIND
         dw DOTHEX
         dw EXIT
 

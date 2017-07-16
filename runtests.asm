@@ -12,4 +12,5 @@
 	dw _test_0BRANCH
 	dw _test_PFIND
 	dw _test_PFIND2
-	dw _test_PFIN3
+	dw _test_PFIND3
+	dw _test_PFIND_NOTFOUND
