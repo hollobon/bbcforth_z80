@@ -211,7 +211,9 @@ EMIT:   defw $+2
 ;; Description:     Searches the dictionary starting at the
 ;;         name field address addr2 for a match with the text
 ;;         starting at addrl. For a successful match the code
-;;         field execution! address and length byte of the name
+;;         field execution address and length byte of the name
+;;         field plus a true flag are left. If no match is found
+;;         only a false flag is left.
 
 ;	(FIND)
 
@@ -264,9 +266,7 @@ _NW2:   ld c, (ix+1)            ; load link address
         push hl
         jp nz, _CPNAME          ; if valid, compare strings
         
-        ld hl, $AA5E            ; not valid, 
-        push hl
-        ld hl, $0      
+        ld hl, $0               ; not found - push false flag
         push hl
         jp NEXT
 
