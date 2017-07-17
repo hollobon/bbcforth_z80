@@ -14,3 +14,8 @@
 	dw _test_PFIND2
 	dw _test_PFIND3
 	dw _test_PFIND_NOTFOUND
+	dw _test_AT_STORE
+	dw _test_CAT
+	dw _test_CMOVE
+	dw _test_COUNT
+	dw _test_CSTOR

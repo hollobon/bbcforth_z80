@@ -24,21 +24,34 @@ class Word(object):
         self.cfa = cfa
         self.name_length = name_length
         self.flags = flags
-        self.words = []
+        self._words = []
 
     def append(self, word):
         size, word = word
         for w in word.split(','):
             w = w.strip()
             if re.match(r'^\d+$', w):
-                self.words.append('LIT')
-                self.words.append(int(w))
+                self._words.append('LIT')
+                self._words.append(int(w))
             elif re.match(r'^\$([a-fA-F\d]+)$', w):
                 value = int(w[1:], 16)
-                self.words.append(value)
+                self._words.append(value)
             else:
-                self.words.append(w)
+                self._words.append(w)
 
+    def words(self):
+        if self.cfa != 'DOCOL':
+            raise Exception('{} is not a colon definition'.format(self.name))
+        
+        for w in self._words:
+            if isinstance(w, int):
+                yield w
+            else:
+                yield words_by_label[w]
+
+    def definition(self):
+        return ': {} {} ;'.format(self.name, ' '.join(w if isinstance(w, int) else w.name for w in self.words()))
+                
     def __repr__(self):
         result = 'WORD name: {}, label: {}, code label: {}, lfa: {}, cfa: {}, name len: {}, flags: {}, location: {}:{}'.format(
             self.name,
@@ -60,7 +73,7 @@ class Word(object):
                 return '??' + w +'??'
 
             try:
-                result += '\n    : {} {} ;'.format(self.name, ' '.join(map(getword, self.words)))
+                result += '\n    : {} {} ;'.format(self.name, ' '.join(map(getword, self._words)))
             except KeyError as e:
                 print(e)
 
@@ -84,6 +97,7 @@ def main():
     parser.add_argument('-l', '--label', metavar='LABEL', type=str, help='Look up definition of a word')
     parser.add_argument('--edit', action="store_true")
     parser.add_argument('--check', action="store_true")
+    parser.add_argument('--z80', action="store_true")
     args = parser.parse_args()
 
     state = 'search'
@@ -171,7 +185,24 @@ def main():
         print(word)
         if args.edit:
             subprocess.check_call(['emacsclient', '-n', '+{}'.format(word.line_number + 1), word.filename])
+        elif args.z80:
+            print(';; {}'.format(word.name))
+            if word.cfa == 'DOCOL':
+                print(';;    {}'.format(word.definition()))
+            print('{}:'.format(word.label))
+            print('\tdb ${:x},\'{}\',${:x}'.format(word.name_length | 0x80, word.name[:-1], ord(word.name[-1]) | 0x80))
+            print('\tdw $0 ; LFA')
+            if word.cfa == 'DOCOL':
+                print('{}:\tdw DOCOL'.format(word.code_label))
+                for w in word.words():
+                    if isinstance(w, int):
+                        print('\tlit ${:x}'.format(w))
+                    else:
+                        print('\tdw {}'.format(w.code_label))
+            elif word.cfa == '*+2':
+                print('{}:\tdw $+2'.format(word.code_label))
+                print('\n\tjp NEXT')
 
-
+    
 if __name__ == "__main__":
     main()

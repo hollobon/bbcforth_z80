@@ -333,12 +333,128 @@ _test_PFIND3:
         emitchr .
         dw DOTHEX
         dw EXIT
-	
+
 _test_PFIND_NOTFOUND:
         test 14 ; expect 0000
         lit TSTNAME3
         lit _WORDD
         dw PFIND
+        dw DOTHEX
+        dw EXIT
+
+;;; --------------------------------------------------------------------------------
+	
+_EX1:   dw $1234
+
+_test_AT_STORE:
+        test 1 ; expect 1234.FADB
+        lit _EX1
+        dw AT
+        dw DOTHEX
+        emitchr .
+        lit $FADB
+        lit _EX1
+        dw STORE
+        lit _EX1
+        dw AT
+        dw DOTHEX
+        dw EXIT
+
+;;; --------------------------------------------------------------------------------
+	
+_EX2:   dw $1234
+
+_test_CAT:
+        test 1 ; expect 0034
+        lit _EX2
+        dw CAT
+        dw DOTHEX
+        dw EXIT
+
+;;; --------------------------------------------------------------------------------
+	
+_tcmove_FROM:   db 'atest'
+_tcmove_TO:     db 'xxxxxxxx'
+
+;;; print 6 characters from address at top of stack, without looping
+_emit6: dw DOCOL
+        dw DUP
+        dw AT
+        dw EMIT
+	
+        dw DUP
+        dw ONE
+        dw PLUS
+        dw AT
+        dw EMIT
+	
+        dw DUP
+        dw TWO
+        dw PLUS
+        dw AT
+        dw EMIT
+        
+        dw DUP
+        lit 3
+        dw PLUS
+        dw AT
+        dw EMIT
+	
+        dw DUP
+        lit 4
+        dw PLUS
+        dw AT
+        dw EMIT
+
+        dw DUP
+        lit 5
+        dw PLUS
+        dw AT
+        dw EMIT
+
+        dw EXIT
+        
+_test_CMOVE:
+        test 1 ; expect xxxxxx.atestx
+        lit _tcmove_TO
+	dw _emit6
+        emitchr .
+        lit _tcmove_FROM
+        lit _tcmove_TO
+        lit 5
+        dw CMOVE
+        lit _tcmove_TO
+        dw _emit6
+        dw EXIT
+
+;;; --------------------------------------------------------------------------------
+
+_d_test_COUNT:
+        db $05,'abcde'
+	
+_test_COUNT:
+        test 1 ; expect 0005
+        lit _d_test_COUNT
+        dw COUNT
+        dw DOTHEX
+        dw EXIT
+
+;;; --------------------------------------------------------------------------------
+
+_d_test_CSTOR:
+        dw $0000
+
+_test_CSTOR:
+        test 1 ; expect 0000.00DE
+	lit _d_test_CSTOR
+        dw AT
+        dw DOTHEX
+        emitchr .
+        lit $BCDE
+	lit _d_test_CSTOR
+        dw CSTOR
+	lit _d_test_CSTOR
+        dw AT
         dw DOTHEX
         dw EXIT
 

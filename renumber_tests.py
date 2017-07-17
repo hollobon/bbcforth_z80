@@ -28,8 +28,8 @@ def main():
                 if match:
                     indent, number, expect = match.groups()
                     print('Renumbering test {} to {}'.format(number, counter))
-                    line = '{}test {} ; expect {}'.format(indent, counter, expect)
-                    expect_file.write('{} {}\n'.format(counter, expect))
+                    line = '{}test ${:x} ; expect {}'.format(indent, counter, expect)
+                    expect_file.write('{}:{} {}\n'.format(label, counter, expect))
                     runtests_file.write('\tdw {}\n'.format(label))
                     counter += 1
                     state = 'find_label'

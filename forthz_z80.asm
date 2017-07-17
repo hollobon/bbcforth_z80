@@ -272,7 +272,6 @@ _NW2:   ld c, (ix+1)            ; load link address
 
 include "word.asm"
 
-
 ;	-FIND
 
 ;; L90B1:  db	$85,'-FIN',$C4
@@ -300,6 +299,15 @@ include "word.asm"
 ;; 	dw	ZERO
 ;; 	dw	EXIT
         
+	db $85,'CMOV',$C5
+	dw $0
+CMOVE:  dw $+2
+        pop bc                  ; count
+        pop de                  ; to
+        pop hl                  ; from
+        ldir
+        jp NEXT
+
 include "arith.asm"
 
 include "stack.asm"	
@@ -432,7 +440,19 @@ STORE:  dw	$+2
         ld (ix+1), b
         jp NEXT
 
-        
+;	C@
+
+L8885:  db	$82,'C',$C0
+	dw	$0 ; L8874
+CAT:    dw	$+2
+        pop hl
+        ld c, (hl)
+        ld b, 0
+        push bc
+        jp NEXT
+
+;	@
+	
 L8895:  db	$81,$C0
 	dw	$0 ;L8885
 AT:     dw $+2
@@ -443,8 +463,40 @@ AT:     dw $+2
         push bc
         jp NEXT
 
+;;;  1+
+;;;     : 1+ 1 + EXIT ;
+L8AE0:
+        db $82,'1',$ab
+        dw $0           ; LFA
+ONEP:      dw DOCOL
+        dw ONE
+        dw PLUS
+        dw EXIT
+
+;;;  COUNT
+;;;     : COUNT DUP 1+ SWAP C@ EXIT ;
+L8DDB:
+        db $85,'COUN',$d4
+        dw $0              ; LFA
+COUNT:    dw DOCOL
+        dw DUP
+        dw ONEP
+        dw SWAP
+        dw CAT
+        dw EXIT
         
+;;;  C!
+L88A9:
+        db $82,'C',$a1
+        dw $0           ; LFA
+CSTOR:  dw $+2
+        pop ix
+        pop bc
+        ld (ix+0), c
+        jp NEXT
+
         include "tests.asm.gen"
+
 
 TOPDP: equ $	; TOP OF DICTIONARY
 	

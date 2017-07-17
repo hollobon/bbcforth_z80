@@ -22,7 +22,8 @@ class ZForthTestHandler(socketserver.BaseRequestHandler):
         with open('expect.txt') as expect_file:
             for line in expect_file:
                 test_number, expected_value = line.strip().split(maxsplit=1)
-                self.expected[int(test_number)] = expected_value.format(**labels)
+                label, test_number = test_number.split(':')
+                self.expected[int(test_number)] = (label, expected_value.format(**labels))
                 
     def lines(self):
         while True:
@@ -50,12 +51,12 @@ class ZForthTestHandler(socketserver.BaseRequestHandler):
             match = re.match(r'^TEST ([A-F\d]{4,4}):(.*)$', line.decode('unicode_escape'))
             if match:
                 test_number, result = match.groups()
-                expect = self.expected[int(test_number, 16)]
+                label, expect = self.expected[int(test_number, 16)]
                 if result != expect:
-                    print('Test {} failed: expected {}, got {}'.format(test_number, expect, result))
+                    print('Test {}({}) failed: expected {}, got {}'.format(test_number, label, expect, result))
                     fail += 1
                 else:
-                    print('Test {} ok'.format(test_number))
+                    print('Test {}({}) ok'.format(test_number, label))
                 count += 1
             else:
                 if line.startswith(b'DONE'):
