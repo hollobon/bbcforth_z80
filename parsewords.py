@@ -78,7 +78,10 @@ class Word(object):
                 print(e)
 
         elif self.cfa == 'DOCON':
-            result = '\n{} CONSTANT {}'.format(self.words[0], self.name)
+            result = '\n{} CONSTANT {}'.format(self._words[0], self.name)
+
+        elif self.cfa == 'DOUSE':
+            result = '\n{} USER {}'.format(self._words[0], self.name)
 
         return result
 
