@@ -9,6 +9,7 @@
 	dw _test_DOCON
 	dw _test_OVER
 	dw _test_words
+	dw _test_BRANCH
 	dw _test_0BRANCH
 	dw _test_PFIND
 	dw _test_PFIND2
@@ -20,3 +21,6 @@
 	dw _test_COUNT
 	dw _test_CSTOR
 	dw _test_PSTORE
+	dw _test_ZLESS
+	dw _test_NEGAT
+	dw _test_PM

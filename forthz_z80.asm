@@ -23,9 +23,9 @@ BUF1: equ EM-BUFS		; FIRST BLOCK BUFFER
         org $8000
 
         incbin 'forthz_6502.a'
-        
+
 ;;; this has to be immediately after the 6502 code
-        
+
 LANGENT:
         cp $1
         jp z, LVALID
@@ -54,16 +54,16 @@ OLDSTARTUP:
         ld iy, IW
         jp NEXT
 
-        ;; 
+        ;;
 RSP:    defw $c200 ; return stack pointer
 CWMSG:  dm '\r\nCOLD or WARM start (C/W)?',0
 COLDST: dw START
 WARMST: dw PABOR
 
-	
+
 ; BOOT-UP LITERALS
 
-BOOTLITERALS:   
+BOOTLITERALS:
 	dw	TOPNFA		; TOP NFA
 	dw	$7F		; BACKSPACE CHARACTER
 UAVALUE:
@@ -111,11 +111,11 @@ NEXT:
         ld h, a
         ;; jump to address in HL
         jp (hl)
-	
+
 DOCOL:
         ;; push IY onto return stack
         push bc
-	
+
 	ld de, (RSP)
         dec de
         ld b, iyh
@@ -128,7 +128,7 @@ DOCOL:
         ld (RSP), de
 
         pop bc
-        
+
         ;; load IY with new IP
         inc bc
         ld iyl, c
@@ -150,7 +150,7 @@ DOCON:  inc bc                  ; load word from PFA into hl
         ld h, a
         push hl                 ; push onto forth stack
         jp NEXT
-	
+
 ;; 	;	USER
 
 L897D:  db	$84,'USE',$D2
@@ -171,13 +171,14 @@ DOUSE:  inc bc
 
 include "constants.asm"
 include "user.asm"
-        
+
 ;	BRANCH
         ;; unconditional branch, next word is IP offset in bytes from word following IP
 L81D4:	db	$86,'BRANC',$C8
 	dw	$0 ;L81B4
 BRAN:	dw	$+2
-        pop bc
+        ld c, (iy+0)
+        ld b, (iy+1)
         add iy, bc
         jp NEXT
 
@@ -190,7 +191,8 @@ ZBRAN:	dw	$+2
         ld a, c
         cp b
         jp z, BRAN
-        pop bc
+        inc iy                  ; skip the offset
+        inc iy
         jp NEXT
 
         db 4
@@ -265,7 +267,7 @@ _NW2:   ld c, (ix+1)            ; load link address
         pop hl                  ; restore address of search string
         push hl
         jp nz, _CPNAME          ; if valid, compare strings
-        
+
         ld hl, $0               ; not found - push false flag
         push hl
         jp NEXT
@@ -276,7 +278,7 @@ include "word.asm"
 
 ;; L90B1:  db	$85,'-FIN',$C4
 ;; 	dw	$0
-        
+
 ;; DFIND:  dw	DOCOL
 ;; 	dw	BLL
 ;; 	dw	ONEWRD
@@ -298,7 +300,7 @@ include "word.asm"
 ;; 	dw	BRAN,4
 ;; 	dw	ZERO
 ;; 	dw	EXIT
-        
+
 	db $85,'CMOV',$C5
 	dw $0
 CMOVE:  dw $+2
@@ -310,8 +312,8 @@ CMOVE:  dw $+2
 
 include "arith.asm"
 
-include "stack.asm"	
-        
+include "stack.asm"
+
         db 4
         db 'EXIT'
 EXIT:   defw $+2
@@ -335,11 +337,11 @@ SP:     defw DOCOL
         dw EXIT
 
 ;;;  +!
-;;; 
+;;;
 ;;; Stack Action: n\addr ...
 ;;; Uses/Leaves: 2 0
 ;;; Description: Adds n to the value at the address addr.
-        
+
 L88CE:
         db $82,'+',$a1
         dw $0           ; LFA
@@ -369,7 +371,7 @@ PEXPEC: dw $+2
         ld (ix+0), $40
         ld (ix+1), $eb
         pop bc                  ; number of characters to read
-        ld (ix+2), c            
+        ld (ix+2), c
         ld (ix+3), $20          ; min ASCII value
         ld (ix+4), $FF          ; max ASCII value
         ld hl, $eb00
@@ -391,23 +393,23 @@ EXPECT: dw	DOCOL
 	dw	PLUS
 	dw	ZERO
 	dw	SWAP
-;	dw	STORE
+	dw	STORE
 	dw	EXIT
-	
+
 ;; 	;	QUERY
 
-;; ;L8F17	.BYTE	$85,'QUER',$D9
-;; ;	.WORD	L8EFC
-;; QUERY	dw	DOCOL
-;; 	dw	TIB
-;; 	dw	AT
-;; 	dw	LITERAL
-;;         dw      80
-;; 	dw	EXPECT
-;; 	dw	ZERO
-;; 	dw	INN
-;; 	dw	STORE
-;; 	dw	EXIT
+L8F17:  db	$85,'QUER',$D9
+	dw	$0
+QUERY:  dw	DOCOL
+	dw	TIB
+	dw	AT
+	dw	LITERAL
+        dw      80
+	dw	EXPECT
+	dw	ZERO
+	dw	INN
+	dw	STORE
+	dw	EXIT
 
 ;	COLD
 
@@ -443,7 +445,7 @@ COPYLITERALS:
 ; copy literals up to and including WARNING (for warm start) or VOC-LINK (for cold start)
         ld hl, BOOTLITERALS
         ld de, (UAVALUE)
-        ldir 
+        ldir
 	jp NEXT
 ;	jp RPSTO+2		; Reset return pointer and RUN FORTH
 
@@ -471,7 +473,7 @@ CAT:    dw	$+2
         jp NEXT
 
 ;	@
-	
+
 L8895:  db	$81,$C0
 	dw	$0 ;L8885
 AT:     dw $+2
@@ -503,7 +505,7 @@ COUNT:    dw DOCOL
         dw SWAP
         dw CAT
         dw EXIT
-        
+
 ;;;  C!
 L88A9:
         db $82,'C',$a1
@@ -514,12 +516,62 @@ CSTOR:  dw $+2
         ld (ix+0), c
         jp NEXT
 
+;;;  0<
+;;; Stack Action: n ... f
+;;; Uses/Leaves: 1 1
+;;; Status:
+;;; Description:     Leaves a true flag if n is less than zero,
+;;; otherwise leaves a false flag.
+L8676:
+        db $82,'0',$bc
+        dw $0           ; LFA
+ZLESS:  dw $+2
+        pop hl
+        ld a, h
+        or 0
+        jp M, _ZLESS_M
+        ld hl, 0
+        jp _ZLESS_NEXT
+_ZLESS_M:
+        ld hl, 1
+_ZLESS_NEXT:
+        push hl
+        jp NEXT
+
+;;;  NEGATE
+L8708:
+        db $86,'NEGAT',$c5
+        dw $0           ; LFA
+NEGAT:  dw $+2
+        pop bc
+        ld hl, 0
+        and 0
+        sbc hl, bc
+        push hl
+        jp NEXT
+
+;;;  +-
+;;; Stack Action: n1\n2 ... n3
+;;; Uses/Leaves: 2 1
+;;; Status:
+;;; Description:     Leaves as n3 the result of applying the sign of n2 to n1.
+;;;     : +- 0< 0BRANCH LIT 4 NEGATE EXIT ;
+L956B:
+        db $82,'+',$ad
+        dw $0           ; LFA
+PM:     dw DOCOL
+        dw ZLESS
+        dw ZBRAN
+        dw $4
+        dw NEGAT
+        dw EXIT
+
         include "tests.asm.gen"
 
 
 TOPDP: equ $	; TOP OF DICTIONARY
-	
+
 TOPNFA:  equ 0 ; top non-forth area?
 
-       
+
 ;include "messages.asm"

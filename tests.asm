@@ -16,7 +16,7 @@ DOTHEX: dw $+2
 
         ;; display byte value in c as hex
         ;; overwrites a
-_DOTCHEX:       
+_DOTCHEX:
         ld a, c
         srl a
         srl a
@@ -39,7 +39,7 @@ ALPHA1: add 55
 OUT1:   call OSWRCH
 
         ret
-	
+
 lit:    macro value
         dw LITERAL
         dw value
@@ -258,16 +258,26 @@ PETE:   dw DOCOL
 
 ;;; --------------------------------------------------------------------------------
 
-_test_0BRANCH:
-        test 11 ; expect tft
-        lit 6
-        lit 0
-        dw ZBRAN
+_test_BRANCH:
+        test 11 ; expect t
+        dw BRAN
+        dw 8
         emitchr f
         emitchr t
-        lit 6
+        dw EXIT
+	
+;;; --------------------------------------------------------------------------------
+
+_test_0BRANCH:
+        test 11 ; expect tft
+        lit 0
+        dw ZBRAN
+        dw 8
+        emitchr f
+        emitchr t
         lit 1
         dw ZBRAN
+        dw 8
         emitchr f
         emitchr t
         dw EXIT
@@ -343,7 +353,7 @@ _test_PFIND_NOTFOUND:
         dw EXIT
 
 ;;; --------------------------------------------------------------------------------
-	
+
 _EX1:   dw $1234
 
 _test_AT_STORE:
@@ -361,7 +371,7 @@ _test_AT_STORE:
         dw EXIT
 
 ;;; --------------------------------------------------------------------------------
-	
+
 _EX2:   dw $1234
 
 _test_CAT:
@@ -372,7 +382,7 @@ _test_CAT:
         dw EXIT
 
 ;;; --------------------------------------------------------------------------------
-	
+
 _tcmove_FROM:   db 'atest'
 _tcmove_TO:     db 'xxxxxxxx'
 
@@ -381,25 +391,25 @@ _emit6: dw DOCOL
         dw DUP
         dw AT
         dw EMIT
-	
+
         dw DUP
         dw ONE
         dw PLUS
         dw AT
         dw EMIT
-	
+
         dw DUP
         dw TWO
         dw PLUS
         dw AT
         dw EMIT
-        
+
         dw DUP
         lit 3
         dw PLUS
         dw AT
         dw EMIT
-	
+
         dw DUP
         lit 4
         dw PLUS
@@ -413,7 +423,7 @@ _emit6: dw DOCOL
         dw EMIT
 
         dw EXIT
-        
+
 _test_CMOVE:
         test 1 ; expect xxxxxx.atestx
         lit _tcmove_TO
@@ -431,7 +441,7 @@ _test_CMOVE:
 
 _d_test_COUNT:
         db $05,'abcde'
-	
+
 _test_COUNT:
         test 1 ; expect 0005
         lit _d_test_COUNT
@@ -459,7 +469,7 @@ _test_CSTOR:
         dw EXIT
 
 ;;; --------------------------------------------------------------------------------
-	
+
 _d_test_PSTORE:
         dw $1234
 
@@ -473,6 +483,64 @@ _test_PSTORE:
         dw DOTHEX
         dw EXIT
 
+;;; --------------------------------------------------------------------------------
+
+_test_ZLESS:
+        test 1 ; expect 0000.0001.0000
+
+        lit $0001
+        dw ZLESS
+        dw DOTHEX
+        emitchr .
+
+        lit $FFFF
+        dw ZLESS
+        dw DOTHEX
+        emitchr .
+
+        lit $0
+        dw ZLESS
+        dw DOTHEX
+
+        dw EXIT
+
+;;; --------------------------------------------------------------------------------
+
+_test_NEGAT:
+        test 1 ; expect FFFF.FF00.0001
+
+        lit $1
+        dw NEGAT
+        dw DOTHEX
+        emitchr .
+
+        lit $100
+        dw NEGAT
+        dw DOTHEX
+        emitchr .
+
+        lit $FFFF
+        dw NEGAT
+        dw DOTHEX
+
+        dw EXIT
+
+;;; --------------------------------------------------------------------------------
+
+_test_PM:
+        test 1 ; expect 0001.FFFE
+        lit $1
+        lit $1
+        dw PM
+        dw DOTHEX
+        emitchr .
+
+        lit $2
+        lit $FFFF
+        dw PM
+        dw DOTHEX
+
+        dw EXIT
 ;;; --------------------------------------------------------------------------------
 
 RUNTESTS:
