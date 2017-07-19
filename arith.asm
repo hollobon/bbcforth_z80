@@ -123,3 +123,32 @@ PM:     dw DOCOL
         dw $4
         dw NEGAT
         dw EXIT
+
+
+;;;  2+
+;;;     : 2+ 2 + EXIT ;
+L8AED:
+        db $82,'2',$ab
+        dw $0           ; LFA
+TWOP:   dw DOCOL
+        dw TWO
+        dw PLUS
+        dw EXIT         
+
+
+;;;  0=
+L8661:
+        db $82,'0',$bd
+        dw $0           ; LFA
+ZEQU:   dw $+2
+        pop hl
+        ld a, l
+        or h
+        ld hl, 0
+        jp z, _ZEQU_T
+        push hl
+        jp NEXT
+_ZEQU_T:
+        inc l
+        push hl
+        jp NEXT 
