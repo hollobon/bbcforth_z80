@@ -6,25 +6,14 @@ LESS:	dw	$+2
         pop hl
         pop bc
         sbc hl, bc
-        ld hl, $0
+        ld hl, $1
         jp m, _LESS1
+        jp z, _LESS1
         push hl
         jp NEXT
-_LESS1: ld l, 1
+_LESS1: ld l, 0
         push hl
         jp NEXT
-;; 	SEC
-;; 	LDA	2,X
-;; 	SBC	0,X
-;; 	LDA	3,X
-;; 	SBC	1,X
-;; 	STY	3,X
-;; 	BVC	L869D
-;; 	EOR	#$80
-;; L869D:	BPL	L86A0
-;; 	INY
-;; L86A0:	STY	2,X
-;; 	JMP	POP
 	
 ;	>
 
@@ -45,7 +34,7 @@ PLUS:   dw $+2
         jp NEXT
 
 ;	MIN
-
+;  : MIN 2DUP > 0BRANCH LIT 4 SWAP DROP EXIT ;
 L95AB:	db	$83,'MI',$CE
 	dw	$0 ;L959C
 MIN:	dw	DOCOL

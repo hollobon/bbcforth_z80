@@ -119,16 +119,16 @@ _test_LESS:
         test 3 ; expect 100
 
         ;; 2<3 -> true
-        lit 3
         lit 2
+        lit 3
         dw LESS
         lit '0'
         dw PLUS
         dw EMIT
 
         ;; 3<2 -> false
-        lit 2
         lit 3
+        lit 2
         dw LESS
         lit '0'
         dw PLUS
@@ -150,16 +150,16 @@ _test_GREAT:
         test 4 ; expect 010
 
         ;; 2>3 -> false
-        lit 3
         lit 2
+        lit 3
         dw GREAT
         lit '0'
         dw PLUS
         dw EMIT
 
         ;; 3>2 -> true
-        lit 2
         lit 3
+        lit 2
         dw GREAT
         lit '0'
         dw PLUS
@@ -541,6 +541,24 @@ _test_PM:
         dw DOTHEX
 
         dw EXIT
+	
+;;; --------------------------------------------------------------------------------
+
+_test_MIN:
+        test 1 ; expect 0005.00AA
+        lit 5
+        lit 6
+        dw MIN
+        dw DOTHEX
+        emitchr .
+
+        lit $AA00
+        lit $00AA
+        dw MIN
+        dw DOTHEX
+
+        dw EXIT
+
 ;;; --------------------------------------------------------------------------------
 
 RUNTESTS:

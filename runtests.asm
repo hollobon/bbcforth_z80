@@ -24,3 +24,4 @@
 	dw _test_ZLESS
 	dw _test_NEGAT
 	dw _test_PM
+	dw _test_MIN
