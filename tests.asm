@@ -459,6 +459,21 @@ _test_CSTOR:
         dw EXIT
 
 ;;; --------------------------------------------------------------------------------
+	
+_d_test_PSTORE:
+        dw $1234
+
+_test_PSTORE:
+        test 1 ; expect 666C
+        lit $5438
+        lit _d_test_PSTORE
+        dw PSTOR
+        lit _d_test_PSTORE
+        dw AT
+        dw DOTHEX
+        dw EXIT
+
+;;; --------------------------------------------------------------------------------
 
 RUNTESTS:
         dw DOCOL

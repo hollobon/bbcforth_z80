@@ -334,6 +334,25 @@ SP:     defw DOCOL
         dw EMIT
         dw EXIT
 
+;;;  +!
+;;; 
+;;; Stack Action: n\addr ...
+;;; Uses/Leaves: 2 0
+;;; Description: Adds n to the value at the address addr.
+        
+L88CE:
+        db $82,'+',$a1
+        dw $0           ; LFA
+PSTOR:  dw $+2
+        pop ix
+        pop hl
+        ld c, (ix+0)
+        ld b, (ix+1)
+        add hl, bc
+        ld (ix+0), l
+        ld (ix+1), h
+        jp NEXT
+
 ;; On exit,
 ;;  C=0 if a carriage return terminated input.
 ;;  C=1 if an ESCAPE condition terminated input.

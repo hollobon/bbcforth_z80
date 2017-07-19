@@ -19,3 +19,4 @@
 	dw _test_CMOVE
 	dw _test_COUNT
 	dw _test_CSTOR
+	dw _test_PSTORE
