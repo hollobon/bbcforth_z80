@@ -265,7 +265,7 @@ _test_BRANCH:
         emitchr f
         emitchr t
         dw EXIT
-	
+
 ;;; --------------------------------------------------------------------------------
 
 _test_0BRANCH:
@@ -541,7 +541,7 @@ _test_PM:
         dw DOTHEX
 
         dw EXIT
-	
+
 ;;; --------------------------------------------------------------------------------
 
 _test_MIN:
@@ -552,9 +552,44 @@ _test_MIN:
         dw DOTHEX
         emitchr .
 
-        lit $AA00
+        lit $7A00
         lit $00AA
         dw MIN
+        dw DOTHEX
+
+        dw EXIT
+
+;;; --------------------------------------------------------------------------------
+
+_test_ZEQU:
+        test 1 ; expect 0001.0000.0000.0000.0000.0000
+        lit $0
+        dw ZEQU
+        dw DOTHEX
+        emitchr .
+
+        lit $1
+        dw ZEQU
+        dw DOTHEX
+        emitchr .
+
+        lit $FFFF
+        dw ZEQU
+        dw DOTHEX
+        emitchr .
+
+        lit $0101
+        dw ZEQU
+        dw DOTHEX
+        emitchr .
+
+        lit $00FF
+        dw ZEQU
+        dw DOTHEX
+        emitchr .
+
+        lit $FF00
+        dw ZEQU
         dw DOTHEX
 
         dw EXIT
