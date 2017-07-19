@@ -10,7 +10,7 @@ forthz_6502.a: forthz_6502.asm
 	xa $< -o $@
 
 test: forthz.ROM
-	@echo 'Set RS423 to IP: localhost:25232 then issue *TEST'
+	@echo 'In BeebEm, set RS423 to IP: localhost:25232 then issue *TEST'
 	./zforthtests.py
 
 clean:
