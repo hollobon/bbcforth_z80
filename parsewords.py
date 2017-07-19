@@ -115,6 +115,10 @@ def main():
                     state = 'possword'
                     comment = match.groups()[0]
                     continue
+                match = re.match(r'^(\S+)\s+=\s+(\S+)-REL$', line)
+                if match:
+                    words_by_label[match.groups()[0]] = words_by_label[match.groups()[1]]
+                    continue
                 if state == 'possword':
                     match = re.match(r"^(L....)\t\.BYTE\t(\$..),(?:'([^']+)',)?(\$..)", line)
                     if match:
