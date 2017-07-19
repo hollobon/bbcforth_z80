@@ -203,7 +203,7 @@ def main():
                 print('{}:\tdw DOCOL'.format(word.code_label))
                 for w in word.words():
                     if isinstance(w, int):
-                        print('\tlit ${:x}'.format(w))
+                        print('\tdw ${:x}'.format(w))
                     else:
                         print('\tdw {}'.format(w.code_label))
             elif word.cfa == '*+2':
