@@ -50,7 +50,7 @@ class Word(object):
                 yield words_by_label[w]
 
     def definition(self):
-        return ': {} {} ;'.format(self.name, ' '.join(w if isinstance(w, int) else w.name for w in self.words()))
+        return ': {} {} ;'.format(self.name, ' '.join(str(w) if isinstance(w, int) else w.name for w in self.words()))
                 
     def __repr__(self):
         result = 'WORD name: {}, label: {}, code label: {}, lfa: {}, cfa: {}, name len: {}, flags: {}, location: {}:{}'.format(
