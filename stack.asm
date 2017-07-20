@@ -110,3 +110,24 @@ ROT:    dw $+2
         ld (ix+1), b
 
         jp NEXT
+
+
+;;;  PICK
+L9B90:
+        db $84,'PIC',$cb
+        dw $0           ; LFA
+PICK:   dw $+2
+        pop bc                  ; get n, multiply by 2 to get offset in bytes
+        sla c
+        sla b
+
+        ld ix, 0                ; get SP
+        add ix, sp
+
+        add ix, bc              ; apply offset
+
+        ld c, (ix+0)            ; load word from stack
+        ld b, (ix+1)
+
+        push bc
+        jp NEXT

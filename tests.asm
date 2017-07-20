@@ -595,11 +595,39 @@ _test_ZEQU:
         dw EXIT
 
 ;;; --------------------------------------------------------------------------------
-_test_DROP: 
+
+_test_DROP:
         test 1 ; expect FEED
         lit $FEED
         lit $B00F
         dw DROP
+        dw DOTHEX
+
+        dw EXIT
+
+;;; --------------------------------------------------------------------------------
+
+_test_PICK:
+        test 1 ; expect BEEF.600D.6006
+        lit $6006
+        lit $EEFF
+        lit $BEEF
+        lit $000F
+        lit $B0B0
+        lit $600D
+
+        lit 3
+        dw PICK
+        dw DOTHEX
+        emitchr .
+
+        lit 0
+        dw PICK
+        dw DOTHEX
+        emitchr .
+
+        lit 5
+        dw PICK
         dw DOTHEX
 
         dw EXIT
