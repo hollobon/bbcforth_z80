@@ -131,3 +131,14 @@ PICK:   dw $+2
 
         push bc
         jp NEXT
+
+
+;;;  SP@
+L8422:
+        db $83,'SP',$c0
+        dw $0           ; LFA
+SPAT:   dw $+2
+        ld ix, 0
+        add ix, sp
+        push ix
+        jp NEXT 

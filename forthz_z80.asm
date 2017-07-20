@@ -400,6 +400,10 @@ COPYLITERALS:
         ;; ld ix, (UAVALUE)
         ;; ld (UP), ix ; Set user area address
 
+        ld hl, 0
+        add hl, sp
+        ld (UAVALUE+2), hl
+
 ; a is $15 for cold start, $F for warm start
 ; copy literals up to and including WARNING (for warm start) or VOC-LINK (for cold start)
         ld hl, BOOTLITERALS

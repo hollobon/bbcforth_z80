@@ -84,6 +84,34 @@ test:   macro number
 
 ;;; --------------------------------------------------------------------------------
 
+_test_SPAT_SZERO:
+        test 1 ; expect 0000.0006
+	
+        dw SPAT
+        dw SZERO
+        dw SWAP
+        dw SUBB
+        dw DOTHEX
+        emitchr .
+	
+        lit 1
+        lit 1
+        lit 1
+        
+        dw SPAT
+        dw SZERO
+        dw SWAP
+        dw SUBB
+        dw DOTHEX
+
+        dw DROP
+        dw DROP
+        dw DROP
+
+        dw EXIT
+	
+;;; --------------------------------------------------------------------------------
+
 _test_0:
         test 0 ; expect 0
 
