@@ -490,7 +490,7 @@ L8DDB:
         db $85,'COUN',$d4
         dw $0              ; LFA
 COUNT:    dw DOCOL
-        dw DUP
+        dw DUPP
         dw ONEP
         dw SWAP
         dw CAT

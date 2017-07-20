@@ -1,3 +1,7 @@
+;;;  OVER
+L87D2:
+        db $84,'OVE',$d2
+        dw $0           ; LFA
 OVER:   dw $+2
         ld ix, 0
         add ix, sp
@@ -5,16 +9,17 @@ OVER:   dw $+2
         ld h, (ix+3)
         push hl
         jp NEXT
-	
+
+
 NIP:    dw $+2
         pop hl
         inc sp
         inc sp
         push hl
         jp NEXT
-	
-;	2DUP
 
+
+;;;	2DUP
 L8770:	db	$84,'2DU',$D0
 	dw	$0
 TDUP:	dw	$+2
@@ -29,6 +34,10 @@ TDUP:	dw	$+2
         jp NEXT
 
 
+;;;  SWAP
+L878F:
+        db $84,'SWA',$d0
+        dw $0           ; LFA
 SWAP:   dw $+2
         ld ix, 0
         add ix, sp
@@ -42,24 +51,32 @@ SWAP:   dw $+2
         ld (ix+3), h
         jp NEXT
 
+
+;;;  DROP
+L873B:
+        db $84,'DRO',$d0
+        dw $0           ; LFA
 DROP:   dw $+2
         inc sp
         inc sp
+        jp NEXT
 
-;	DUP
 
-;; L874E	db	$83,'DU',$D0
-;; 	dw	L8744
-DUP:    dw $+2
+;;;  DUP
+L874E:
+        db $83,'DU',$d0
+        dw $0           ; LFA
+DUPP:   dw $+2
         pop hl
         push hl
         push hl
         jp NEXT
-	
-;	?DUP
 
-;; L875E	db	$84,'?DU',$D0
-;; 	dw	L874E
+
+;;;	?DUP
+L875E:
+        db $84,'?DU',$d0
+        dw $0           ; LFA
 QDUP:
         dw $+2
         pop hl
@@ -68,8 +85,8 @@ QDUP:
         push hl
         jp NEXT
 
-;;	ROT
 
+;;;	ROT
 L87FF:  db $83,'RO',$D4
 	dw $0
 ROT:    dw $+2

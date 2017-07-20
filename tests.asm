@@ -388,35 +388,35 @@ _tcmove_TO:     db 'xxxxxxxx'
 
 ;;; print 6 characters from address at top of stack, without looping
 _emit6: dw DOCOL
-        dw DUP
+        dw DUPP
         dw AT
         dw EMIT
 
-        dw DUP
+        dw DUPP
         dw ONE
         dw PLUS
         dw AT
         dw EMIT
 
-        dw DUP
+        dw DUPP
         dw TWO
         dw PLUS
         dw AT
         dw EMIT
 
-        dw DUP
+        dw DUPP
         lit 3
         dw PLUS
         dw AT
         dw EMIT
 
-        dw DUP
+        dw DUPP
         lit 4
         dw PLUS
         dw AT
         dw EMIT
 
-        dw DUP
+        dw DUPP
         lit 5
         dw PLUS
         dw AT
@@ -590,6 +590,16 @@ _test_ZEQU:
 
         lit $FF00
         dw ZEQU
+        dw DOTHEX
+
+        dw EXIT
+
+;;; --------------------------------------------------------------------------------
+_test_DROP: 
+        test 1 ; expect FEED
+        lit $FEED
+        lit $B00F
+        dw DROP
         dw DOTHEX
 
         dw EXIT
