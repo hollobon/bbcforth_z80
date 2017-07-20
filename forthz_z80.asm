@@ -355,47 +355,6 @@ PSTOR:  dw $+2
         ld (ix+1), h
         jp NEXT
 
-;; On exit,
-;;  C=0 if a carriage return terminated input.
-;;  C=1 if an ESCAPE condition terminated input.
-;;  Y contains line length, including carriage return if used
-
-;; ;	(EXPECT)
-
-;; L8EC8	.BYTE	$88,'(EXPECT',$A9
-        ;; 	.WORD	L8E8B
-PEXPEC: dw $+2
-        call OSNEWL
-        ld ix, $eb00
-        pop bc                  ; address to write input
-        ld (ix+0), $40
-        ld (ix+1), $eb
-        pop bc                  ; number of characters to read
-        ld (ix+2), c
-        ld (ix+3), $20          ; min ASCII value
-        ld (ix+4), $FF          ; max ASCII value
-        ld hl, $eb00
-        ld a, $0
-        call OSWORD
-        ld l, h                 ; h contains number of characters read
-        ld h, 0
-        push hl
-        jp NEXT
-
-;; ;	EXPECT
-
-;; L8EFC	.BYTE	$86,'EXPEC',$D4
-;; 	.WORD	L8EC8
-EXPECT: dw	DOCOL
-	dw	OVER
-	dw	SWAP
-	dw	PEXPEC
-	dw	PLUS
-	dw	ZERO
-	dw	SWAP
-	dw	STORE
-	dw	EXIT
-
 ;; 	;	QUERY
 
 L8F17:  db	$85,'QUER',$D9
