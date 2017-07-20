@@ -125,6 +125,17 @@ PM:     dw DOCOL
         dw EXIT
 
 
+;;;  1+
+;;;     : 1+ 1 + EXIT ;
+L8AE0:
+        db $82,'1',$ab
+        dw $0           ; LFA
+ONEP:   dw DOCOL
+        dw ONE
+        dw PLUS
+        dw EXIT
+
+
 ;;;  2+
 ;;;     : 2+ 2 + EXIT ;
 L8AED:
@@ -133,7 +144,7 @@ L8AED:
 TWOP:   dw DOCOL
         dw TWO
         dw PLUS
-        dw EXIT         
+        dw EXIT
 
 
 ;;;  0=
@@ -151,4 +162,4 @@ ZEQU:   dw $+2
 _ZEQU_T:
         inc l
         push hl
-        jp NEXT 
+        jp NEXT

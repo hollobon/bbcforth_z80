@@ -484,16 +484,6 @@ AT:     dw $+2
         push bc
         jp NEXT
 
-;;;  1+
-;;;     : 1+ 1 + EXIT ;
-L8AE0:
-        db $82,'1',$ab
-        dw $0           ; LFA
-ONEP:      dw DOCOL
-        dw ONE
-        dw PLUS
-        dw EXIT
-
 ;;;  COUNT
 ;;;     : COUNT DUP 1+ SWAP C@ EXIT ;
 L8DDB:
