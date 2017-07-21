@@ -25,6 +25,8 @@ GREAT:	dw	DOCOL
 	dw	LESS
 	dw	EXIT
 
+
+;;; +
         db 1
         db 'PLUS'
 PLUS:   dw $+2
@@ -108,6 +110,17 @@ NEGAT:  dw $+2
         jp NEXT
 
 
+;;;  ABS
+;;;     : ABS DUP +- EXIT ;
+L958E:
+        db $83,'AB',$d3
+        dw $0           ; LFA
+ABS:    dw DOCOL
+        dw DUPP
+        dw PM
+        dw EXIT
+
+
 ;;;  +-
 ;;; Stack Action: n1\n2 ... n3
 ;;; Uses/Leaves: 2 1
@@ -136,6 +149,17 @@ ONEP:   dw DOCOL
         dw EXIT
 
 
+;;; 1-
+;;;    : 1- -1 + EXIT ;
+L8AFB:
+        db $82,'1',$ad
+        dw $0 ; LFA
+ONESUB:  dw DOCOL
+        dw TRUE
+        dw PLUS
+        dw EXIT
+
+
 ;;;  2+
 ;;;     : 2+ 2 + EXIT ;
 L8AED:
@@ -145,6 +169,41 @@ TWOP:   dw DOCOL
         dw TWO
         dw PLUS
         dw EXIT
+
+
+;;;  2-
+;;;     : 2- -2 + EXIT ;
+L8B08:
+        db $82,'2',$ad
+        dw $0           ; LFA
+TWOSUB: dw DOCOL
+        dw NEGTWO
+        dw PLUS
+        dw EXIT
+
+
+;;;  2*
+L9806:
+        db $82,'2',$aa
+        dw $0           ; LFA
+TSTAR:  dw $+2
+        ld ix, 0
+        add ix, sp
+        sla (ix+0)
+        rl (ix+1)
+        jp NEXT
+
+
+;;;  2/
+L9814:
+        db $82,'2',$af
+        dw $0           ; LFA
+TSLAS:  dw $+2
+        ld ix, 0
+        add ix, sp
+        sra (ix+1)
+        rr (ix+0)
+        jp NEXT
 
 
 ;;;  0=

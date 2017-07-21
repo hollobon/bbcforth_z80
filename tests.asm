@@ -82,6 +82,30 @@ test:   macro number
         emitchr :
         endm
 
+
+RUNTESTS:
+        dw DOCOL
+        include "runtests.asm"
+        nl
+        emitchr D
+        emitchr O
+        emitchr N
+        emitchr E
+        nl
+        dw EXIT
+
+
+PABOR:
+START:  dw DOCOL
+        dw RUNTESTS
+        dw FIN
+
+
+;;; loop infinitely
+FIN:    dw $+2
+HERE:   jp HERE
+
+
 ;;; --------------------------------------------------------------------------------
 
 _test_0:
@@ -667,69 +691,138 @@ _test_PICK:
 
 ;;; --------------------------------------------------------------------------------
 
-RUNTESTS:
-        dw DOCOL
-        include "runtests.asm"
-        nl
-        emitchr D
-        emitchr O
-        emitchr N
-        emitchr E
-        nl
+_test_TSTAR:
+        test 1 ; expect 0004.0000.0100.
+
+        lit $2
+        dw TSTAR
+        dw DOTHEX
+        emitchr .
+
+        lit $0
+        dw TSTAR
+        dw DOTHEX
+        emitchr .
+
+        lit $80
+        dw TSTAR
+        dw DOTHEX
+        emitchr .
+
         dw EXIT
 
-PABOR:
-START:  dw DOCOL
-        dw RUNTESTS
-        dw SHOWB
-IW:     dw SHOWA
+;;; --------------------------------------------------------------------------------
 
-        emitchr -
+_test_TSLAS:
+        test 1 ; expect 0001.0000.0080.C001
 
-        ;; test 0BRANCH and BRANCH - expect t
-        ;; nl
-        ;; lit 6
-        ;; lit 1
-        ;; dw ZBRAN
-        ;; emitchr t
-        ;; lit 6
-        ;; dw BRAN
-        ;; emitchr f
-
-        nl
-        ;; read line from keyboard
-        lit 20
-        lit $eb10
-        dw PEXPEC
+        lit $2
+        dw TSLAS
         dw DOTHEX
-        emitchr /
-        ;; show first character read
-        lit $eb40
-        dw AT
-        dw EMIT
-        lit $41
-        lit $eb40
-        dw STORE
-        lit $eb40
-        dw AT
-        dw EMIT
-        emitchr /
-        dw SHOWA
-        dw SHOWA
-        dw SHOWA
-        dw SHOWA
-        nl
-        dw SHOWB
+        emitchr .
 
-        ;; display an A
-SHOWA:  dw $+2
-        ld a, 65
-        call $ffee
-        jp NEXT
+        lit $0
+        dw TSLAS
+        dw DOTHEX
+        emitchr .
 
-        ;; display a B then loop infinitely
-SHOWB:  dw $+2
-        ld a, 66
-        call $ffee
-HERE:
-        jp HERE
+        ;; check carry crosses from MSB to LSB
+        lit $0100
+        dw TSLAS
+        dw DOTHEX
+        emitchr .
+
+        ;; check sign maintained
+        lit $8002
+        dw TSLAS
+        dw DOTHEX
+
+        dw EXIT
+
+;;; --------------------------------------------------------------------------------
+
+_test_ABS:
+        test 1 ; expect 0000.0001.0001.7FFF
+
+        lit $0
+        dw ABS
+        dw DOTHEX
+        emitchr .
+
+        lit $1
+        dw ABS
+        dw DOTHEX
+        emitchr .
+
+        lit $FFFF
+        dw ABS
+        dw DOTHEX
+        emitchr .
+
+        lit $8001
+        dw ABS
+        dw DOTHEX
+
+        dw EXIT
+
+;;; --------------------------------------------------------------------------------
+
+_test_ONESUB:
+        test 1 ; expect 0001.FFFF.0000
+
+        lit $2
+        dw ONESUB
+        dw DOTHEX
+        emitchr .
+
+        lit $0
+        dw ONESUB
+        dw DOTHEX
+        emitchr .
+
+        lit $1
+        dw ONESUB
+        dw DOTHEX
+
+        dw EXIT
+
+;;; --------------------------------------------------------------------------------
+
+_test_TWOSUB:
+        test 1 ; expect 0001.FFFE.0000
+
+        lit $3
+        dw TWOSUB
+        dw DOTHEX
+        emitchr .
+
+        lit $0
+        dw TWOSUB
+        dw DOTHEX
+        emitchr .
+
+        lit $2
+        dw TWOSUB
+        dw DOTHEX
+
+        dw EXIT
+
+;;; --------------------------------------------------------------------------------
+
+;; _test_PEXPEC:
+;;         ;; read line from keyboard
+;;         lit 20
+;;         lit $eb10
+;;         dw PEXPEC
+;;         dw DOTHEX
+;;         emitchr /
+;;         ;; show first character read
+;;         lit $eb40
+;;         dw AT
+;;         dw EMIT
+;;         lit $41
+;;         lit $eb40
+;;         dw STORE
+;;         lit $eb40
+;;         dw AT
+;;         dw EMIT
