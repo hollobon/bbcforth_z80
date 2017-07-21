@@ -192,7 +192,8 @@ def main():
         print(word)
         if args.edit:
             subprocess.check_call(['emacsclient', '-n', '+{}'.format(word.line_number + 1), word.filename])
-        elif args.z80:
+
+        if args.z80:
             print(';; {}'.format(word.name))
             if word.cfa == 'DOCOL':
                 print(';;    {}'.format(word.definition()))
