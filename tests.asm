@@ -84,34 +84,6 @@ test:   macro number
 
 ;;; --------------------------------------------------------------------------------
 
-_test_SPAT_SZERO:
-        test 1 ; expect 0000.0006
-	
-        dw SPAT
-        dw SZERO
-        dw SWAP
-        dw SUBB
-        dw DOTHEX
-        emitchr .
-	
-        lit 1
-        lit 1
-        lit 1
-        
-        dw SPAT
-        dw SZERO
-        dw SWAP
-        dw SUBB
-        dw DOTHEX
-
-        dw DROP
-        dw DROP
-        dw DROP
-
-        dw EXIT
-	
-;;; --------------------------------------------------------------------------------
-
 _test_0:
         test 0 ; expect 0
 
@@ -630,7 +602,37 @@ _test_DROP:
         lit $B00F
         dw DROP
         dw DOTHEX
+        dw EXIT
 
+;;; --------------------------------------------------------------------------------
+
+STACKHEIGHT:
+        dw DOCOL
+        dw SPAT
+        dw SZERO
+        dw SWAP
+        dw SUBB
+        dw DOTHEX
+        dw EXIT
+
+_test_SPAT_SZERO:
+        test 1 ; expect 0000.0006.0000
+
+        ;; check that SP@ - S0 is 0
+        dw STACKHEIGHT
+        emitchr .
+
+        ;; push 3 things on stack and check stack depth is 6 bytes
+        lit 1
+        lit 1
+        lit 1
+
+        dw STACKHEIGHT
+        emitchr .
+
+        ;;  check that SP! resets stack
+        dw SPSTO
+        dw STACKHEIGHT
         dw EXIT
 
 ;;; --------------------------------------------------------------------------------

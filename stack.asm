@@ -142,3 +142,13 @@ SPAT:   dw $+2
         add ix, sp
         push ix
         jp NEXT 
+
+
+;;;  SP!
+L8445:
+        db $83,'SP',$a1
+        dw $0           ; LFA
+SPSTO:  dw $+2
+        ld hl, (UAVALUE+2)
+        ld sp, hl
+        jp NEXT 
