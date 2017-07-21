@@ -202,7 +202,6 @@ _test_DOTHEX:
         test 7 ; expect BEEF
         lit $BEEF
         dw DOTHEX
-        dw SP
         dw EXIT
 
 ;;; --------------------------------------------------------------------------------
@@ -217,7 +216,6 @@ _test_DOCON:
         test 8 ; expect CAFE
         dw CAFE
         dw DOTHEX
-        dw SP
         dw EXIT
 
 ;;; --------------------------------------------------------------------------------
