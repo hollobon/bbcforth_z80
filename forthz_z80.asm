@@ -488,6 +488,40 @@ CSTOR:  dw $+2
 ;;         dw COMMA
 ;;         dw EXIT
 
+
+;;;  DIGIT
+L831F:
+        db $85,'DIGI',$d4
+        dw $0           ; LFA
+DIGIT:  dw $+2
+        ld ix, 0
+        add ix, sp
+
+        ld a, (ix+2)
+        sub '0'
+        jp m, _DIGIT_INVALID
+
+        cp 10
+        jp m, _DIGIT_NOADJ
+
+        sub 7
+        cp 10
+        jp m, _DIGIT_INVALID
+_DIGIT_NOADJ:
+        cp (IX+0)
+        jp p, _DIGIT_INVALID
+        ld (ix+2), a
+        ld (ix+0), 1
+        jp NEXT
+
+_DIGIT_INVALID:
+        pop hl
+        pop hl
+        ld hl, 0
+        push hl
+        jp NEXT
+
+
 TOPDP: equ $	; TOP OF DICTIONARY
 
 TOPNFA:  equ 0 ; top non-forth area?

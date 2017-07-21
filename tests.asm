@@ -891,6 +891,59 @@ _test_DEPTH:
 
         dw EXIT
 
+
+;;; --------------------------------------------------------------------------------
+
+_test_DIGIT:
+        test 1 ; expect 0001-0004.0001-000E.0001-0023.0000.0000.0000.0000
+
+        lit '4'
+        lit 10
+        dw DIGIT
+        dw DOTHEX
+        emitchr -
+        dw DOTHEX
+        emitchr .
+
+        lit 'E'
+        lit 16
+        dw DIGIT
+        dw DOTHEX
+        emitchr -
+        dw DOTHEX
+        emitchr .
+
+        lit 'Z'
+        lit 36
+        dw DIGIT
+        dw DOTHEX
+        emitchr -
+        dw DOTHEX
+	emitchr .
+
+        lit 'A'
+        lit 10
+        dw DIGIT
+        dw DOTHEX
+        emitchr .
+
+        lit ':'
+        lit 16
+        dw DIGIT
+        dw DOTHEX
+	emitchr .
+
+        lit 'G'
+        lit 16
+        dw DIGIT
+        dw DOTHEX
+	emitchr .
+
+        dw DEPTH
+        dw DOTHEX
+
+        dw EXIT
+
 ;;; --------------------------------------------------------------------------------
 
 ;; _test_PEXPEC:
