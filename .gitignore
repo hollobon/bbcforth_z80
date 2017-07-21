@@ -5,3 +5,5 @@
 *.LST
 *.LABEL
 expect.txt
+\#*\#
+runtests.asm
