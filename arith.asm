@@ -222,3 +222,64 @@ _ZEQU_T:
         inc l
         push hl
         jp NEXT
+
+
+;;;  AND
+L854E:
+        db $83,'AN',$c4
+        dw $0           ; LFA
+ANDD:   dw $+2
+        pop bc
+        pop hl
+
+        ld a, c
+        and l
+        ld l, a
+
+        ld a, b
+        and h
+        ld h, a
+
+        push hl
+        jp NEXT
+
+
+;;;  OR
+L8564:
+        db $82,'O',$d2
+        dw $0           ; LFA
+ORR:    dw $+2
+
+        pop bc
+        pop hl
+
+        ld a, c
+        or l
+        ld l, a
+
+        ld a, b
+        or h
+        ld h, a
+
+        push hl
+        jp NEXT
+
+
+;;;  XOR
+L8579:
+        db $83,'XO',$d2
+        dw $0           ; LFA
+XORR:   dw $+2
+        pop bc
+        pop hl
+
+        ld a, c
+        xor l
+        ld l, a
+
+        ld a, b
+        xor h
+        ld h, a
+
+        push hl
+        jp NEXT

@@ -809,6 +809,60 @@ _test_TWOSUB:
 
 ;;; --------------------------------------------------------------------------------
 
+_test_ANDD:
+        test 1 ; expect 0000.F005
+
+        lit $FFFF
+        lit $0000
+        dw ANDD
+        dw DOTHEX
+        emitchr .
+
+        lit $FEE7
+        lit $F005
+        dw ANDD
+        dw DOTHEX
+
+        dw EXIT
+
+;;; --------------------------------------------------------------------------------
+
+_test_ORR:
+        test 1 ; expect FFFF.FEE7
+
+        lit $FFFF
+        lit $0000
+        dw ORR
+        dw DOTHEX
+        emitchr .
+
+        lit $F005
+        lit $4EE2
+        dw ORR
+        dw DOTHEX
+
+        dw EXIT
+
+;;; --------------------------------------------------------------------------------
+
+_test_XORR:
+        test 1 ; expect BB9C.0010
+
+        lit $F4A8
+        lit $4F34
+        dw XORR
+        dw DOTHEX
+        emitchr .
+
+        lit $FF0F
+        lit $FF1F
+        dw XORR
+        dw DOTHEX
+
+        dw EXIT
+
+;;; --------------------------------------------------------------------------------
+
 ;; _test_PEXPEC:
 ;;         ;; read line from keyboard
 ;;         lit 20
