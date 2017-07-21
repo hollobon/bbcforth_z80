@@ -863,6 +863,36 @@ _test_XORR:
 
 ;;; --------------------------------------------------------------------------------
 
+_test_DEPTH:
+        test 1 ; expect 0000.0005.0000
+
+        dw DEPTH
+        dw DOTHEX
+        emitchr .
+
+        lit $0
+        lit $0
+        lit $0
+        lit $0
+        lit $0
+
+        dw DEPTH
+        dw DOTHEX
+        emitchr .
+
+        dw DROP
+        dw DROP
+        dw DROP
+        dw DROP
+        dw DROP
+
+        dw DEPTH
+        dw DOTHEX
+
+        dw EXIT
+
+;;; --------------------------------------------------------------------------------
+
 ;; _test_PEXPEC:
 ;;         ;; read line from keyboard
 ;;         lit 20

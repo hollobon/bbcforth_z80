@@ -151,4 +151,19 @@ L8445:
 SPSTO:  dw $+2
         ld hl, (UAVALUE+2)
         ld sp, hl
-        jp NEXT 
+        jp NEXT
+
+
+;;;  DEPTH
+;;;     : DEPTH SP@ S0 @ - NEGATE 2/ EXIT ;
+L9B46:
+        db $85,'DEPT',$c8
+        dw $0           ; LFA
+DEPTH:  dw DOCOL
+        dw SPAT
+        dw SZERO
+;        dw AT
+        dw SUBB
+        dw NEGAT
+        dw TSLAS
+        dw EXIT
