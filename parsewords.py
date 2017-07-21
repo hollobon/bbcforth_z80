@@ -35,6 +35,8 @@ class Word(object):
                 self._words.append(int(w))
             elif re.match(r'^\$([a-fA-F\d]+)$', w):
                 value = int(w[1:], 16)
+                if value > 0x8000:
+                    value = -(~value & 0xFFFF) - 1
                 self._words.append(value)
             else:
                 self._words.append(w)
@@ -204,7 +206,7 @@ def main():
                 print('{}:\tdw DOCOL'.format(word.code_label))
                 for w in word.words():
                     if isinstance(w, int):
-                        print('\tdw ${:x}'.format(w))
+                        print('\tdw {}${:x}'.format('-' if w < 0 else '', abs(w)))
                     else:
                         print('\tdw {}'.format(w.code_label))
             elif word.cfa == '*+2':
