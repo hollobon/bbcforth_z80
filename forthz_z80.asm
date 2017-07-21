@@ -47,12 +47,6 @@ L80F0:  cp 'W'
 	jp nz, CWQ
 	jp COLD+2
 
-OLDSTARTUP:
-        dw $+2
-        ;; ld hl, SP
-        ;; ld (TOS), hl
-        ld iy, IW
-        jp NEXT
 
         ;;
 RSP:    defw $c200 ; return stack pointer
@@ -172,6 +166,10 @@ DOUSE:  inc bc
 include "constants.asm"
 include "user.asm"
 
+        db 0                            ; Removing this makes tests crash. No idea why. Don't think it's
+                                        ; alignment. Memory trampling? Moving to after BRANCH also crashes
+                                        ; tests.
+
 ;	BRANCH
         ;; unconditional branch, next word is IP offset in bytes from word following IP
 L81D4:	db	$86,'BRANC',$C8
@@ -194,6 +192,7 @@ ZBRAN:	dw	$+2
         inc iy                  ; skip the offset
         inc iy
         jp NEXT
+
 
         db 4
         db 'EMIT'
@@ -369,6 +368,7 @@ QUERY:  dw	DOCOL
 	dw	INN
 	dw	STORE
 	dw	EXIT
+
 
 ;	COLD
 
