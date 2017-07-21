@@ -471,6 +471,20 @@ CSTOR:  dw $+2
 
         include "tests.asm.gen"
 
+;;;  COMPILE
+;;;     : COMPILE ?COMP R> DUP 2+ >R @ , EXIT ;
+;; L8CCB:
+;;         db $87,'COMPIL',$c5
+;;         dw $0           ; LFA
+;; COMP:   dw DOCOL
+;;         dw QCOMP
+;;         dw RFROM
+;;         dw DUPP
+;;         dw TWOP
+;;         dw TOR
+;;         dw AT
+;;         dw COMMA
+;;         dw EXIT
 
 TOPDP: equ $	; TOP OF DICTIONARY
 
