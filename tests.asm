@@ -416,7 +416,6 @@ _emit6: dw DOCOL
         dw AT
         dw EMIT
 
-        dw DUPP
         lit 5
         dw PLUS
         dw AT
@@ -444,9 +443,12 @@ _d_test_COUNT:
 
 _test_COUNT:
         test 1 ; expect 0005
+
         lit _d_test_COUNT
         dw COUNT
         dw DOTHEX
+
+        dw DROP                 ; drop addr2 from COUNT
         dw EXIT
 
 ;;; --------------------------------------------------------------------------------
@@ -659,6 +661,9 @@ _test_PICK:
         lit 5
         dw PICK
         dw DOTHEX
+
+        ;; reset stack
+        dw SPSTO
 
         dw EXIT
 

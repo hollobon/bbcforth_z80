@@ -239,6 +239,7 @@ _CPCHAR:inc ix                  ; point to next byte of each name
         jp nz, _NXTWRD
         jp nc, _CPCHAR          ; if bit 7 was set, we've reached end of dict name
 
+        pop hl                  ; throw away name address
         inc ix                  ; point to cfa
         inc ix
         inc ix
@@ -267,6 +268,7 @@ _NW2:   ld c, (ix+1)            ; load link address
         push hl
         jp nz, _CPNAME          ; if valid, compare strings
 
+        pop hl                  ; throw away name address
         ld hl, $0               ; not found - push false flag
         push hl
         jp NEXT
@@ -452,7 +454,7 @@ AT:     dw $+2
 L8DDB:
         db $85,'COUN',$d4
         dw $0              ; LFA
-COUNT:    dw DOCOL
+COUNT:  dw DOCOL
         dw DUPP
         dw ONEP
         dw SWAP
