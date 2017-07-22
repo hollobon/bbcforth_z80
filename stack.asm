@@ -141,7 +141,7 @@ SPAT:   dw $+2
         ld ix, 0
         add ix, sp
         push ix
-        jp NEXT 
+        jp NEXT
 
 
 ;;;  SP!
@@ -167,3 +167,52 @@ DEPTH:  dw DOCOL
         dw NEGAT
         dw TSLAS
         dw EXIT
+
+
+;;;  >R
+L860F:
+        db $82,'>',$d2
+        dw $0           ; LFA
+TOR:    dw $+2
+        pop hl
+
+	ld de, (RSP)
+
+        ld a, h
+        dec de
+        ld (de), a
+        ld a, l
+        dec de
+        ld (de), a
+
+        ld (RSP), de
+        jp NEXT
+
+
+;;;  R>
+L861F:
+        db $82,'R',$be
+        dw $0           ; LFA
+RFROM:  dw $+2
+	ld de, (RSP)
+
+        ld a, (de)
+        ld c, a
+        inc de
+        ld a, (de)
+        ld b, a
+        inc de
+        push bc
+
+        ld (RSP), de
+        jp NEXT
+
+
+;;;  RP@
+L8431:
+        db $83,'RP',$c0
+        dw $0           ; LFA
+RPAT:   dw $+2
+	ld de, (RSP)
+        push de
+        jp NEXT

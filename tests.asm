@@ -946,6 +946,34 @@ _test_DIGIT:
 
 ;;; --------------------------------------------------------------------------------
 
+_test_TOR_RFROM:
+        test 1 ; expect 0002.1234.0000
+
+        dw RPAT
+
+        lit $1234
+        dw TOR
+
+        dw DUPP
+        dw RPAT
+        dw SUBB
+        dw DOTHEX
+
+        emitchr .
+
+        dw RFROM
+        dw DOTHEX
+
+        emitchr .
+
+        dw RPAT
+        dw SUBB
+        dw DOTHEX
+
+        dw EXIT
+
+;;; --------------------------------------------------------------------------------
+
 ;; _test_PEXPEC:
 ;;         ;; read line from keyboard
 ;;         lit 20
