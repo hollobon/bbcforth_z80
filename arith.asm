@@ -283,3 +283,28 @@ XORR:   dw $+2
 
         push hl
         jp NEXT
+
+
+;;;  D+
+L86E5:
+        db $82,'D',$ab
+        dw $0           ; LFA
+DPLUS:  dw $+2
+        pop ix
+        pop hl
+        pop bc
+        pop de
+
+        add hl, de              ; add low words
+
+        ld a, c                 ; add high word low bytes
+        adc a, ixh              ; BUG? ixh and ixl appear to be reversed here
+        ld e, a
+
+        ld a, b                 ; add high word high bytes
+        adc a, ixl
+        ld d, a
+
+        push hl
+        push de
+        jp NEXT

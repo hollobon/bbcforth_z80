@@ -974,6 +974,35 @@ _test_TOR_RFROM:
 
 ;;; --------------------------------------------------------------------------------
 
+DDOTHEX:
+        dw DOCOL
+        dw DOTHEX
+        dw DOTHEX
+        dw EXIT
+
+_test_DPLUS:
+        test 1 ; expect 00010000.01000400
+
+        lit $1000
+        lit $0000
+        lit $F000
+        lit $0000
+        dw DPLUS
+        dw DDOTHEX
+
+        emitchr .
+
+        lit $0280
+        lit $0080
+        lit $0180
+        lit $0080
+        dw DPLUS
+        dw DDOTHEX
+
+        dw EXIT
+
+;;; --------------------------------------------------------------------------------
+
 ;; _test_PEXPEC:
 ;;         ;; read line from keyboard
 ;;         lit 20
