@@ -55,7 +55,7 @@ L83B4:
         db $87,'ENCLOS',$c5
         dw $0           ; LFA
 ENCL:   dw $+2
-        
+
         jp NEXT
 
 ;	(WORD)  ( C -- ADR LEN )

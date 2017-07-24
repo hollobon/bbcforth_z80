@@ -2,7 +2,7 @@ OSWRCH = $FFEE
 OSRDCH = $FFE0
 OSNEWL = $FFE7
 OSBYTE = $FFF4
-	
+
 XSAVE	=	$68		; TEMPORARY FOR X REGISTER
 
 ;	ROM HEADER
@@ -20,9 +20,9 @@ VERS	.BYTE	'1.03'		; VERSION STRING
 COPYR	.BYTE	0,'(C)'		; COPYRIGHT IDENT
 	.BYTE	' Acornsoft Ltd. 1983'
 	.BYTE	0
-        .WORD	L8000		; TUBE RELOC ADDRESS 
+        .WORD	L8000		; TUBE RELOC ADDRESS
 	.WORD	0
-	
+
 WRSTR	LDA	#>L8000
 	STA	$13
 	LDY	#0
@@ -32,7 +32,7 @@ L8054	LDA	($12),Y
 	INY
 	BNE	L8054
 L805E	RTS
-	
+
 ;	SERVICE ENTRY
 
 SERVENT	CMP	#4              ; unrecognised comand
@@ -91,7 +91,7 @@ L809C	INY
 
 L80A8	CMP	#'.'            ; abbreviated command - *FOR. etc.
 	BEQ	L809C
-	
+
 _CTEST	LDA	($F2),Y
 	CMP	#'T'
 	BNE	_RESTOR
@@ -108,6 +108,7 @@ _CTEST	LDA	($F2),Y
 	CMP	#'T'
 	BNE	_RESTOR
 
+        ;; configure serial I/O
         STX     XSAVE
 	LDA     #3
         LDX     #1
