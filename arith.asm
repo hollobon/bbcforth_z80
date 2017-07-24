@@ -308,3 +308,31 @@ DPLUS:  dw $+2
         push hl
         push de
         jp NEXT
+
+
+L84D5:
+        db $82,'U',$aa
+        dw $0           ; LFA
+USTAR:  dw $+2
+        pop bc                  ; $34
+        pop de                  ; $12
+        ld a, c
+        ld c, b
+
+;;; 16-bit multiply - multiplier in a,c, multiplicand in de
+;;; result in hl
+        ld b, 16
+        ld hl, 0
+MULT:   srl c                   ; right shift multiplier, high
+        rra                     ; rotate right multiplier, low
+        jr nc, NOADD            ; test carry
+        add hl, de              ; add multiplicand to result
+NOADD:  ex de, hl
+        add hl, hl              ; double-shift multiplicand left
+        ex de, hl
+        djnz MULT
+
+        push hl
+        ld hl, 0
+        push hl
+        jp NEXT
