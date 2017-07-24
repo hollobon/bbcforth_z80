@@ -209,6 +209,9 @@ def main():
                         print('\tdw {}${:x}'.format('-' if w < 0 else '', abs(w)))
                     else:
                         print('\tdw {}'.format(w.code_label))
+            elif word.cfa == 'DOCON':
+                print('{}:\tdw DOCON'.format(word.code_label))
+                print('\tdw {}'.format(word._words[0]))
             elif word.cfa == '*+2':
                 print('{}:\tdw $+2'.format(word.code_label))
                 print('\n\tjp NEXT')
