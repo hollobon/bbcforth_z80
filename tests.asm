@@ -1028,6 +1028,32 @@ _test_default_BASE:
 
 ;;; --------------------------------------------------------------------------------
 
+_dtest_CONV:  db 10,'1234xxxxxx'
+_dtest_CONV2:  db 6,'53605 '
+
+_test_CONV:
+        test 1 ; expect 000004D2.0000D165
+
+        lit 0
+        lit 0
+        lit _dtest_CONV
+        dw CONV
+        dw DROP
+        dw DDOTHEX
+
+        emitchr .
+
+        lit 0
+        lit 0
+        lit _dtest_CONV2
+        dw CONV
+        dw DROP
+        dw DDOTHEX
+
+        dw EXIT
+
+;;; --------------------------------------------------------------------------------
+
 ;; _test_PEXPEC:
 ;;         ;; read line from keyboard
 ;;         lit 20

@@ -164,8 +164,6 @@ DOUSE:  inc bc
         push hl
         jp NEXT
 
-include "constants.asm"
-include "user.asm"
 
 ;	BRANCH
         ;; unconditional branch, next word is IP offset in bytes from word following IP
@@ -520,9 +518,63 @@ _DIGIT_INVALID:
         jp NEXT
 
 
+;;;  CONVERT
+;; \ (nd1\addrl ... nd2\addr2)
+;; \ Description: Converts the text beginning at the
+;; \ address addrl to the equivalent stack number. The value
+;; \ is accumulated into double number nd1, with regard to
+;; \ the current numeric base, being left as nd2. The
+;; \ address of the first non-convertible character is left
+;; \ as addr2.
+;; : CONVERT
+;;     1+                                  \ skip length byte
+;;     DUP >R                              \ save copy of addr to return stack
+;;     C@ BASE @ DIGIT                     \ attempt to convert current char to digit
+;;     0BRANCH 28                          \ fail - jump to R>
+;;     SWAP                                \ put nd1 on top
+;;     BASE @ U*                           \ shift left
+;;     DROP                                \ drop MSW
+;;     ROT BASE @ U* D+
+;;     R>
+;;     BRANCH -42                          \ loop to first word
+;;     R>                                  \ restore addr
+;;     EXIT
+;; ;
+L9075:
+        db $87,'CONVER',$d4
+        dw $0           ; LFA
+CONV:   dw DOCOL
+        dw ONEP
+        dw DUPP
+        dw TOR
+        dw CAT
+        dw BASE
+        dw AT
+        dw DIGIT
+        dw ZBRAN
+        dw $1c
+        dw SWAP
+        dw BASE
+        dw AT
+        dw USTAR
+        dw DROP
+        dw ROT
+        dw BASE
+        dw AT
+        dw USTAR
+        dw DPLUS
+        dw RFROM
+        dw BRAN
+        dw -$2a
+        dw RFROM
+        dw EXIT
+
+
 TOPDP: equ $	; TOP OF DICTIONARY
 
 TOPNFA:  equ 0 ; top non-forth area?
 
+include "constants.asm"
+include "user.asm"
 
 ;include "messages.asm"
