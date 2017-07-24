@@ -67,3 +67,17 @@ L89EC:	db	$85,'B/SC',$D2
 	dw	L89E0
 BSCR:	dw	DOCON
 	dw	1
+
+;;;  WBFR
+L902B:
+        db $84,'WBF',$d2
+        dw $0           ; LFA
+WBFR:   dw DOCON
+        dw WORDBU
+
+;;;  WDSZ
+L9020:
+        db $84,'WDS',$da
+        dw $0           ; LFA
+WDSZ:   dw DOCON
+        dw WBSIZ
