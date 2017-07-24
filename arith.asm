@@ -336,3 +336,30 @@ NOADD:  ex de, hl
         ld hl, 0
         push hl
         jp NEXT
+
+
+;;;  DECIMAL
+;;;     : DECIMAL LIT 10 BASE ! EXIT ;
+L8D37:
+        db $87,'DECIMA',$cc
+        dw $0           ; LFA
+DECIM:  dw DOCOL
+        dw LITERAL
+        dw $a
+        dw BASE
+        dw STORE
+        dw EXIT
+
+
+;;;  HEX
+;;;     : HEX LIT 16 BASE ! EXIT ;
+L8D25:
+        db $83,'HE',$d8
+        dw $0           ; LFA
+HEX:    dw DOCOL
+        dw LITERAL
+        dw $10
+        dw BASE
+        dw STORE
+        dw EXIT
+

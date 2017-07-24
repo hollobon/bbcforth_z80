@@ -85,6 +85,7 @@ test:   macro number
 
 RUNTESTS:
         dw DOCOL
+        dw DECIM
         include "runtests.asm"
         nl
         emitchr D
@@ -1011,6 +1012,17 @@ _test_USTAR:
         dw USTAR
         dw DDOTHEX
         emitchr .
+
+        dw EXIT
+
+;;; --------------------------------------------------------------------------------
+
+_test_default_BASE:
+        test 1 ; expect 000A
+
+        dw BASE
+        dw AT
+        dw DOTHEX
 
         dw EXIT
 
