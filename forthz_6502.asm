@@ -122,6 +122,13 @@ _CTEST	LDA	($F2),Y
         LDA     #8
         LDX     #8
         JSR    OSBYTE
+
+        ;; set test flag to 1
+        LDY     0
+        LDX     #$1
+        LDA     #$1
+        JSR     OSBYTE          ; Read/write user flag
+
 	LDA	#$8E            ; Enter language ROM
         LDX     XSAVE
         JMP     OSBYTE

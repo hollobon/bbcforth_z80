@@ -96,9 +96,39 @@ RUNTESTS:
         dw EXIT
 
 
+READUSERFLAG:
+        dw $+2
+        ld a, 1
+        ld hl, $FF00
+        call OSBYTE
+        ld h, 0
+        push hl
+        jp NEXT
+
+
 PABOR:
 START:  dw DOCOL
+
+        ;; check if test mode; if not, skip to interactive interpreter
+        dw READUSERFLAG
+        dw ZBRAN
+        dw $6
         dw RUNTESTS
+        dw FIN
+
+        nl
+        emitchr >
+
+        dw QUERY
+        dw TIB
+        dw AT
+        dw DUPP
+        dw AT
+        dw EMIT
+        dw ONEP
+        dw AT
+        dw EMIT
+
         dw FIN
 
 
