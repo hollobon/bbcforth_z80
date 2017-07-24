@@ -145,6 +145,7 @@ DOCON:  inc bc                  ; load word from PFA into hl
         push hl                 ; push onto forth stack
         jp NEXT
 
+
 ;; 	;	USER
 
 L897D:  db	$84,'USE',$D2
@@ -166,19 +167,16 @@ DOUSE:  inc bc
 include "constants.asm"
 include "user.asm"
 
-        db 0                            ; Removing this makes tests crash. No idea why. Don't think it's
-                                        ; alignment. Memory trampling? Moving to after BRANCH also crashes
-                                        ; tests.
-
 ;	BRANCH
         ;; unconditional branch, next word is IP offset in bytes from word following IP
 L81D4:	db	$86,'BRANC',$C8
 	dw	$0 ;L81B4
 BRAN:	dw	$+2
-        ld c, (iy+0)
+_BRAN:  ld c, (iy+0)
         ld b, (iy+1)
         add iy, bc
         jp NEXT
+
 
 ;	0BRANCH
         ;; conditional branch, only taken if top of stack is zero
@@ -188,7 +186,7 @@ ZBRAN:	dw	$+2
         pop bc
         ld a, c
         cp b
-        jp z, BRAN
+        jp z, _BRAN
         inc iy                  ; skip the offset
         inc iy
         jp NEXT
