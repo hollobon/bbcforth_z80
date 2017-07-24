@@ -1,30 +1,37 @@
 ;; ;	(EXPECT)
-	
+
 ;; On exit,
 ;;  C=0 if a carriage return terminated input.
 ;;  C=1 if an ESCAPE condition terminated input.
 ;;  Y contains line length, including carriage return if used
 
+;;; (addr\count .. )
+
+_OSWORD_PBLOCK:         ds 5
 
 L8EC8:  db $88,'(EXPECT',$A9
         dw $0                   ; LF
 PEXPEC: dw $+2
         call OSNEWL
-        ld ix, $eb00
-        pop bc                  ; address to write input
-        ld (ix+0), $40
-        ld (ix+1), $eb
+        ld ix, _OSWORD_PBLOCK
+
         pop bc                  ; number of characters to read
         ld (ix+2), c
+
+        pop bc                  ; address to write input
+        ld (ix+0), c
+        ld (ix+1), b
+
         ld (ix+3), $20          ; min ASCII value
         ld (ix+4), $FF          ; max ASCII value
-        ld hl, $eb00
+
+        ld hl, _OSWORD_PBLOCK
         ld a, $0
         call OSWORD
         ld l, h                 ; h contains number of characters read
         ld h, 0
         push hl
-        jp NEXT	
+        jp NEXT
 
 
 ;;;  EXPECT

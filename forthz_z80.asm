@@ -350,20 +350,24 @@ PSTOR:  dw $+2
         ld (ix+1), h
         jp NEXT
 
-;; 	;	QUERY
 
-L8F17:  db	$85,'QUER',$D9
-	dw	$0
-QUERY:  dw	DOCOL
-	dw	TIB
-	dw	AT
-	dw	LITERAL
-        dw      80
-	dw	EXPECT
-	dw	ZERO
-	dw	INN
-	dw	STORE
-	dw	EXIT
+;;;  QUERY
+;;;     : QUERY TIB @ LIT 80 EXPECT 0 >IN ! EXIT ;
+L8F17:
+        db $85,'QUER',$d9
+        dw $0           ; LFA
+QUERY:  dw DOCOL
+        dw TIB
+        dw AT
+        dw LITERAL
+        dw $50
+        dw EXPECT
+        dw ZERO
+        dw INN
+        dw STORE
+        dw EXIT
+
+
 
 
 ;	COLD
