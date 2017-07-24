@@ -635,6 +635,7 @@ STACKHEIGHT:
         dw DOCOL
         dw SPAT
         dw SZERO
+        dw AT
         dw SWAP
         dw SUBB
         dw DOTHEX
@@ -1049,6 +1050,17 @@ _test_CONV:
         dw CONV
         dw DROP
         dw DDOTHEX
+
+        dw EXIT
+
+;;; --------------------------------------------------------------------------------
+
+_test_USER:
+        test 1 ; expect {label_TIBB}
+
+        dw TIB
+        dw AT
+        dw DOTHEX
 
         dw EXIT
 

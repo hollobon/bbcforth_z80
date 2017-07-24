@@ -162,7 +162,7 @@ L9B46:
 DEPTH:  dw DOCOL
         dw SPAT
         dw SZERO
-;        dw AT
+        dw AT
         dw SUBB
         dw NEGAT
         dw TSLAS

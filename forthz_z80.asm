@@ -157,10 +157,8 @@ DOUSE:  inc bc
         ld a, (bc)
         ld c, a
         ld b, 0
-        ld ix, (UAVALUE)
-        add ix, bc
-        ld l, (ix+0)
-        ld h, (ix+1)
+        ld hl, (UAVALUE)
+        add hl, bc
         push hl
         jp NEXT
 
