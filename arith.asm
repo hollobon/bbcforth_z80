@@ -363,3 +363,13 @@ HEX:    dw DOCOL
         dw STORE
         dw EXIT
 
+
+;;;  0>
+;;;     : 0> NEGATE 0< EXIT ;
+L8DCE:
+        db $82,'0',$be
+        dw $0           ; LFA
+ZGREA:    dw DOCOL
+        dw NEGAT
+        dw ZLESS
+        dw EXIT

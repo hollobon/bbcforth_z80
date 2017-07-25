@@ -216,3 +216,16 @@ RPAT:   dw $+2
 	ld de, (RSP)
         push de
         jp NEXT
+
+
+;;;  R@
+L85F9:
+        db $82,'R',$c0
+        dw $0           ; LFA
+RAT:    dw $+2
+        ld hl, (RSP)
+        ld e, (hl)
+        inc hl
+        ld d, (hl)
+        push de
+        jp NEXT

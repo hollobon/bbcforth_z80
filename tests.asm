@@ -1139,6 +1139,30 @@ _test_DO_LOOP_I:
 
         dw EXIT
 
+;;; --------------------------------------------------------------------------------
+
+_dtest_TYPE:
+        db 'hello, world!'
+
+_test_TYPE:
+        test 1 ; expect hello, world!
+
+        lit _dtest_TYPE
+        lit 13
+        dw TYPE
+
+        dw EXIT
+
+;;; --------------------------------------------------------------------------------
+
+_test_PDOTQ:
+        test 1 ; expect this is a test.
+        dw PDOTQ
+        db 15,"this is a test."
+        dw EXIT
+
+;;; --------------------------------------------------------------------------------
+
 ;; _test_PEXPEC:
 ;;         ;; read line from keyboard
 ;;         lit 20

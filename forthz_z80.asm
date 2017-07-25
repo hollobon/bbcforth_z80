@@ -574,6 +574,47 @@ CONV:   dw DOCOL
         dw EXIT
 
 
+;;;     : TYPE DUP 0> 0BRANCH 24 OVER + SWAP (DO) I C@ EMIT (ULOOP) -8 BRANCH LIT 4 2DROP EXIT ;
+L8DEF:
+        db $84,'TYP',$c5
+        dw $0           ; LFA
+TYPE:   dw DOCOL
+        dw DUPP                 ; dup length
+        dw ZGREA                ; 0>
+        dw ZBRAN                ;
+        dw $18
+        dw OVER
+        dw PLUS
+        dw SWAP
+        dw XDO
+        dw IDO
+        dw CAT
+        dw EMIT
+        dw XPULO
+        dw -$8
+        dw BRAN
+        dw $4
+        dw DROP
+        dw DROP
+        dw EXIT
+
+;;;  (.")
+;;;     : (.") R@ COUNT DUP 1+ R> + >R TYPE EXIT ;
+L8E70:
+        db $84,'(."',$a9 ; "
+        dw $0           ; LFA
+PDOTQ:  dw DOCOL
+        dw RAT
+        dw COUNT
+        dw DUPP
+        dw ONEP
+        dw RFROM
+        dw PLUS
+        dw TOR
+        dw TYPE
+        dw EXIT
+
+
 TOPDP: equ $	; TOP OF DICTIONARY
 
 TOPNFA:  equ 0 ; top non-forth area?
