@@ -1096,6 +1096,49 @@ _test_USER:
 
 ;;; --------------------------------------------------------------------------------
 
+_test_DO_LOOP:
+        test 1 ; expect 0000.0006.xxxxxxy
+
+        lit 6  ; limit
+        lit 0  ; initial value
+        dw XDO
+        dw RFROM
+        dw DOTHEX
+        emitchr .
+        dw RFROM
+        dw DOTHEX
+        emitchr .
+
+        lit 6
+        lit 0
+        dw XDO
+        lit 'x'
+        dw EMIT
+        dw XPULO
+        dw -$8
+
+        emitchr y
+
+        dw EXIT
+
+;;; --------------------------------------------------------------------------------
+
+_test_DO_LOOP_I:
+        test 1 ; expect 0001.0002.0003.0004.0005.#
+
+        lit 6
+        lit 1
+        dw XDO
+        dw IDO
+        dw DOTHEX
+        emitchr .
+        dw XPULO
+        dw -$C
+
+        emitchr #
+
+        dw EXIT
+
 ;; _test_PEXPEC:
 ;;         ;; read line from keyboard
 ;;         lit 20

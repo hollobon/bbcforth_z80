@@ -183,7 +183,7 @@ ZBRAN:	dw	$+2
         ld a, c
         cp b
         jp z, _BRAN
-        inc iy                  ; skip the offset
+BUMP:   inc iy                  ; skip the offset
         inc iy
         jp NEXT
 
@@ -196,6 +196,8 @@ EMIT:   defw $+2
         call OSWRCH
         jp NEXT
 
+
+        include "loop.asm"
 
 ;; Pronounced:      bracket-find
 ;;         Stack Action: (addr1\addr2 ... cfa\b\tf) [found]
