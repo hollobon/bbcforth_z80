@@ -627,6 +627,19 @@ BSWAP:  dw $+2
         jp NEXT
 
 
+;;;  ALLOT
+;;;     : ALLOT DP +! EXIT ;
+;;; Stack Action: (n ...)
+;;; Reserve n bytes of dictionary space.
+L8B24:
+        db $85,'ALLO',$d4
+        dw $0           ; LFA
+ALLOT:  dw DOCOL
+        dw DP
+        dw PSTOR
+        dw EXIT
+
+
 TOPDP: equ $	; TOP OF DICTIONARY
 
 TOPNFA:  equ 0 ; top non-forth area?

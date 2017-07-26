@@ -1174,6 +1174,26 @@ _test_BSWAP:
 
 ;;; --------------------------------------------------------------------------------
 
+_test_ALLOT:
+        test 1 ; expect 000F
+
+        dw DP
+        dw AT
+
+        lit $f
+        dw ALLOT
+
+        dw DP
+        dw AT
+        dw SWAP
+        dw SUBB
+
+        dw DOTHEX
+
+        dw EXIT
+
+;;; --------------------------------------------------------------------------------
+
 ;; _test_PEXPEC:
 ;;         ;; read line from keyboard
 ;;         lit 20
