@@ -640,6 +640,29 @@ ALLOT:  dw DOCOL
         dw EXIT
 
 
+;;;  HERE
+;;;     : HERE DP @ EXIT ;
+L8B15:
+        db $84,'HER',$c5
+        dw $0           ; LFA
+HERE:   dw DOCOL
+        dw DP
+        dw AT
+        dw EXIT
+
+;;;  ,
+;;;     : , HERE ! 2 ALLOT EXIT ;
+L8B44:
+        db $81,'',$ac
+        dw $0           ; LFA
+COMMA:  dw DOCOL
+        dw HERE
+        dw STORE
+        dw TWO
+        dw ALLOT
+        dw EXIT
+
+
 TOPDP: equ $	; TOP OF DICTIONARY
 
 TOPNFA:  equ 0 ; top non-forth area?

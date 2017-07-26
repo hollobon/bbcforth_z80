@@ -134,7 +134,8 @@ START:  dw DOCOL
 
 ;;; loop infinitely
 FIN:    dw $+2
-HERE:   jp HERE
+_FINLOOP:
+        jp _FINLOOP
 
 
 ;;; --------------------------------------------------------------------------------
@@ -1188,6 +1189,30 @@ _test_ALLOT:
         dw SWAP
         dw SUBB
 
+        dw DOTHEX
+
+        dw EXIT
+
+;;; --------------------------------------------------------------------------------
+
+_test_COMMA:
+        test 1 ; expect 0002.BEEF
+
+        dw HERE
+
+        lit $BEEF
+        dw COMMA
+
+        dw HERE
+        dw SWAP
+        dw SUBB
+        dw DOTHEX
+
+        emitchr .
+
+        dw HERE
+        dw TWOSUB
+        dw AT
         dw DOTHEX
 
         dw EXIT
