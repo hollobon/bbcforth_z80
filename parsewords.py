@@ -44,16 +44,21 @@ class Word(object):
     def words(self):
         if self.cfa != 'DOCOL':
             raise Exception('{} is not a colon definition'.format(self.name))
-        
+
         for w in self._words:
             if isinstance(w, int):
                 yield w
             else:
-                yield words_by_label[w]
+                try:
+                    yield words_by_label[w]
+                except KeyError:
+                    yield w
 
     def definition(self):
-        return ': {} {} ;'.format(self.name, ' '.join(str(w) if isinstance(w, int) else w.name for w in self.words()))
-                
+        return ': {} {} ;'.format(self.name, ' '.join(
+            str(w) if isinstance(w, int) else w.name if hasattr(w, 'name') else '?{}?'.format(w)
+            for w in self.words()))
+
     def __repr__(self):
         result = 'WORD name: {}, label: {}, code label: {}, lfa: {}, cfa: {}, name len: {}, flags: {}, location: {}:{}'.format(
             self.name,
@@ -67,17 +72,7 @@ class Word(object):
             self.line_number + 1)
 
         if self.cfa == 'DOCOL':
-            def getword(w):
-                if isinstance(w, int):
-                    return '{}'.format(w)
-                elif w in words_by_label:
-                    return words_by_label[w].name
-                return '??' + w +'??'
-
-            try:
-                result += '\n    : {} {} ;'.format(self.name, ' '.join(map(getword, self._words)))
-            except KeyError as e:
-                print(e)
+            result += '\n    : {} {} ;'.format(self.name, self.definition())
 
         elif self.cfa == 'DOCON':
             result = '\n{} CONSTANT {}'.format(self._words[0], self.name)
@@ -208,7 +203,10 @@ def main():
                     if isinstance(w, int):
                         print('\tdw {}${:x}'.format('-' if w < 0 else '', abs(w)))
                     else:
-                        print('\tdw {}'.format(w.code_label))
+                        if hasattr(w, "code_label"):
+                            print('\tdw {}'.format(w.code_label))
+                        else:
+                            print('\tdw {} ; ???'.format(w))
             elif word.cfa == 'DOCON':
                 print('{}:\tdw DOCON'.format(word.code_label))
                 print('\tdw {}'.format(word._words[0]))
@@ -216,6 +214,6 @@ def main():
                 print('{}:\tdw $+2'.format(word.code_label))
                 print('\n\tjp NEXT')
 
-    
+
 if __name__ == "__main__":
     main()
