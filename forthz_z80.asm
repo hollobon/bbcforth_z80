@@ -615,6 +615,18 @@ PDOTQ:  dw DOCOL
         dw EXIT
 
 
+;;;  ><
+L8631:
+        db $82,'>',$bc
+        dw $0           ; LFA
+BSWAP:  dw $+2
+        pop hl
+        ld c, h
+        ld b, l
+        push bc
+        jp NEXT
+
+
 TOPDP: equ $	; TOP OF DICTIONARY
 
 TOPNFA:  equ 0 ; top non-forth area?
