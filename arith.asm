@@ -1,3 +1,7 @@
+;;; Note - for double precision (32 bit) integers, the most-significant word
+;;; goes on the top of the stack, with the least-significant word underneath.
+
+
 ;;; <
 
 L8688:	db	$81,$BC
@@ -373,3 +377,32 @@ ZGREA:    dw DOCOL
         dw NEGAT
         dw ZLESS
         dw EXIT
+
+
+;;;  =
+;;;     : = - 0= EXIT ;
+L8B97:
+        db $81,'',$bd
+        dw $0           ; LFA
+EQUAL:  dw DOCOL
+        dw SUBB
+        dw ZEQU
+        dw EXIT
+
+
+;;;  DNEGATE
+L8721:
+        db $87,'DNEGAT',$c5
+        dw $0           ; LFA
+DNEGAT: dw $+2
+	pop de                  ; MSW
+        pop bc                  ; LSW
+        ld hl, 0
+        sbc hl, bc
+        ld c, l
+        ld b, h
+        ld hl, 0
+        sbc hl, de
+        push bc
+        push hl
+        jp NEXT

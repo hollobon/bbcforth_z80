@@ -1219,6 +1219,31 @@ _test_COMMA:
 
 ;;; --------------------------------------------------------------------------------
 
+_test_DNEGAT:
+        test 1 ; expect 00000001.00100001.EB61753C
+        lit $FFFF
+        lit $FFFF
+        dw DNEGAT
+        dw DDOTHEX
+
+        emitchr .
+
+        lit $FFFF
+        lit $FFEF
+        dw DNEGAT
+        dw DDOTHEX
+
+	emitchr .
+
+        lit $8AC4
+        lit $149E
+        dw DNEGAT
+        dw DDOTHEX
+
+        dw EXIT
+
+;;; --------------------------------------------------------------------------------
+
 ;; _test_PEXPEC:
 ;;         ;; read line from keyboard
 ;;         lit 20
