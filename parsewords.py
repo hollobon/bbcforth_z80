@@ -31,7 +31,6 @@ class Word(object):
         for w in word.split(','):
             w = w.strip()
             if re.match(r'^\d+$', w):
-                self._words.append('LIT')
                 self._words.append(int(w))
             elif re.match(r'^\$([a-fA-F\d]+)$', w):
                 value = int(w[1:], 16)
