@@ -314,31 +314,50 @@ DPLUS:  dw $+2
         jp NEXT
 
 
+
+;;;  U*
 L84D5:
         db $82,'U',$aa
         dw $0           ; LFA
 USTAR:  dw $+2
-        pop bc                  ; $34
-        pop de                  ; $12
+        pop bc
+        pop de
         ld a, c
         ld c, b
 
-;;; 16-bit multiply - multiplier in a,c, multiplicand in de
-;;; result in hl
+;;; 16-bit multiply
+;;; multiplier in a:c (shifted right during calc)
+;;; multiplicand (shifted left during calc) in de':de
+;;; result in hl':hl
+;;; Likely can be optimised. Uses alternate register set.
         ld b, 16
         ld hl, 0
+        exx
+        ld de, 0
+        ld hl, 0
+        exx
 MULT:   srl c                   ; right shift multiplier, high
         rra                     ; rotate right multiplier, low
         jr nc, NOADD            ; test carry
         add hl, de              ; add multiplicand to result
+        exx
+        adc hl, de
+        exx
+
 NOADD:  ex de, hl
-        add hl, hl              ; double-shift multiplicand left
+        add hl, hl              ; double-shift multiplicand (ix:de) left
+        exx
+        ex de, hl
+        adc hl, hl
+        ex de, hl
+        exx
         ex de, hl
         djnz MULT
 
         push hl
-        ld hl, 0
+        exx
         push hl
+        exx
         jp NEXT
 
 

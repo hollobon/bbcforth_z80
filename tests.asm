@@ -1037,13 +1037,26 @@ _test_DPLUS:
 ;;; --------------------------------------------------------------------------------
 
 _test_USTAR:
-        test 1 ; expect 000003A8.
+        test 1 ; expect 000003A8.00010000.FFFE0001
 
         lit $12
         lit $34
         dw USTAR
         dw DDOTHEX
+
         emitchr .
+
+        lit $8000
+        lit $0002
+        dw USTAR
+        dw DDOTHEX
+
+        emitchr .
+
+        lit $FFFF
+        lit $FFFF
+        dw USTAR
+        dw DDOTHEX
 
         dw EXIT
 
