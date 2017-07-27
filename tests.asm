@@ -1317,6 +1317,27 @@ _test_EXEC:
 
 ;;; --------------------------------------------------------------------------------
 
+_test_TRAVERSE:
+        test 1 ; expect {label_L8820}.{label_TRAV}
+
+        lit TRAV-3
+        lit -1
+        dw TRAV
+	dw DOTHEX
+
+        emitchr .
+
+        lit L8820
+        lit 1
+        dw TRAV
+        lit 3
+        dw PLUS
+	dw DOTHEX
+
+        dw EXIT
+
+;;; --------------------------------------------------------------------------------
+
 ;; _test_PEXPEC:
 ;;         ;; read line from keyboard
 ;;         lit 20

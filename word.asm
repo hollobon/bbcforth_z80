@@ -129,3 +129,29 @@ ENCL:   dw $+2
 ;; 	dw	CMOVE
 ;; 	dw	WBFR
 ;; 	dw	EXIT
+
+
+;;;  TRAVERSE
+;; Stack Action: (addr1\n ... addr2)
+;; Uses/Leaves: 2 1
+;; Status:
+;; Description:     Moves across the name field of a
+;;         dictionary entry. If n=l, addr1 should be the address
+;;         of the name length byte i.e. the NFA of the word! and
+;;         the movement is towards high memory. If n= -1, addr1
+;;         should be the last letter of the name and the movement
+;;         is towards low memory. The addr2 that is left is the
+;;         address of the other end of the name.
+L8820:
+        db $88,'TRAVERS',$c5
+        dw $0           ; LFA
+TRAV:   dw $+2
+        pop de
+        pop hl
+        ld a, $7F
+_TRAVLOOP:
+        add hl, de
+        cp (hl)
+        jp p, _TRAVLOOP
+        push hl
+        jp NEXT
