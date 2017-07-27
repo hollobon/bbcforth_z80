@@ -574,6 +574,77 @@ CONV:   dw DOCOL
         dw EXIT
 
 
+;; NUMBER
+;;    : NUMBER DUP C@ OVER + >R 0 0 ROT DUP 1+ C@ LIT ?'-'? = DUP >R + CONVERT R> 0BRANCH LIT 8 >R DNEGATE R> R> OVER - DUP 0< 0BRANCH LIT 8 2DROP BRANCH 18 0 ?ERROR C@ LIT ?'.'? - 0 ?ERROR EXIT ;
+L9282:
+	db $86,'NUMBE',$d2
+	dw $0 ; LFA
+NUMBER:	dw DOCOL
+	dw DUPP
+	dw CAT
+	dw OVER
+	dw PLUS
+	dw TOR
+	dw ZERO
+	dw ZERO
+	dw ROT
+	dw DUPP
+	dw ONEP
+	dw CAT
+	dw LITERAL
+	dw '-'
+	dw EQUAL
+	dw DUPP
+	dw TOR
+	dw PLUS
+	dw CONV
+	dw RFROM
+	dw ZBRAN
+	dw $8
+	dw TOR
+	dw DNEGAT
+	dw RFROM
+	dw RFROM
+	dw OVER
+	dw SUBB
+	dw DUPP
+	dw ZLESS
+	dw ZBRAN
+	dw $8
+        dw TDROP
+	dw BRAN
+	dw $12
+	dw ZERO
+	dw QERR
+	dw CAT
+	dw LITERAL
+	dw '.'
+	dw SUBB
+	dw ZERO
+	dw QERR
+	dw EXIT
+
+
+;;;  ?ERROR
+;;;     : ?ERROR SWAP 0BRANCH LIT 8 ERROR BRANCH LIT 4 DROP EXIT ;
+L8C21:
+        db $86,'?ERRO',$d2
+        dw $0           ; LFA
+QERR:   dw DOCOL
+        dw DROP
+        dw DROP
+        ;; dw SWAP
+        ;; dw ZBRAN
+        ;; dw LIT
+        ;; dw $8
+        ;; dw ERROR
+        ;; dw BRAN
+        ;; dw LIT
+        ;; dw $4
+        ;; dw DROP
+        dw EXIT
+
+
 ;;;     : TYPE DUP 0> 0BRANCH 24 OVER + SWAP (DO) I C@ EMIT (ULOOP) -8 BRANCH LIT 4 2DROP EXIT ;
 L8DEF:
         db $84,'TYP',$c5

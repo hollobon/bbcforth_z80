@@ -1257,6 +1257,37 @@ _test_DNEGAT:
 
 ;;; --------------------------------------------------------------------------------
 
+_dtest_NUMBER:
+        db 6,'482914'
+_dtest_NUMBER_2:
+        db 5,'-1234'
+_dtest_NUMBER_3:
+        db 8,'7FEEB1E9'
+
+_test_NUMBER:
+        test 1 ; expect 00075E62.FFFFFB2E.7FEEB1E9
+
+        lit _dtest_NUMBER
+        dw NUMBER
+        dw DDOTHEX
+
+        emitchr .
+
+        lit _dtest_NUMBER_2
+        dw NUMBER
+        dw DDOTHEX
+
+        emitchr .
+
+        dw HEX
+        lit _dtest_NUMBER_3
+        dw NUMBER
+        dw DDOTHEX
+
+        dw EXIT
+
+;;; --------------------------------------------------------------------------------
+
 _test_TDROP:
         test 1 ; expect 0001
 
