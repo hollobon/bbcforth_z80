@@ -574,6 +574,15 @@ CONV:   dw DOCOL
         dw EXIT
 
 
+;;;  NOOP
+;;;     : NOOP EXIT ;
+L8D05:
+        db $84,'NOO',$d0
+        dw $0           ; LFA
+NOOP:   dw DOCOL
+        dw EXIT
+
+
 ;; NUMBER
 ;;    : NUMBER DUP C@ OVER + >R 0 0 ROT DUP 1+ C@ LIT ?'-'? = DUP >R + CONVERT R> 0BRANCH LIT 8 >R DNEGATE R> R> OVER - DUP 0< 0BRANCH LIT 8 2DROP BRANCH 18 0 ?ERROR C@ LIT ?'.'? - 0 ?ERROR EXIT ;
 L9282:
