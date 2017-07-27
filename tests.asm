@@ -1257,6 +1257,20 @@ _test_DNEGAT:
 
 ;;; --------------------------------------------------------------------------------
 
+_test_TDROP:
+        test 1 ; expect 0001
+
+        lit 1
+        lit 2
+        lit 3
+        dw TDROP
+        dw DOTHEX
+        dw DROP
+
+        dw EXIT
+
+;;; --------------------------------------------------------------------------------
+
 ;; _test_PEXPEC:
 ;;         ;; read line from keyboard
 ;;         lit 20

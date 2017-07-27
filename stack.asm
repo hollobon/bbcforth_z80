@@ -229,3 +229,13 @@ RAT:    dw $+2
         ld d, (hl)
         push de
         jp NEXT
+
+
+;;;  2DROP
+L8744:
+        db $85,'2DRO',$d0
+        dw $0           ; LFA
+TDROP:  dw DOCOL
+        dw DROP
+        dw DROP
+        dw EXIT
