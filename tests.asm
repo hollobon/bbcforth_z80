@@ -1271,6 +1271,21 @@ _test_TDROP:
 
 ;;; --------------------------------------------------------------------------------
 
+_test_EXEC:
+        test 1 ; expect 0305
+
+        lit DOTHEX
+        lit $0102
+        lit $0203
+        lit PLUS
+        dw EXEC
+        dw SWAP
+        dw EXEC
+
+	dw EXIT
+
+;;; --------------------------------------------------------------------------------
+
 ;; _test_PEXPEC:
 ;;         ;; read line from keyboard
 ;;         lit 20

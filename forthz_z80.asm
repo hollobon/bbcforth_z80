@@ -98,7 +98,7 @@ NEXT:
         ld b, (iy+0)
         inc iy
         ;; dereference BC into HL (HL has address of code)
-        ld a, (bc)
+JPCFA:  ld a, (bc)
         ld l, a
         inc bc
         ld a, (bc)
@@ -661,6 +661,15 @@ COMMA:  dw DOCOL
         dw TWO
         dw ALLOT
         dw EXIT
+
+
+;;;  EXECUTE
+L819B:
+        db $87,'EXECUT',$c5
+        dw $0           ; LFA
+EXEC:   dw $+2
+        pop bc
+        jp JPCFA
 
 
 TOPDP: equ $	; TOP OF DICTIONARY
