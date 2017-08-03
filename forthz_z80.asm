@@ -273,15 +273,14 @@ include "word.asm"
 
 ;	-FIND
 
-;; L90B1:  db	$85,'-FIN',$C4
-;; 	dw	$0
-
-;; DFIND:  dw	DOCOL
-;; 	dw	BLL
-;; 	dw	ONEWRD
-;; 	dw	SWAP
-;; 	dw	PFIND
-;; 	dw	EXIT
+L90B1:  db	$85,'-FIN',$C4
+	dw	$0
+DFIND:  dw	DOCOL
+	dw	BLL
+	dw	ONEWRD
+	dw	SWAP
+	dw	PFIND
+	dw	EXIT
 
 ;	FIND
 

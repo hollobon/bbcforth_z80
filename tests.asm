@@ -349,7 +349,7 @@ _CFAA:  dw $0
 
 _WORDB: db $6,'SECON',$C4
         dw _WORDA
-        dw $0
+_CFAB:  dw $0
         dw $0
 
 _WORDC: db $7,'(THIRD',$A9
@@ -404,6 +404,36 @@ _test_PFIND_NOTFOUND:
         lit _WORDD
         dw PFIND
         dw DOTHEX
+        dw EXIT
+
+_dtest_DFIND_TIB:       db '   SECOND    '
+
+_test_DFIND3:
+        test 1 ; expect 0001.0006.{label__CFAB}
+
+        lit 0
+        dw INN
+        dw STORE
+
+        dw TIB
+        dw AT
+
+        lit _dtest_DFIND_TIB
+        dw TIB
+        dw STORE
+
+        lit _WORDD
+        dw DFIND
+        dw DOTHEX
+        emitchr .
+        dw DOTHEX
+        emitchr .
+        dw DOTHEX
+
+        ;; restore TIB
+        dw TIB
+        dw STORE
+
         dw EXIT
 
 ;;; --------------------------------------------------------------------------------
