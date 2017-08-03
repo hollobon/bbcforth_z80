@@ -1413,6 +1413,38 @@ _test_ENCLOSE_4:
 
 ;;; --------------------------------------------------------------------------------
 
+_dtest_WORD_TIB:   db '  Hello World',0
+
+_test_WORD:
+        test 1 ; expect Hello.World.
+
+        dw TIB
+        dw AT
+
+        lit 0
+        dw INN
+        dw STORE
+
+        lit _dtest_WORD_TIB
+        dw TIB
+        dw STORE
+
+        dw BLL
+        dw WORD
+        dw COUNT
+        dw TYPE
+        emitchr .
+
+        dw BLL
+        dw WORD
+        dw COUNT
+        dw TYPE
+        emitchr .
+
+        dw EXIT
+
+;; --------------------------------------------------------------------------------
+
 ;; _test_PEXPEC:
 ;;         ;; read line from keyboard
 ;;         lit 20

@@ -186,21 +186,39 @@ PWORD:  dw DOCOL
 
 ;; ;	1WORD
 ;; ;;; : 1WORD (WORD) WDSZ MIN WBFR C! WBFR COUNT 1+ CMOVE WBFR ;
-;; L9036:	db	$85,'1WOR',$C4
-;; 	dw	L902B
-;; ONEWRD:	dw	DOCOL
-;; 	dw	PWORD
-;; 	dw	WDSZ
-;; 	dw	MIN
-;; 	dw	WBFR
-;; 	dw	CSTOR
-;; 	dw	WBFR
-;; 	dw	COUNT
-;; 	dw	ONEP
-;; 	dw	CMOVE
-;; 	dw	WBFR
-;; 	dw	EXIT
+L9036:	db	$85,'1WOR',$C4
+	dw	L902B
+ONEWRD:	dw	DOCOL
+	dw	PWORD
+	dw	WDSZ
+	dw	MIN
+	dw	WBFR
+	dw	CSTOR
+	dw	WBFR
+	dw	COUNT
+	dw	ONEP
+	dw	CMOVE
+	dw	WBFR
+	dw	EXIT
 
+
+;;;  WORD
+;;;     : WORD 1WORD DUP 1+ C@ 0= 0BRANCH 8 0 OVER C! EXIT ;
+L9056:
+        db $84,'WOR',$c4
+        dw $0           ; LFA
+WORD:   dw DOCOL
+        dw ONEWRD
+        dw DUPP
+        dw ONEP
+        dw CAT
+        dw ZEQU
+        dw ZBRAN
+        dw $8
+        dw ZERO
+        dw OVER
+        dw CSTOR
+        dw EXIT
 
 ;;;  TRAVERSE
 ;; Stack Action: (addr1\n ... addr2)
