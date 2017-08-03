@@ -1338,6 +1338,51 @@ _test_TRAVERSE:
 
 ;;; --------------------------------------------------------------------------------
 
+_ENCLOSE_TEST:
+        dw DOCOL
+
+        lit 'c'
+        dw ENCL
+        dw DOTHEX
+        emitchr .
+        dw DOTHEX
+        emitchr .
+        dw DOTHEX
+        emitchr .
+        dw DOTHEX
+
+        dw EXIT
+
+_dtest_ENCLOSE_1:        db 'ccABCDcc'
+_test_ENCLOSE_1:
+        test 1 ; expect 0007.0006.0002.{label__dtest_ENCLOSE_1}
+        lit _dtest_ENCLOSE_1
+        dw _ENCLOSE_TEST
+        dw EXIT
+
+_dtest_ENCLOSE_2:        db 'ABCDcc'
+_test_ENCLOSE_2:
+        test 1 ; expect 0005.0004.0000.{label__dtest_ENCLOSE_2}
+        lit _dtest_ENCLOSE_2
+        dw _ENCLOSE_TEST
+        dw EXIT
+
+_dtest_ENCLOSE_3:        db 'ABC',0,'c'
+_test_ENCLOSE_3:
+        test 1 ; expect 0003.0003.0000.{label__dtest_ENCLOSE_3}
+        lit _dtest_ENCLOSE_3
+        dw _ENCLOSE_TEST
+        dw EXIT
+
+_dtest_ENCLOSE_4:        db 0,'ccc'
+_test_ENCLOSE_4:
+        test 1 ; expect 0000.0001.0000.{label__dtest_ENCLOSE_4}
+        lit _dtest_ENCLOSE_4
+        dw _ENCLOSE_TEST
+        dw EXIT
+
+;;; --------------------------------------------------------------------------------
+
 ;; _test_PEXPEC:
 ;;         ;; read line from keyboard
 ;;         lit 20

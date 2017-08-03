@@ -50,11 +50,82 @@ EXPECT: dw DOCOL
         dw EXIT
 
 
+;; Stack Action: (addr\c ... addr\n1\n2\n3)
+;; Uses/Leaves: 2 4
+;; Description: The text-scanning primitive used by
+;; WORD . The text starting at the address addr is
+;; searched, ignoring leading occurrences of the
+;; delimiter c, until the first non-delimiter character is
+;; found. The offset from addr to this character is left
+;; as n1. The search continues from this point until the
+;; first delimiter after the text is found. The offsets
+;; from addr to this delimiter and to the first character
+;; not included in the scan are left as n2 and n3
+;; respectively. The search will, regardless of the value
+;; of c, stop on encountering an ASCII null, which is
+;; regarded as an unconditional delimiter. The null is
+;; never included in the scan.
+
+
 ;;;  ENCLOSE
 L83B4:
         db $87,'ENCLOS',$c5
         dw $0           ; LFA
 ENCL:   dw $+2
+
+        pop de                  ; e is delimiter
+        pop hl                  ; addr
+        push hl
+
+        ld bc, -1               ; current offset counter
+        dec hl
+
+_ENCL_SKIP_INITIAL_DELIMITER:
+        inc hl
+        inc bc
+        ld a, (hl)
+        cp e
+        jr z, _ENCL_SKIP_INITIAL_DELIMITER
+
+        push bc                 ; n1
+
+_ENCL_MAIN_LOOP:
+        ld a, (hl)
+        cp 0
+        jr nz, _ENCL_NOT_NULL
+
+        pop de
+        ld a, e
+        cp c
+        jr nz, _ENCL_RET_N2_UNCH
+
+        ld a, d
+        cp b
+        jr nz, _ENCL_RET_N2_UNCH
+
+        push de
+        inc bc
+        push bc
+        dec bc
+        push bc
+        jp NEXT
+
+_ENCL_RET_N2_UNCH:
+        push de
+        push bc
+        push bc
+        jp NEXT
+
+_ENCL_NOT_NULL:
+        inc bc
+        inc hl
+        cp e
+        jr nz, _ENCL_MAIN_LOOP
+
+        dec bc
+        push bc
+        inc bc
+        push bc
 
         jp NEXT
 
