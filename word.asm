@@ -155,34 +155,34 @@ _ENCL_NOT_NULL:
 ;; ;
 ;;;  (WORD)
 ;;;     : (WORD) BLK @ ?DUP 0BRANCH LIT 8 BLOCK BRANCH LIT 6 TIB @ >IN @ + SWAP ENCLOSE >IN +! OVER - ROT ROT + SWAP EXIT ;
-;; L8FE5:
-;;         db $86,'(WORD',$a9
-;;         dw $0           ; LFA
-;; PWORD:  dw DOCOL
-;;         dw BLK
-;;         dw AT
-;;         dw QDUP
-;;         dw ZBRAN
-;;         dw $8
-;;         dw BLOCK
-;;         dw BRAN
-;;         dw $6
-;;         dw TIB
-;;         dw AT
-;;         dw INN
-;;         dw AT
-;;         dw PLUS
-;;         dw SWAP
-;;         dw ENCL
-;;         dw INN
-;;         dw PSTOR
-;;         dw OVER
-;;         dw SUBB
-;;         dw ROT
-;;         dw ROT
-;;         dw PLUS
-;;         dw SWAP
-;;         dw EXIT
+L8FE5:
+        db $86,'(WORD',$a9
+        dw $0           ; LFA
+PWORD:  dw DOCOL
+        ;; dw BLK
+        ;; dw AT
+        ;; dw QDUP
+        ;; dw ZBRAN
+        ;; dw $8
+        ;; dw BLOCK
+        ;; dw BRAN
+        ;; dw $6
+        dw TIB
+        dw AT
+        dw INN
+        dw AT
+        dw PLUS
+        dw SWAP
+        dw ENCL
+        dw INN
+        dw PSTOR
+        dw OVER
+        dw SUBB
+        dw ROT
+        dw ROT
+        dw PLUS
+        dw SWAP
+        dw EXIT
 
 ;; ;	1WORD
 ;; ;;; : 1WORD (WORD) WDSZ MIN WBFR C! WBFR COUNT 1+ CMOVE WBFR ;

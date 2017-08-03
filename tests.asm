@@ -1177,6 +1177,36 @@ _test_PDOTQ:
 
 ;;; --------------------------------------------------------------------------------
 
+_dtest_PWORD_TIB:
+        db 'this is a test'
+
+_test_PWORD:
+        test 1 ; expect 0004.{label__dtest_PWORD_TIB}
+        dw TIB
+        dw AT
+
+        lit 0
+        dw INN
+        dw STORE
+
+        lit _dtest_PWORD_TIB
+        dw TIB
+        dw STORE
+
+        lit 32
+        dw PWORD
+
+        dw DOTHEX
+        emitchr .
+        dw DOTHEX
+
+        dw TIB
+        dw STORE
+
+        dw EXIT
+
+;;; --------------------------------------------------------------------------------
+
 _test_BSWAP:
         test 1 ; expect 3412
 
