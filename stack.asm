@@ -27,10 +27,10 @@ TDUP:	dw	$+2
 	add ix, sp
         ld l, (ix+0)
         ld h, (ix+1)
-        ld d, (ix+2)
-        ld e, (ix+3)
-        push hl
+        ld e, (ix+2)
+        ld d, (ix+3)
         push de
+        push hl
         jp NEXT
 
 

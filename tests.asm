@@ -1484,6 +1484,23 @@ _test_WORD:
 
 ;; --------------------------------------------------------------------------------
 
+_test_2DUP:
+        test 1 ; expect 1234.ABCD.1234.ABCD
+        lit $ABCD
+        lit $1234
+        dw TDUP
+        dw DOTHEX
+        emitchr .
+        dw DOTHEX
+        emitchr .
+        dw DOTHEX
+        emitchr .
+        dw DOTHEX
+
+        dw EXIT
+
+;; --------------------------------------------------------------------------------
+
 ;; _test_PEXPEC:
 ;;         ;; read line from keyboard
 ;;         lit 20
