@@ -30,9 +30,10 @@ GREAT:	dw	DOCOL
 	dw	EXIT
 
 
-;;; +
-        db 1
-        db 'PLUS'
+;;;  +
+L86CF:
+        db $81,$ab
+        dw $0           ; LFA
 PLUS:   dw $+2
         pop hl
         pop bc
