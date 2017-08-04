@@ -1501,6 +1501,22 @@ _test_2DUP:
 
 ;; --------------------------------------------------------------------------------
 
+_test_MAX:
+        test 1 ; expect 000A.000A
+        lit 1
+        lit 10
+        dw MAX
+        dw DOTHEX
+        emitchr .
+        lit 10
+        lit 1
+        dw MAX
+        dw DOTHEX
+
+        dw EXIT
+
+;; --------------------------------------------------------------------------------
+
 ;; _test_PEXPEC:
 ;;         ;; read line from keyboard
 ;;         lit 20

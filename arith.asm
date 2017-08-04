@@ -55,17 +55,19 @@ MIN:	dw	DOCOL
 	dw	EXIT
 
 
-;	MAX
-
-L95C1:	db	$83,'MA',$D8
-	dw	$0 ;L95AB
-MAX:	dw	DOCOL
-	dw	TDUP
-	dw	LESS
-	dw	ZBRAN,4
-	dw	SWAP
-	dw	DROP
-	dw	EXIT
+;;;  MAX
+;;;     : MAX 2DUP < 0BRANCH 4 SWAP DROP EXIT ;
+L95C1:
+        db $83,'MA',$d8
+        dw $0           ; LFA
+MAX:    dw DOCOL
+        dw TDUP
+        dw LESS
+        dw ZBRAN
+        dw $4
+        dw SWAP
+        dw DROP
+        dw EXIT
 
 
 ;;;  -
