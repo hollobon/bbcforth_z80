@@ -1,9 +1,9 @@
 .PHONY: test clean
 
 forthz.ROM: forthz_z80.asm word.asm arith.asm stack.asm loop.asm tests.asm.gen forthz_6502.a
-	z80asm --list=$@.LST --label=$@.LABEL $< -o $@ 
+	z80asm --list=$@.LST --label=$@.LABEL $< -o $@
 
-tests.asm.gen: tests.asm
+tests.asm.gen: tests.asm renumber_tests.py
 	./renumber_tests.py $< $<.gen
 
 forthz_6502.a: forthz_6502.asm
