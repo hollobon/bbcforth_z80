@@ -324,13 +324,18 @@ EXIT:   dw $+2
         ld (RSP), de
         jp NEXT
 
-        db 2
-        db 'SP'
-SP:     dw DOCOL
-        dw LITERAL
-        dw 32
+
+;;;  SPACE
+;;;     : SPACE BL EMIT EXIT ;
+L8B34:
+        db $85,'SPAC',$c5
+        dw $0           ; LFA
+SPACE:    dw DOCOL
+        dw BLL
+;        dw XEMIT
         dw EMIT
         dw EXIT
+
 
 ;;;  +!
 ;;;

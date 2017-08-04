@@ -291,9 +291,9 @@ _test_OVER:
 _test_words:
         test 10 ; expect petepetepete petepetepete
 
-        ;; test SP and EXIT -
+        ;; test SPACE and EXIT -
         dw PETE3
-        dw SP
+        dw SPACE
         dw PETE3
         dw EXIT
 
