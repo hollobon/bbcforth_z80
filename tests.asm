@@ -323,17 +323,26 @@ _test_BRANCH:
 ;;; --------------------------------------------------------------------------------
 
 _test_0BRANCH:
-        test 11 ; expect tft
+        test 11 ; expect tftft
+
         lit 0
         dw ZBRAN
         dw 8
         emitchr f
         emitchr t
+
         lit 1
         dw ZBRAN
         dw 8
         emitchr f
         emitchr t
+
+        lit $0101
+        dw ZBRAN
+        dw 8
+        emitchr f
+        emitchr t
+
         dw EXIT
 
 ;;; --------------------------------------------------------------------------------

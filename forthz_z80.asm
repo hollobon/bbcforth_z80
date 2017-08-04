@@ -181,8 +181,10 @@ L81F4:	db	$87,'0BRANC',$C8
 ZBRAN:	dw	$+2
         pop bc
         ld a, c
+        cp 0
+        jr nz, BUMP
         cp b
-        jp z, _BRAN
+        jr z, _BRAN
 BUMP:   inc iy                  ; skip the offset
         inc iy
         jp NEXT
