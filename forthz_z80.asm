@@ -49,7 +49,7 @@ L80F0:  cp 'W'
 
 
         ;;
-RSP:    defw $c200 ; return stack pointer
+RSP:    dw $c200 ; return stack pointer
 CWMSG:  dm '\r\nCOLD or WARM start (C/W)?',0
 COLDST: dw START
 WARMST: dw PABOR
@@ -80,7 +80,7 @@ WRSTR:  ld a, (hl)
         ret
 
 ;; push following word onto stack
-LITERAL: defw $+2
+LITERAL: dw $+2
         ld l, (iy+0)
         inc iy
         ld h, (iy+0)
@@ -190,7 +190,7 @@ BUMP:   inc iy                  ; skip the offset
 
         db 4
         db 'EMIT'
-EMIT:   defw $+2
+EMIT:   dw $+2
         pop bc
         ld a, c
         call OSWRCH
@@ -312,7 +312,7 @@ include "stack.asm"
 
         db 4
         db 'EXIT'
-EXIT:   defw $+2
+EXIT:   dw $+2
         ;; pop IY from return stack
         ld de, (RSP)
         ld a, (de)
@@ -326,7 +326,7 @@ EXIT:   defw $+2
 
         db 2
         db 'SP'
-SP:     defw DOCOL
+SP:     dw DOCOL
         dw LITERAL
         dw 32
         dw EMIT
