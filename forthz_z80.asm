@@ -339,6 +339,25 @@ SPACE:    dw DOCOL
         dw EXIT
 
 
+;;;  SPACES
+;;;     : SPACES 0 MAX ?DUP 0BRANCH 12 0 (DO) SPACE (ULOOP) -4 EXIT ;
+L96B3:
+        db $86,'SPACE',$d3
+        dw $0           ; LFA
+SPACS:  dw DOCOL
+        dw ZERO
+        dw MAX
+        dw QDUP
+        dw ZBRAN
+        dw $c
+        dw ZERO
+        dw XDO
+        dw SPACE
+        dw XPULO
+        dw -$4
+        dw EXIT
+
+
 ;;;  +!
 ;;;
 ;;; Stack Action: n\addr ...
@@ -374,8 +393,6 @@ QUERY:  dw DOCOL
         dw INN
         dw STORE
         dw EXIT
-
-
 
 
 ;	COLD

@@ -1517,6 +1517,23 @@ _test_MAX:
 
 ;; --------------------------------------------------------------------------------
 
+_test_SPACES:
+        test 1 ; expect <          ><>
+
+        emitchr <
+        lit 10
+        dw SPACS
+        emitchr >
+
+        emitchr <
+        lit -10
+        dw SPACS
+        emitchr >
+
+        dw EXIT
+
+;; --------------------------------------------------------------------------------
+
 ;; _test_PEXPEC:
 ;;         ;; read line from keyboard
 ;;         lit 20
