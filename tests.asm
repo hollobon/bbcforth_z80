@@ -64,11 +64,6 @@ nl:     macro
         emitchr \n
         endm
 
-bl:     macro
-        lit $20
-        dw EMIT
-        endm
-
 test:   macro number
         dw DOCOL
         nl
@@ -77,7 +72,8 @@ test:   macro number
         emitchr S
         emitchr T
         lit number
-        bl
+        lit $20
+        dw EMIT
         dw DOTHEX
         emitchr :
         endm
