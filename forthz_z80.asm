@@ -72,6 +72,7 @@ UAVALUE:
 	dw	0 ;VL0-REL		; Initial VOC-LINK   -- COLD $14/$15
 	dw	1
 
+
 WRSTR:  ld a, (hl)
         inc hl
         call OSWRCH
@@ -79,7 +80,12 @@ WRSTR:  ld a, (hl)
         jp nz, WRSTR
         ret
 
+
+;; LIT
 ;; push following word onto stack
+L814A:
+        db $83,'LI',$d4
+        dw $0           ; LFA
 LITERAL: dw $+2
         ld l, (iy+0)
         inc iy
@@ -87,6 +93,7 @@ LITERAL: dw $+2
         inc iy
         push hl
         jp NEXT
+
 
 NEXT:
 ;;; On entry, IY holds address of word
@@ -105,6 +112,7 @@ JPCFA:  ld a, (bc)
         ld h, a
         ;; jump to address in HL
         jp (hl)
+
 
 DOCOL:
         ;; push IY onto return stack
@@ -128,6 +136,7 @@ DOCOL:
         ld iyl, c
         ld iyh, b
         jp NEXT
+
 
 ;	CONSTANT
 
@@ -199,15 +208,12 @@ EMIT:   dw $+2
         jp NEXT
 
 
-        include "loop.asm"
-
 ;; Pronounced:      bracket-find
-;;         Stack Action: (addr1\addr2 ... cfa\b\tf) [found]
-;;         Uses/Leaves: 2 3
-;;         Stact Action: (addrl\addr2 ... ff) [not found]
-;;         Uses/Leaves: 2 1
-;; Status:
-;; Description:     Searches the dictionary starting at the
+;; Stack Action: (addr1\addr2 ... cfa\b\tf) [found]
+;; Uses/Leaves: 2 3
+;; Stack Action: (addrl\addr2 ... ff) [not found]
+;; Uses/Leaves: 2 1
+;; Description: Searches the dictionary starting at the
 ;;         name field address addr2 for a match with the text
 ;;         starting at addrl. For a successful match the code
 ;;         field execution address and length byte of the name
@@ -271,12 +277,12 @@ _NW2:   ld c, (ix+1)            ; load link address
         push hl
         jp NEXT
 
-include "word.asm"
 
-;	-FIND
-
-L90B1:  db	$85,'-FIN',$C4
-	dw	$0
+;;;  -FIND
+;;;     : -FIND BL 1WORD SWAP (FIND) EXIT ;
+L90B1:
+        db $85,'-FIN',$c4
+        dw $0           ; LFA
 DFIND:  dw	DOCOL
 	dw	BLL
 	dw	ONEWRD
@@ -299,6 +305,7 @@ DFIND:  dw	DOCOL
 ;; 	dw	ZERO
 ;; 	dw	EXIT
 
+
 	db $85,'CMOV',$C5
 	dw $0
 CMOVE:  dw $+2
@@ -308,9 +315,15 @@ CMOVE:  dw $+2
         ldir
         jp NEXT
 
+
 include "arith.asm"
 
 include "stack.asm"
+
+include "word.asm"
+
+include "loop.asm"
+
 
         db 4
         db 'EXIT'
@@ -421,6 +434,7 @@ WARM:   dw $+2
 	ld bc, $F
         jp COPYLITERALS
 
+
 COPYLITERALS:
         ;; ld ix, (UAVALUE)
         ;; ld (UP), ix ; Set user area address
@@ -449,6 +463,7 @@ STORE:  dw	$+2
         ld (ix+1), b
         jp NEXT
 
+
 ;	C@
 
 L8885:  db	$82,'C',$C0
@@ -459,6 +474,7 @@ CAT:    dw	$+2
         ld b, 0
         push bc
         jp NEXT
+
 
 ;	@
 
@@ -472,6 +488,7 @@ AT:     dw $+2
         push bc
         jp NEXT
 
+
 ;;;  COUNT
 ;;;     : COUNT DUP 1+ SWAP C@ EXIT ;
 L8DDB:
@@ -484,6 +501,7 @@ COUNT:  dw DOCOL
         dw CAT
         dw EXIT
 
+
 ;;;  C!
 L88A9:
         db $82,'C',$a1
@@ -495,6 +513,7 @@ CSTOR:  dw $+2
         jp NEXT
 
         include "tests.asm.gen"
+
 
 ;;;  COMPILE
 ;;;     : COMPILE ?COMP R> DUP 2+ >R @ , EXIT ;
@@ -701,6 +720,7 @@ TYPE:   dw DOCOL
         dw DROP
         dw EXIT
 
+
 ;;;  (.")
 ;;;     : (.") R@ COUNT DUP 1+ R> + >R TYPE EXIT ;
 L8E70:
@@ -752,6 +772,7 @@ HERE:   dw DOCOL
         dw DP
         dw AT
         dw EXIT
+
 
 ;;;  ,
 ;;;     : , HERE ! 2 ALLOT EXIT ;
