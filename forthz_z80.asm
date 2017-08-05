@@ -86,7 +86,7 @@ WRSTR:  ld a, (hl)
 L814A:
         db $83,'LI',$d4
         dw $0           ; LFA
-LITERAL: dw $+2
+LIT:    dw $+2
         ld l, (iy+0)
         inc iy
         ld h, (iy+0)
@@ -399,7 +399,7 @@ L8F17:
 QUERY:  dw DOCOL
         dw TIB
         dw AT
-        dw LITERAL
+        dw LIT
         dw $50
         dw EXPECT
         dw ZERO
@@ -642,7 +642,7 @@ NUMBER:	dw DOCOL
 	dw DUPP
 	dw ONEP
 	dw CAT
-	dw LITERAL
+	dw LIT
 	dw '-'
 	dw EQUAL
 	dw DUPP
@@ -668,7 +668,7 @@ NUMBER:	dw DOCOL
 	dw ZERO
 	dw QERR
 	dw CAT
-	dw LITERAL
+	dw LIT
 	dw '.'
 	dw SUBB
 	dw ZERO

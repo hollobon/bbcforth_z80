@@ -41,7 +41,7 @@ OUT1:   call OSWRCH
         ret
 
 lit:    macro value
-        dw LITERAL
+        dw LIT
         dw value
         endm
 

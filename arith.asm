@@ -370,7 +370,7 @@ L8D37:
         db $87,'DECIMA',$cc
         dw $0           ; LFA
 DECIM:  dw DOCOL
-        dw LITERAL
+        dw LIT
         dw $a
         dw BASE
         dw STORE
@@ -383,7 +383,7 @@ L8D25:
         db $83,'HE',$d8
         dw $0           ; LFA
 HEX:    dw DOCOL
-        dw LITERAL
+        dw LIT
         dw $10
         dw BASE
         dw STORE
