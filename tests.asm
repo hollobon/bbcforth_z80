@@ -168,7 +168,7 @@ _test_SWAP:
 ;;; --------------------------------------------------------------------------------
 
 _test_LESS:
-        test 3 ; expect 100
+        test 3 ; expect 1000
 
         ;; 2<3 -> true
         lit 2
@@ -187,6 +187,14 @@ _test_LESS:
         dw EMIT
 
         ;; 2<2 -> false
+        lit 2
+        lit 2
+        dw LESS
+        lit '0'
+        dw PLUS
+        dw EMIT
+
+        ;; 10<0 -> false
         lit 2
         lit 2
         dw LESS
@@ -1482,6 +1490,7 @@ _test_WORD:
 
 _test_2DUP:
         test 1 ; expect 1234.ABCD.1234.ABCD
+
         lit $ABCD
         lit $1234
         dw TDUP
@@ -1504,6 +1513,7 @@ _test_MAX:
         dw MAX
         dw DOTHEX
         emitchr .
+
         lit 10
         lit 1
         dw MAX
