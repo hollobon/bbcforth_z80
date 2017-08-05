@@ -81,8 +81,13 @@ QDUP:
         dw $+2
         pop hl
         push hl
-        jp z, NEXT
+        ld a, l
+        cp 0
+        jr z, _QDUPNEXT
+        cp h
+        jr z, _QDUPNEXT
         push hl
+_QDUPNEXT:
         jp NEXT
 
 
