@@ -9,8 +9,9 @@
 
 _OSWORD_PBLOCK:         ds 5
 
-L8EC8:  db $88,'(EXPECT',$A9
-        dw $0                   ; LF
+_NF_PEXPEC:
+        db $88,'(EXPECT',$A9
+        dw _LF_PEXPEC
 PEXPEC: dw $+2
         call OSNEWL
         ld ix, _OSWORD_PBLOCK
@@ -36,9 +37,9 @@ PEXPEC: dw $+2
 
 ;;;  EXPECT
 ;;;     : EXPECT OVER SWAP (EXPECT) + 0 SWAP ! EXIT ;
-L8EFC:
+_NF_EXPECT:
         db $86,'EXPEC',$d4
-        dw $0           ; LFA
+        dw _LF_EXPECT
 EXPECT: dw DOCOL
         dw OVER
         dw SWAP
@@ -68,9 +69,9 @@ EXPECT: dw DOCOL
 
 
 ;;;  ENCLOSE
-L83B4:
+_NF_ENCL:
         db $87,'ENCLOS',$c5
-        dw $0           ; LFA
+        dw _LF_ENCL
 ENCL:   dw $+2
 
         pop de                  ; e is delimiter
@@ -155,9 +156,9 @@ _ENCL_NOT_NULL:
 ;; ;
 ;;;  (WORD)
 ;;;     : (WORD) BLK @ ?DUP 0BRANCH LIT 8 BLOCK BRANCH LIT 6 TIB @ >IN @ + SWAP ENCLOSE >IN +! OVER - ROT ROT + SWAP EXIT ;
-L8FE5:
+_NF_PWORD:
         db $86,'(WORD',$a9
-        dw $0           ; LFA
+        dw _LF_PWORD
 PWORD:  dw DOCOL
         ;; dw BLK
         ;; dw AT
@@ -186,8 +187,9 @@ PWORD:  dw DOCOL
 
 ;; ;	1WORD
 ;; ;;; : 1WORD (WORD) WDSZ MIN WBFR C! WBFR COUNT 1+ CMOVE WBFR ;
-L9036:	db	$85,'1WOR',$C4
-	dw	L902B
+_NF_ONEWRD:
+	db	$85,'1WOR',$C4
+	dw	_LF_ONEWRD
 ONEWRD:	dw	DOCOL
 	dw	PWORD
 	dw	WDSZ
@@ -204,9 +206,9 @@ ONEWRD:	dw	DOCOL
 
 ;;;  WORD
 ;;;     : WORD 1WORD DUP 1+ C@ 0= 0BRANCH 8 0 OVER C! EXIT ;
-L9056:
+_NF_WORD:
         db $84,'WOR',$c4
-        dw $0           ; LFA
+        dw _LF_WORD
 WORD:   dw DOCOL
         dw ONEWRD
         dw DUPP
@@ -231,9 +233,9 @@ WORD:   dw DOCOL
 ;;         should be the last letter of the name and the movement
 ;;         is towards low memory. The addr2 that is left is the
 ;;         address of the other end of the name.
-L8820:
+_NF_TRAV:
         db $88,'TRAVERS',$c5
-        dw $0           ; LFA
+        dw _LF_TRAV
 TRAV:   dw $+2
         pop de
         pop hl

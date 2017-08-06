@@ -5,9 +5,9 @@ LOOPLIMIT_HIGH: equ 3
 LOOPLIMIT_LOW: equ 2
 
 ;;;  (ULOOP)
-L828C:
+_NF_XPULO:
         db $87,'(ULOOP',$a9
-        dw $0           ; LFA
+        dw _LF_XPULO
 XPULO:  dw $+2
         ld bc, (RSP)
         ld ix, 0
@@ -33,9 +33,9 @@ _XPULO_NI:
 
 ;;;  (DO)
 
-L82C8:
+_NF_XDO:
         db $84,'(DO',$a9
-        dw $0           ; LFA
+        dw _LF_XDO
 XDO:    dw $+2
         ld hl, (RSP)
         pop de                  ; inital counter value
@@ -53,9 +53,9 @@ XDO:    dw $+2
 
 
 ;;;  I
-L82B3:
+_NF_IDO:
         db $81,'',$c9
-        dw $0           ; LFA
+        dw _LF_IDO
 IDO:    dw $+2
         ld hl, (RSP)
         ld e, (hl)

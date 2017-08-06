@@ -4,8 +4,9 @@
 
 ;;; <
 
-L8688:	db	$81,$BC
-	dw	$0
+_NF_LESS:
+        db	$81,$BC
+	dw	_LF_LESS
 LESS:	dw	$+2
         pop hl
         pop bc
@@ -22,8 +23,9 @@ _LESS1: ld l, 0
 
 ;;; >
 
-L8BA3:	db	$81,$BE
-	dw	$0
+_NF_GREAT:
+	db	$81,$BE
+	dw	_LF_GREAT
 GREAT:	dw	DOCOL
 	dw	SWAP
 	dw	LESS
@@ -31,9 +33,9 @@ GREAT:	dw	DOCOL
 
 
 ;;;  +
-L86CF:
+_NF_PLUS:
         db $81,$ab
-        dw $0           ; LFA
+        dw _LF_PLUS
 PLUS:   dw $+2
         pop hl
         pop bc
@@ -44,8 +46,9 @@ PLUS:   dw $+2
 
 ;	MIN
 ;  : MIN 2DUP > 0BRANCH LIT 4 SWAP DROP EXIT ;
-L95AB:	db	$83,'MI',$CE
-	dw	$0 ;L959C
+_NF_MIN:
+	db	$83,'MI',$CE
+	dw	_LF_MIN
 MIN:	dw	DOCOL
 	dw	TDUP
 	dw	GREAT
@@ -57,9 +60,9 @@ MIN:	dw	DOCOL
 
 ;;;  MAX
 ;;;     : MAX 2DUP < 0BRANCH 4 SWAP DROP EXIT ;
-L95C1:
+_NF_MAX:
         db $83,'MA',$d8
-        dw $0           ; LFA
+        dw _LF_MAX
 MAX:    dw DOCOL
         dw TDUP
         dw LESS
@@ -72,9 +75,9 @@ MAX:    dw DOCOL
 
 ;;;  -
 ;;;     : - NEGATE + EXIT ;
-L8B8B:
+_NF_SUBB:
         db $81,'',$ad
-        dw $0           ; LFA
+        dw _LF_SUBB
 SUBB:   dw DOCOL
         dw NEGAT
         dw PLUS
@@ -87,9 +90,9 @@ SUBB:   dw DOCOL
 ;;; Status:
 ;;; Description:     Leaves a true flag if n is less than zero,
 ;;; otherwise leaves a false flag.
-L8676:
+_NF_ZLESS:
         db $82,'0',$bc
-        dw $0           ; LFA
+        dw _LF_ZLESS
 ZLESS:  dw $+2
         pop hl
         ld a, h
@@ -105,9 +108,9 @@ _ZLESS_NEXT:
 
 
 ;;;  NEGATE
-L8708:
+_NF_NEGAT:
         db $86,'NEGAT',$c5
-        dw $0           ; LFA
+        dw _LF_NEGAT
 NEGAT:  dw $+2
         pop bc
         ld hl, 0
@@ -119,9 +122,9 @@ NEGAT:  dw $+2
 
 ;;;  ABS
 ;;;     : ABS DUP +- EXIT ;
-L958E:
+_NF_ABS:
         db $83,'AB',$d3
-        dw $0           ; LFA
+        dw _LF_ABS
 ABS:    dw DOCOL
         dw DUPP
         dw PM
@@ -134,9 +137,9 @@ ABS:    dw DOCOL
 ;;; Status:
 ;;; Description:     Leaves as n3 the result of applying the sign of n2 to n1.
 ;;;     : +- 0< 0BRANCH LIT 4 NEGATE EXIT ;
-L956B:
+_NF_PM:
         db $82,'+',$ad
-        dw $0           ; LFA
+        dw _LF_PM
 PM:     dw DOCOL
         dw ZLESS
         dw ZBRAN
@@ -147,9 +150,9 @@ PM:     dw DOCOL
 
 ;;;  1+
 ;;;     : 1+ 1 + EXIT ;
-L8AE0:
+_NF_ONEP:
         db $82,'1',$ab
-        dw $0           ; LFA
+        dw _LF_ONEP
 ONEP:   dw DOCOL
         dw ONE
         dw PLUS
@@ -158,9 +161,9 @@ ONEP:   dw DOCOL
 
 ;;; 1-
 ;;;    : 1- -1 + EXIT ;
-L8AFB:
+_NF_ONESUB:
         db $82,'1',$ad
-        dw $0 ; LFA
+        dw _LF_ONESUB
 ONESUB:  dw DOCOL
         dw TRUE
         dw PLUS
@@ -169,9 +172,9 @@ ONESUB:  dw DOCOL
 
 ;;;  2+
 ;;;     : 2+ 2 + EXIT ;
-L8AED:
+_NF_TWOP:
         db $82,'2',$ab
-        dw $0           ; LFA
+        dw _LF_TWOP
 TWOP:   dw DOCOL
         dw TWO
         dw PLUS
@@ -180,9 +183,9 @@ TWOP:   dw DOCOL
 
 ;;;  2-
 ;;;     : 2- -2 + EXIT ;
-L8B08:
+_NF_TWOSUB:
         db $82,'2',$ad
-        dw $0           ; LFA
+        dw _LF_TWOSUB
 TWOSUB: dw DOCOL
         dw NEGTWO
         dw PLUS
@@ -190,9 +193,9 @@ TWOSUB: dw DOCOL
 
 
 ;;;  2*
-L9806:
+_NF_TSTAR:
         db $82,'2',$aa
-        dw $0           ; LFA
+        dw _LF_TSTAR
 TSTAR:  dw $+2
         ld ix, 0
         add ix, sp
@@ -202,9 +205,9 @@ TSTAR:  dw $+2
 
 
 ;;;  2/
-L9814:
+_NF_TSLAS:
         db $82,'2',$af
-        dw $0           ; LFA
+        dw _LF_TSLAS
 TSLAS:  dw $+2
         ld ix, 0
         add ix, sp
@@ -214,9 +217,9 @@ TSLAS:  dw $+2
 
 
 ;;;  0=
-L8661:
+_NF_ZEQU:
         db $82,'0',$bd
-        dw $0           ; LFA
+        dw _LF_ZEQU
 ZEQU:   dw $+2
         pop hl
         ld a, l
@@ -232,9 +235,9 @@ _ZEQU_T:
 
 
 ;;;  AND
-L854E:
+_NF_ANDD:
         db $83,'AN',$c4
-        dw $0           ; LFA
+        dw _LF_ANDD
 ANDD:   dw $+2
         pop bc
         pop hl
@@ -252,9 +255,9 @@ ANDD:   dw $+2
 
 
 ;;;  OR
-L8564:
+_NF_ORR:
         db $82,'O',$d2
-        dw $0           ; LFA
+        dw _LF_ORR
 ORR:    dw $+2
 
         pop bc
@@ -273,9 +276,9 @@ ORR:    dw $+2
 
 
 ;;;  XOR
-L8579:
+_NF_XORR:
         db $83,'XO',$d2
-        dw $0           ; LFA
+        dw _LF_XORR
 XORR:   dw $+2
         pop bc
         pop hl
@@ -293,9 +296,9 @@ XORR:   dw $+2
 
 
 ;;;  D+
-L86E5:
+_NF_DPLUS:
         db $82,'D',$ab
-        dw $0           ; LFA
+        dw _LF_DPLUS
 DPLUS:  dw $+2
         pop ix
         pop hl
@@ -317,11 +320,10 @@ DPLUS:  dw $+2
         jp NEXT
 
 
-
 ;;;  U*
-L84D5:
+_NF_USTAR:
         db $82,'U',$aa
-        dw $0           ; LFA
+        dw _LF_USTAR
 USTAR:  dw $+2
         pop bc
         pop de
@@ -366,9 +368,9 @@ NOADD:  ex de, hl
 
 ;;;  DECIMAL
 ;;;     : DECIMAL LIT 10 BASE ! EXIT ;
-L8D37:
+_NF_DECIM:
         db $87,'DECIMA',$cc
-        dw $0           ; LFA
+        dw _LF_DECIM
 DECIM:  dw DOCOL
         dw LIT
         dw $a
@@ -379,9 +381,9 @@ DECIM:  dw DOCOL
 
 ;;;  HEX
 ;;;     : HEX LIT 16 BASE ! EXIT ;
-L8D25:
+_NF_HEX:
         db $83,'HE',$d8
-        dw $0           ; LFA
+        dw _LF_HEX
 HEX:    dw DOCOL
         dw LIT
         dw $10
@@ -392,9 +394,9 @@ HEX:    dw DOCOL
 
 ;;;  0>
 ;;;     : 0> NEGATE 0< EXIT ;
-L8DCE:
+_NF_ZGREA:
         db $82,'0',$be
-        dw $0           ; LFA
+        dw _LF_ZGREA
 ZGREA:    dw DOCOL
         dw NEGAT
         dw ZLESS
@@ -403,9 +405,9 @@ ZGREA:    dw DOCOL
 
 ;;;  =
 ;;;     : = - 0= EXIT ;
-L8B97:
+_NF_EQUAL:
         db $81,'',$bd
-        dw $0           ; LFA
+        dw _LF_EQUAL
 EQUAL:  dw DOCOL
         dw SUBB
         dw ZEQU
@@ -413,9 +415,9 @@ EQUAL:  dw DOCOL
 
 
 ;;;  DNEGATE
-L8721:
+_NF_DNEGAT:
         db $87,'DNEGAT',$c5
-        dw $0           ; LFA
+        dw _LF_NEGAT
 DNEGAT: dw $+2
 	pop de                  ; MSW
         pop bc                  ; LSW

@@ -1,146 +1,147 @@
-;	S0
+;; HLD
+_NF_HLD:
+	db $83,'HL',$c4
+	dw _LF_HLD
+HLD:	dw DOUSE
+	dw 48
 
-L8A0C:	db	$82,'S',$B0
-	dw	$0 ;L89F8
-SZERO:	dw	DOUSE
-	db	6
+;; OUT
+_NF_OUT:
+	db $83,'OU',$d4
+	dw _LF_OUT
+OUT:	dw DOUSE
+	dw 26
 
-;	R0
+;; SCR
+_NF_SCR:
+	db $83,'SC',$d2
+	dw _LF_SCR
+SCR:	dw DOUSE
+	dw 28
 
-L8A14:	db	$82,'R',$B0
-	dw	L8A0C
-RZERO:	dw	DOUSE
-	db	8
+;; WARNING
+_NF_WARN:
+	db $87,'WARNIN',$c7
+	dw _LF_WARN
+WARN:	dw DOUSE
+	dw 14
 
-;	TIB
+;; CONTEXT
+_NF_CONT:
+	db $87,'CONTEX',$d4
+	dw _LF_CONT
+CONT:	dw DOUSE
+	dw 32
 
-L8A1C:	db	$83,'TI',$C2
-	dw	L8A14
-TIB:	dw	DOUSE
-	db	$A
+;; DPL
+_NF_DPL:
+	db $83,'DP',$cc
+	dw _LF_DPL
+DPL:	dw DOUSE
+	dw 40
 
-;	WIDTH
+;; DP
+_NF_DP:
+	db $82,'D',$d0
+	dw _LF_DP
+DP:	dw DOUSE
+	dw 18
 
-L8A25:	db	$85,'WIDT',$C8
-	dw	L8A1C
-WIDTH:	dw	DOUSE
-	db	$C
+;; VOC-LINK
+_NF_VOCL:
+	db $88,'VOC-LIN',$cb
+	dw _LF_VOCL
+VOCL:	dw DOUSE
+	dw 20
 
-;	WARNING
+;; CURRENT
+_NF_CURR:
+	db $87,'CURREN',$d4
+	dw _LF_CURR
+CURR:	dw DOUSE
+	dw 34
 
-L8A30:	db	$87,'WARNIN',$C7
-	dw	L8A25
-WARN:	dw	DOUSE
-	db	$E
+;; >IN
+_NF_INN:
+	db $83,'>I',$ce
+	dw _LF_INN
+INN:	dw DOUSE
+	dw 24
 
-;	FENCE
+;; TIB
+_NF_TIB:
+	db $83,'TI',$c2
+	dw _LF_TIB
+TIB:	dw DOUSE
+	dw 10
 
-L8A3D:	db	$85,'FENC',$C5
-	dw	L8A30
-FENCE:	dw	DOUSE
-	db	$10
+;; OFFSET
+_NF_OFFSE:
+	db $86,'OFFSE',$d4
+	dw _LF_OFFSE
+OFFSE:	dw DOUSE
+	dw 30
 
-;	DP
+;; S0
+_NF_SZERO:
+	db $82,'S',$b0
+	dw _LF_SZERO
+SZERO:	dw DOUSE
+	dw 6
 
-L8A48:	db	$82,'D',$D0
-	dw	L8A3D
-DP:	dw	DOUSE
-	db	$12
+;; R#
+_NF_RNUM:
+	db $82,'R',$a3
+	dw _LF_RNUM
+RNUM:	dw DOUSE
+	dw 46
 
-;	VOC-LINK
+;; CSP
+_NF_CSP:
+	db $83,'CS',$d0
+	dw _LF_CSP
+CSP:	dw DOUSE
+	dw 44
 
-L8A50:	db	$88,'VOC-LIN',$CB
-	dw	L8A48
-VOCL:	dw	DOUSE
-	db	$14
+;; STATE
+_NF_STATE:
+	db $85,'STAT',$c5
+	dw _LF_STATE
+STATE:	dw DOUSE
+	dw 36
 
-;	BLK
+;; BASE
+_NF_BASE:
+	db $84,'BAS',$c5
+	dw _LF_BASE
+BASE:	dw DOUSE
+	dw 38
 
-L8A5E:	db	$83,'BL',$CB
-	dw	L8A50
-BLK:	dw	DOUSE
-	db	$16
+;; R0
+_NF_RZERO:
+	db $82,'R',$b0
+	dw _LF_RZERO
+RZERO:	dw DOUSE
+	dw 8
 
-;	>IN
+;; FENCE
+_NF_FENCE:
+	db $85,'FENC',$c5
+	dw _LF_FENCE
+FENCE:	dw DOUSE
+	dw 16
 
-L8A67:	db	$83,'>I',$CE
-	dw	L8A5E
-INN:	dw	DOUSE
-	db	$18
+;; WIDTH
+_NF_WIDTH:
+	db $85,'WIDT',$c8
+	dw _LF_WIDTH
+WIDTH:	dw DOUSE
+	dw 12
 
-;	QOUT
+;; BLK
+_NF_BLK:
+	db $83,'BL',$cb
+	dw _LF_BLK
+BLK:	dw DOUSE
+	dw 22
 
-L8A70:	db	$83,'OU',$D4
-	dw	L8A67
-OUT:	dw	DOUSE
-	db	$1A
-
-;	SCR
-
-L8A79:	db	$83,'SC',$D2
-	dw	L8A70
-SCR:	dw	DOUSE
-	db	$1C
-
-;	OFFSET
-
-L8A82:	db	$86,'OFFSE',$D4
-	dw	L8A79
-OFFSE:	dw	DOUSE
-	db	$1E
-
-;	CONTEXT
-
-L8A8E:	db	$87,'CONTEX',$D4
-	dw	L8A82
-CONT:	dw	DOUSE
-	db	$20
-
-;	CURRENT
-
-L8A9B:	db	$87,'CURREN',$D4
-	dw	L8A8E
-CURR:	dw	DOUSE
-	db	$22
-
-;	STATE
-
-L8AA8:	db	$85,'STAT',$C5
-	dw	L8A9B
-STATE:	dw	DOUSE
-	db	$24
-
-;	BASE
-
-L8AB3:	db	$84,'BAS',$C5
-	dw	L8AA8
-BASE:	dw	DOUSE
-	db	$26
-
-;	DPL
-
-L8ABD:	db	$83,'DP',$CC
-	dw	L8AB3
-DPL:	dw	DOUSE
-	db	$28
-
-;	CSP
-
-L8AC6:	db	$83,'CS',$D0
-	dw	L8ABD
-CSP:	dw	DOUSE
-	db	$2C
-
-;	R#
-
-L8ACF:	db	$82,'R',$A3
-	dw	L8AC6
-RNUM:	dw	DOUSE
-	db	$2E
-
-;	HLD
-
-L8AD7:	db	$83,'HL',$C4
-	dw	L8ACF
-HLD:	dw	DOUSE
-	db	$30

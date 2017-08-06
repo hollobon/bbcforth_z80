@@ -1,7 +1,7 @@
 ;;;  OVER
-L87D2:
+_NF_OVER:
         db $84,'OVE',$d2
-        dw $0           ; LFA
+        dw _LF_OVER
 OVER:   dw $+2
         ld ix, 0
         add ix, sp
@@ -11,17 +11,18 @@ OVER:   dw $+2
         jp NEXT
 
 
-NIP:    dw $+2
-        pop hl
-        inc sp
-        inc sp
-        push hl
-        jp NEXT
+;; NIP:    dw $+2
+;;         pop hl
+;;         inc sp
+;;         inc sp
+;;         push hl
+;;         jp NEXT
 
 
 ;;;	2DUP
-L8770:	db	$84,'2DU',$D0
-	dw	$0
+_NF_TDUP:
+	db	$84,'2DU',$D0
+	dw	_LF_TDUP
 TDUP:	dw	$+2
         ld ix, 0
 	add ix, sp
@@ -35,9 +36,9 @@ TDUP:	dw	$+2
 
 
 ;;;  SWAP
-L878F:
+_NF_SWAP:
         db $84,'SWA',$d0
-        dw $0           ; LFA
+        dw _LF_SWAP
 SWAP:   dw $+2
         ld ix, 0
         add ix, sp
@@ -53,9 +54,9 @@ SWAP:   dw $+2
 
 
 ;;;  DROP
-L873B:
+_NF_DROP:
         db $84,'DRO',$d0
-        dw $0           ; LFA
+        dw _LF_DROP
 DROP:   dw $+2
         inc sp
         inc sp
@@ -63,9 +64,9 @@ DROP:   dw $+2
 
 
 ;;;  DUP
-L874E:
+_NF_DUPP:
         db $83,'DU',$d0
-        dw $0           ; LFA
+        dw _LF_DUPP
 DUPP:   dw $+2
         pop hl
         push hl
@@ -74,9 +75,9 @@ DUPP:   dw $+2
 
 
 ;;;	?DUP
-L875E:
+_NF_QDUP:
         db $84,'?DU',$d0
-        dw $0           ; LFA
+        dw _LF_QDUP
 QDUP:
         dw $+2
         pop hl
@@ -92,8 +93,9 @@ _QDUPNEXT:
 
 
 ;;;	ROT
-L87FF:  db $83,'RO',$D4
-	dw $0
+_NF_ROT:
+        db $83,'RO',$D4
+	dw _LF_ROT
 ROT:    dw $+2
         ld ix, 0
         add ix, sp
@@ -118,9 +120,9 @@ ROT:    dw $+2
 
 
 ;;;  PICK
-L9B90:
+_NF_PICK:
         db $84,'PIC',$cb
-        dw $0           ; LFA
+        dw _LF_PICK
 PICK:   dw $+2
         pop bc                  ; get n, multiply by 2 to get offset in bytes
         sla c
@@ -139,9 +141,9 @@ PICK:   dw $+2
 
 
 ;;;  SP@
-L8422:
+_NF_SPAT:
         db $83,'SP',$c0
-        dw $0           ; LFA
+        dw _LF_SPAT
 SPAT:   dw $+2
         ld ix, 0
         add ix, sp
@@ -150,9 +152,9 @@ SPAT:   dw $+2
 
 
 ;;;  SP!
-L8445:
+_NF_SPSTO:
         db $83,'SP',$a1
-        dw $0           ; LFA
+        dw _LF_SPSTO
 SPSTO:  dw $+2
         ld hl, (UAVALUE+2)
         ld sp, hl
@@ -161,9 +163,9 @@ SPSTO:  dw $+2
 
 ;;;  DEPTH
 ;;;     : DEPTH SP@ S0 @ - NEGATE 2/ EXIT ;
-L9B46:
+_NF_DEPTH:
         db $85,'DEPT',$c8
-        dw $0           ; LFA
+        dw _LF_DEPTH
 DEPTH:  dw DOCOL
         dw SPAT
         dw SZERO
@@ -175,9 +177,9 @@ DEPTH:  dw DOCOL
 
 
 ;;;  >R
-L860F:
+_NF_TOR:
         db $82,'>',$d2
-        dw $0           ; LFA
+        dw _LF_TOR
 TOR:    dw $+2
         pop hl
 
@@ -195,9 +197,9 @@ TOR:    dw $+2
 
 
 ;;;  R>
-L861F:
+_NF_RFROM:
         db $82,'R',$be
-        dw $0           ; LFA
+        dw _LF_RFROM
 RFROM:  dw $+2
 	ld de, (RSP)
 
@@ -214,9 +216,9 @@ RFROM:  dw $+2
 
 
 ;;;  RP@
-L8431:
+_NF_RPAT:
         db $83,'RP',$c0
-        dw $0           ; LFA
+        dw _LF_RPAT
 RPAT:   dw $+2
 	ld de, (RSP)
         push de
@@ -224,9 +226,9 @@ RPAT:   dw $+2
 
 
 ;;;  R@
-L85F9:
+_NF_RAT:
         db $82,'R',$c0
-        dw $0           ; LFA
+        dw _LF_RAT
 RAT:    dw $+2
         ld hl, (RSP)
         ld e, (hl)
@@ -237,9 +239,9 @@ RAT:    dw $+2
 
 
 ;;;  2DROP
-L8744:
+_NF_TDROP:
         db $85,'2DRO',$d0
-        dw $0           ; LFA
+        dw _LF_TDROP
 TDROP:  dw DOCOL
         dw DROP
         dw DROP

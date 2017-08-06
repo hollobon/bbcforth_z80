@@ -58,6 +58,35 @@ class Word(object):
             str(w) if isinstance(w, int) else w.name if hasattr(w, 'name') else '?{}?'.format(w)
             for w in self.words()))
 
+    def z80(self):
+        print(';; {}'.format(self.name))
+        if self.cfa == 'DOCOL':
+            print(';;    {}'.format(self.definition()))
+        print('_NF_{}:'.format(self.code_label))
+        print('\tdb ${:x},\'{}\',${:x}'.format(self.name_length | 0x80, self.name[:-1], ord(self.name[-1]) | 0x80))
+        print('\tdw _LF_{}'.format(self.code_label))
+        if self.cfa == 'DOCOL':
+            print('{}:\tdw DOCOL'.format(self.code_label))
+            for w in self.words():
+                if isinstance(w, int):
+                    print('\tdw {}${:x}'.format('-' if w < 0 else '', abs(w)))
+                else:
+                    if hasattr(w, "code_label"):
+                        print('\tdw {}'.format(w.code_label))
+                    else:
+                        print('\tdw {} ; ???'.format(w))
+        elif self.cfa == 'DOCON':
+            print('{}:\tdw DOCON'.format(self.code_label))
+            print('\tdw {}'.format(self._words[0]))
+        elif self.cfa == 'DOUSE':
+            print('{}:\tdw DOUSE'.format(self.code_label))
+            print('\tdw {}'.format(self._words[0]))
+        elif self.cfa == '*+2':
+            print('{}:\tdw $+2'.format(self.code_label))
+            print('\n\tjp NEXT')
+
+
+
     def __repr__(self):
         result = 'WORD name: {}, label: {}, code label: {}, lfa: {}, cfa: {}, name len: {}, flags: {}, location: {}:{}'.format(
             self.name,
@@ -97,6 +126,7 @@ def main():
     parser.add_argument('--edit', action="store_true")
     parser.add_argument('--check', action="store_true")
     parser.add_argument('--z80', action="store_true")
+    parser.add_argument('--alloftype')
     args = parser.parse_args()
 
     state = 'search'
@@ -169,49 +199,34 @@ def main():
             print('line', n, line)
             raise
 
-    word = None
-    if args.check:
+    if args.alloftype:
         for word in words.values():
-            if word.lfa not in words:
-                print('Warning: LFA not found: {} -- {}'.format(word.lfa, word))
+            if word.cfa == args.alloftype:
+                word.z80()
+                print()
+    else:
+        word = None
+        if args.check:
+            for word in words.values():
+                if word.lfa not in words:
+                    print('Warning: LFA not found: {} -- {}'.format(word.lfa, word))
 
-        for word in links.values():
-            if word.label not in links:
-                print('Warning: No link to label found: {} -- {}'.format(word.label, word))
+            for word in links.values():
+                if word.label not in links:
+                    print('Warning: No link to label found: {} -- {}'.format(word.label, word))
 
-    #    print({cfa: len(list(values)) for cfa, values in itertools.groupby(sorted(cfas))})
-    elif args.word:
-        word = words_by_name[args.word]
-    elif args.label:
-        word = words_by_label[args.label]
-    if word is not None:
-        print(word)
-        if args.edit:
-            subprocess.check_call(['emacsclient', '-n', '+{}'.format(word.line_number + 1), word.filename])
+        #    print({cfa: len(list(values)) for cfa, values in itertools.groupby(sorted(cfas))})
+        elif args.word:
+            word = words_by_name[args.word]
+        elif args.label:
+            word = words_by_label[args.label]
+        if word is not None:
+            print(word)
+            if args.edit:
+                subprocess.check_call(['emacsclient', '-n', '+{}'.format(word.line_number + 1), word.filename])
 
-        if args.z80:
-            print(';; {}'.format(word.name))
-            if word.cfa == 'DOCOL':
-                print(';;    {}'.format(word.definition()))
-            print('{}:'.format(word.label))
-            print('\tdb ${:x},\'{}\',${:x}'.format(word.name_length | 0x80, word.name[:-1], ord(word.name[-1]) | 0x80))
-            print('\tdw $0 ; LFA')
-            if word.cfa == 'DOCOL':
-                print('{}:\tdw DOCOL'.format(word.code_label))
-                for w in word.words():
-                    if isinstance(w, int):
-                        print('\tdw {}${:x}'.format('-' if w < 0 else '', abs(w)))
-                    else:
-                        if hasattr(w, "code_label"):
-                            print('\tdw {}'.format(w.code_label))
-                        else:
-                            print('\tdw {} ; ???'.format(w))
-            elif word.cfa == 'DOCON':
-                print('{}:\tdw DOCON'.format(word.code_label))
-                print('\tdw {}'.format(word._words[0]))
-            elif word.cfa == '*+2':
-                print('{}:\tdw $+2'.format(word.code_label))
-                print('\n\tjp NEXT')
+            if args.z80:
+                word.z80()
 
 
 if __name__ == "__main__":

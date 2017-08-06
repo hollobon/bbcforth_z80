@@ -1391,7 +1391,7 @@ _test_EXEC:
 ;;; --------------------------------------------------------------------------------
 
 _test_TRAVERSE:
-        test 1 ; expect {label_L8820}.{label_TRAV}
+        test 1 ; expect {label__NF_TRAV}.{label_TRAV}
 
         lit TRAV-3
         lit -1
@@ -1400,7 +1400,7 @@ _test_TRAVERSE:
 
         emitchr .
 
-        lit L8820
+        lit _NF_TRAV
         lit 1
         dw TRAV
         lit 3

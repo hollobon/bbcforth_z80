@@ -1,4 +1,5 @@
 include "oscalls.asm"
+include "links.asm"
 
 BOS: equ $10                    ; BOTTOM OF DATA STACK
 TOS: equ $58                    ; TOP OF DATA STACK
@@ -83,9 +84,9 @@ WRSTR:  ld a, (hl)
 
 ;; LIT
 ;; push following word onto stack
-L814A:
+_NF_LIT:
         db $83,'LI',$d4
-        dw $0           ; LFA
+        dw _LF_LIT
 LIT:    dw $+2
         ld l, (iy+0)
         inc iy
@@ -157,8 +158,9 @@ DOCON:  inc bc                  ; load word from PFA into hl
 
 ;; 	;	USER
 
-L897D:  db	$84,'USE',$D2
-	dw	$0 ;L895C
+_NF_USER:
+        db	$84,'USE',$D2
+	dw	_LF_USER
 ;; USER:   dw	DOCOL
 ;; 	dw	CONST
 ;; 	dw	PSCOD
@@ -174,8 +176,9 @@ DOUSE:  inc bc
 
 ;	BRANCH
         ;; unconditional branch, next word is IP offset in bytes from word following IP
-L81D4:	db	$86,'BRANC',$C8
-	dw	$0 ;L81B4
+_NF_BRAN:
+        db	$86,'BRANC',$C8
+	dw	_LF_BRAN
 BRAN:	dw	$+2
 _BRAN:  ld c, (iy+0)
         ld b, (iy+1)
@@ -185,8 +188,9 @@ _BRAN:  ld c, (iy+0)
 
 ;	0BRANCH
         ;; conditional branch, only taken if top of stack is zero
-L81F4:	db	$87,'0BRANC',$C8
-	dw	$0
+_NF_ZBRAN:
+	db	$87,'0BRANC',$C8
+	dw	_LF_ZBRAN
 ZBRAN:	dw	$+2
         pop bc
         ld a, c
@@ -222,8 +226,9 @@ EMIT:   dw $+2
 
 ;	(FIND)
 
-L834F:  db	$86,'(FIND',$A9
-	dw	L81F4
+_NF_PFIND:
+        db	$86,'(FIND',$A9
+	dw	_LF_PFIND
 PFIND:  dw	$+2
         pop ix                  ; pop dict name field address
         pop hl                  ; pop name address
@@ -280,9 +285,9 @@ _NW2:   ld c, (ix+1)            ; load link address
 
 ;;;  -FIND
 ;;;     : -FIND BL 1WORD SWAP (FIND) EXIT ;
-L90B1:
+_NF_DFIND:
         db $85,'-FIN',$c4
-        dw $0           ; LFA
+        dw _LF_DFIND
 DFIND:  dw	DOCOL
 	dw	BLL
 	dw	ONEWRD
@@ -306,8 +311,9 @@ DFIND:  dw	DOCOL
 ;; 	dw	EXIT
 
 
+_NF_CMOVE:
 	db $85,'CMOV',$C5
-	dw $0
+	dw _LF_CMOVE
 CMOVE:  dw $+2
         pop bc                  ; count
         pop de                  ; to
@@ -325,8 +331,10 @@ include "word.asm"
 include "loop.asm"
 
 
-        db 4
-        db 'EXIT'
+;;;  EXIT
+_NF_EXIT:
+        db $84,'EXI',$d4
+        dw _LF_EXIT
 EXIT:   dw $+2
         ;; pop IY from return stack
         ld de, (RSP)
