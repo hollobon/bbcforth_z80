@@ -1,5 +1,5 @@
 include "oscalls.asm"
-include "links.asm"
+include "links.asm.gen"
 
 BOS: equ $10                    ; BOTTOM OF DATA STACK
 TOS: equ $58                    ; TOP OF DATA STACK
