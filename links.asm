@@ -90,7 +90,7 @@ _LF_ONEP: equ 0
 _LF_PM: equ 0
 _LF_ABS: equ 0
 ;; _LF_NEGAT: equ 0
-_LF_ZLESS: equ 0                ;
+_LF_ZLESS: equ 0
 _LF_SUBB: equ 0
 _LF_MAX: equ 0
 _LF_MIN: equ 0
