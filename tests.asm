@@ -455,7 +455,7 @@ _test_PFIND_FORTH_1:
 	test 1 ; expect 0001.0005.{label_WIDTH}
 
         lit _dtest_PFIND_FORTH_1
-        lit _NF_LIT
+        lit __NF_FIRST
         dw PFIND
         dw DOTHEX
         emitchr .

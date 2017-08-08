@@ -54,12 +54,12 @@ _NF_CSLL:
 CSLL:	dw DOCON
 	dw 64
 
-;; CS
-_NF_LA9FD:
-	db $82,'C',$d3
-	dw _LF_LA9FD
-LA9FD:	dw DOCON
-	dw 144
+;; ;; CS
+;; _NF_LA9FD:
+;; 	db $82,'C',$d3
+;; 	dw _LF_LA9FD
+;; LA9FD:	dw DOCON
+;; 	dw 144
 
 ;; N
 _NF_ANN:
@@ -145,12 +145,12 @@ BSCR:	dw DOCON
 ;; AIP:	dw DOCON
 ;; 	dw IP
 
-;; VS
-_NF_LA9F4:
-	db $82,'V',$d3
-	dw _LF_LA9F4
-LA9F4:	dw DOCON
-	dw 80
+;; ;; VS
+;; _NF_LA9F4:
+;; 	db $82,'V',$d3
+;; 	dw _LF_LA9F4
+;; LA9F4:	dw DOCON
+;; 	dw 80
 
 ;; LIMIT
 _NF_XLIMI:
@@ -187,12 +187,12 @@ _NF_XBUFS:
 XBUFS:	dw DOCON
 	dw HDBT
 
-;; 0=
-_NF_LAA06:
-	db $82,'0',$bd
-	dw _LF_LAA06
-LAA06:	dw DOCON
-	dw 208
+;; ;; 0=
+;; _NF_LAA06:
+;; 	db $82,'0',$bd
+;; 	dw _LF_LAA06
+;; LAA06:	dw DOCON
+;; 	dw 208
 
 ;; 0
 _NF_ZERO:
@@ -208,12 +208,12 @@ _NF_WBFR:
 WBFR:	dw DOCON
 	dw WORDBU
 
-;; 0<
-_NF_LA9EB:
-	db $82,'0',$bc
-	dw _LF_LA9EB
-LA9EB:	dw DOCON
-	dw 16
+;; ;; 0<
+;; _NF_LA9EB:
+;; 	db $82,'0',$bc
+;; 	dw _LF_LA9EB
+;; LA9EB:	dw DOCON
+;; 	dw 16
 
 ;; FIRST
 _NF_XFIRS:

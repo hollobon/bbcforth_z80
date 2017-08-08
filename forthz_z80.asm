@@ -352,9 +352,9 @@ EXIT:   dw $+2
 
 ;;;  SPACE
 ;;;     : SPACE BL EMIT EXIT ;
-L8B34:
+_NF_SPACE:
         db $85,'SPAC',$c5
-        dw $0           ; LFA
+        dw _LF_SPACE
 SPACE:    dw DOCOL
         dw BLL
 ;        dw XEMIT
@@ -387,9 +387,9 @@ SPACS:  dw DOCOL
 ;;; Uses/Leaves: 2 0
 ;;; Description: Adds n to the value at the address addr.
 
-L88CE:
+_NF_PSTOR:
         db $82,'+',$a1
-        dw $0           ; LFA
+        dw _LF_PSTOR
 PSTOR:  dw $+2
         pop ix
         pop hl
@@ -403,9 +403,9 @@ PSTOR:  dw $+2
 
 ;;;  QUERY
 ;;;     : QUERY TIB @ LIT 80 EXPECT 0 >IN ! EXIT ;
-L8F17:
+_NF_QUERY:
         db $85,'QUER',$d9
-        dw $0           ; LFA
+        dw _LF_QUERY
 QUERY:  dw DOCOL
         dw TIB
         dw AT
@@ -464,9 +464,10 @@ COPYLITERALS:
 
 ;	! (n\addr ...) -- Stores the value at n at the address addr
 
-L88B7:  db	$81,$A1
-	dw	$0 ;L88A9
-STORE:  dw	$+2
+_NF_STORE:
+        db $81,$A1
+	dw _LF_STORE
+STORE:  dw $+2
         pop ix
         pop bc
         ld (ix+0), c
@@ -476,9 +477,10 @@ STORE:  dw	$+2
 
 ;	C@
 
-L8885:  db	$82,'C',$C0
-	dw	$0 ; L8874
-CAT:    dw	$+2
+_NF_CAT:
+        db $82,'C',$C0
+	dw _LF_CAT
+CAT:    dw $+2
         pop hl
         ld c, (hl)
         ld b, 0
@@ -488,8 +490,9 @@ CAT:    dw	$+2
 
 ;	@
 
-L8895:  db	$81,$C0
-	dw	$0 ;L8885
+_NF_AT:
+        db $81,$C0
+	dw _LF_AT
 AT:     dw $+2
         pop hl
         ld c, (hl)
@@ -501,9 +504,9 @@ AT:     dw $+2
 
 ;;;  COUNT
 ;;;     : COUNT DUP 1+ SWAP C@ EXIT ;
-L8DDB:
+_NF_COUNT:
         db $85,'COUN',$d4
-        dw $0              ; LFA
+        dw _LF_COUNT
 COUNT:  dw DOCOL
         dw DUPP
         dw ONEP
@@ -513,9 +516,9 @@ COUNT:  dw DOCOL
 
 
 ;;;  C!
-L88A9:
+_NF_CSTOR:
         db $82,'C',$a1
-        dw $0           ; LFA
+        dw _LF_CSTOR
 CSTOR:  dw $+2
         pop ix
         pop bc
@@ -542,9 +545,9 @@ CSTOR:  dw $+2
 
 
 ;;;  DIGIT
-L831F:
+_NF_DIGIT:
         db $85,'DIGI',$d4
-        dw $0           ; LFA
+        dw _LF_DIGIT
 DIGIT:  dw $+2
         ld ix, 0
         add ix, sp
@@ -596,9 +599,9 @@ _DIGIT_INVALID:
 ;;     R>                                  \ restore addr
 ;;     EXIT
 ;; ;
-L9075:
+_NF_CONV:
         db $87,'CONVER',$d4
-        dw $0           ; LFA
+        dw _LF_CONV
 CONV:   dw DOCOL
         dw ONEP
         dw DUPP
@@ -637,9 +640,9 @@ NOOP:   dw DOCOL
 
 ;; NUMBER
 ;;    : NUMBER DUP C@ OVER + >R 0 0 ROT DUP 1+ C@ LIT ?'-'? = DUP >R + CONVERT R> 0BRANCH LIT 8 >R DNEGATE R> R> OVER - DUP 0< 0BRANCH LIT 8 2DROP BRANCH 18 0 ?ERROR C@ LIT ?'.'? - 0 ?ERROR EXIT ;
-L9282:
+_NF_NUMBER:
 	db $86,'NUMBE',$d2
-	dw $0 ; LFA
+	dw _LF_NUMBER
 NUMBER:	dw DOCOL
 	dw DUPP
 	dw CAT
@@ -749,9 +752,9 @@ PDOTQ:  dw DOCOL
 
 
 ;;;  ><
-L8631:
+_NF_BSWAP:
         db $82,'>',$bc
-        dw $0           ; LFA
+        dw _LF_BSWAP
 BSWAP:  dw $+2
         pop hl
         ld c, h
@@ -764,9 +767,9 @@ BSWAP:  dw $+2
 ;;;     : ALLOT DP +! EXIT ;
 ;;; Stack Action: (n ...)
 ;;; Reserve n bytes of dictionary space.
-L8B24:
+_NF_ALLOT:
         db $85,'ALLO',$d4
-        dw $0           ; LFA
+        dw _LF_ALLOT
 ALLOT:  dw DOCOL
         dw DP
         dw PSTOR
@@ -775,9 +778,9 @@ ALLOT:  dw DOCOL
 
 ;;;  HERE
 ;;;     : HERE DP @ EXIT ;
-L8B15:
+_NF_HERE:
         db $84,'HER',$c5
-        dw $0           ; LFA
+        dw _LF_HERE
 HERE:   dw DOCOL
         dw DP
         dw AT
@@ -786,9 +789,9 @@ HERE:   dw DOCOL
 
 ;;;  ,
 ;;;     : , HERE ! 2 ALLOT EXIT ;
-L8B44:
+_NF_COMMA:
         db $81,'',$ac
-        dw $0           ; LFA
+        dw _LF_COMMA
 COMMA:  dw DOCOL
         dw HERE
         dw STORE
@@ -798,9 +801,9 @@ COMMA:  dw DOCOL
 
 
 ;;;  EXECUTE
-L819B:
+_NF_EXEC:
         db $87,'EXECUT',$c5
-        dw $0           ; LFA
+        dw _LF_EXEC
 EXEC:   dw $+2
         pop bc
         jp JPCFA
