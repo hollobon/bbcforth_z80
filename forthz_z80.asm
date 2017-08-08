@@ -269,7 +269,10 @@ _FNDEND:
 _NW2:   ld c, (ix+1)            ; load link address
         ld b, (ix+2)
         ld a, b                 ; check if zero
+        cp 0
+        jr nz, _PFIND_NE
         cp c
+_PFIND_NE:
         ld ixh, b               ; load back into ix
         ld ixl, c
         pop hl                  ; restore address of search string
