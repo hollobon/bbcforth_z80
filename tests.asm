@@ -449,6 +449,21 @@ _test_DFIND3:
 
         dw EXIT
 
+_dtest_PFIND_FORTH_1:   db 5,'WIDTH'
+
+_test_PFIND_FORTH_1:
+	test 1 ; expect 0001.0005.{label_WIDTH}
+
+        lit _dtest_PFIND_FORTH_1
+        lit _NF_LIT
+        dw PFIND
+        dw DOTHEX
+        emitchr .
+        dw DOTHEX
+        emitchr .
+        dw DOTHEX
+        dw EXIT
+
 ;;; --------------------------------------------------------------------------------
 
 _EX1:   dw $1234
