@@ -78,6 +78,18 @@ test:   macro number
         emitchr :
         endm
 
+CHECK_STACK:
+        dw DOCOL
+        dw DEPTH
+        dw ZBRAN
+        dw _CHECK_STACK_OK - $
+        emitchr s
+        emitchr t
+        emitchr k
+        emitchr !
+        dw SPSTO
+_CHECK_STACK_OK:
+        dw EXIT
 
 RUNTESTS:
         dw DOCOL
@@ -986,7 +998,7 @@ _test_DEPTH:
 ;;; --------------------------------------------------------------------------------
 
 _test_DIGIT:
-        test 1 ; expect 0001-0004.0001-000E.0001-0023.0000.0000.0000.0000
+        test 1 ; expect 0001-0004.0001-000E.0001-0023.0000.0000.0000
 
         lit '4'
         lit 10
@@ -1027,10 +1039,6 @@ _test_DIGIT:
         lit 'G'
         lit 16
         dw DIGIT
-        dw DOTHEX
-	emitchr .
-
-        dw DEPTH
         dw DOTHEX
 
         dw EXIT

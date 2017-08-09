@@ -36,7 +36,7 @@ def main():
     with open('expect.txt', 'w') as expect_file, \
          open('runtests.asm', 'w') as runtests_file:
         for label, counter, expect in tests[:]:
-            runtests_file.write('\tdw {}\n'.format(label))
+            runtests_file.write('\tdw {}\n\tdw CHECK_STACK\n'.format(label))
             expect_file.write('{}:{} {}\n'.format(label, counter, expect))
 
 
