@@ -417,7 +417,7 @@ EQUAL:  dw DOCOL
 ;;;  DNEGATE
 _NF_DNEGAT:
         db $87,'DNEGAT',$c5
-        dw _LF_NEGAT
+        dw _LF_DNEGAT
 DNEGAT: dw $+2
 	pop de                  ; MSW
         pop bc                  ; LSW
