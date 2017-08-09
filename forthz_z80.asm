@@ -202,8 +202,10 @@ BUMP:   inc iy                  ; skip the offset
         jp NEXT
 
 
-        db 4
-        db 'EMIT'
+;;;  EMIT
+_NF_XEMIT:
+        db $84,'EMI',$d4
+        dw _LF_XEMIT
 EMIT:   dw $+2
         pop bc
         ld a, c
