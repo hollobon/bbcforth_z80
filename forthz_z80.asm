@@ -711,14 +711,15 @@ QERR:   dw DOCOL
         dw EXIT
 
 
-;;;     : TYPE DUP 0> 0BRANCH 24 OVER + SWAP (DO) I C@ EMIT (ULOOP) -8 BRANCH LIT 4 2DROP EXIT ;
-L8DEF:
+;;;  TYPE
+;;;     : TYPE DUP 0> 0BRANCH 24 OVER + SWAP (DO) I C@ EMIT (ULOOP) -8 BRANCH 4 2DROP EXIT ;
+_NF_TYPE:
         db $84,'TYP',$c5
-        dw $0           ; LFA
+        dw _LF_TYPE
 TYPE:   dw DOCOL
-        dw DUPP                 ; dup length
-        dw ZGREA                ; 0>
-        dw ZBRAN                ;
+        dw DUPP
+        dw ZGREA
+        dw ZBRAN
         dw $18
         dw OVER
         dw PLUS
@@ -726,13 +727,13 @@ TYPE:   dw DOCOL
         dw XDO
         dw IDO
         dw CAT
+        ;; dw XEMIT
         dw EMIT
         dw XPULO
         dw -$8
         dw BRAN
         dw $4
-        dw DROP
-        dw DROP
+        dw TDROP
         dw EXIT
 
 
