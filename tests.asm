@@ -1392,7 +1392,6 @@ _test_TDROP:
         lit 3
         dw TDROP
         dw DOTHEX
-        dw DROP
 
         dw EXIT
 
@@ -1506,6 +1505,9 @@ _test_WORD:
         dw COUNT
         dw TYPE
         emitchr .
+
+        dw TIB
+        dw STORE
 
         dw EXIT
 
