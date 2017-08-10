@@ -812,6 +812,40 @@ EXEC:   dw $+2
         jp JPCFA
 
 
+;;; NULL
+;;;     :  BLK @ 0BRANCH 40 1 BLK +! 0 >IN ! BLK @ B/SCR 1- AND 0= 0BRANCH 8 ?EXEC R> DROP BRANCH 6 R> DROP EXIT ;
+_NF_NULL:
+        db $81,'',$80
+        dw _LF_NULL
+NULL:   dw DOCOL
+        ;; dw BLK
+        ;; dw AT
+        ;; dw ZBRAN
+        ;; dw $28
+        ;; dw ONE
+        ;; dw BLK
+        ;; dw PSTOR
+        ;; dw ZERO
+        ;; dw INN
+        ;; dw STORE
+        ;; dw BLK
+        ;; dw AT
+        ;; dw BSCR
+        ;; dw ONESUB
+        ;; dw ANDD
+        ;; dw ZEQU
+        ;; dw ZBRAN
+        ;; dw $8
+        ;; dw QEXEC
+        ;; dw RFROM
+        ;; dw DROP
+        ;; dw BRAN
+        ;; dw $6
+        dw RFROM
+        dw DROP
+        dw EXIT
+
+
 TOPDP: equ $	; TOP OF DICTIONARY
 
 TOPNFA:  equ 0 ; top non-forth area?

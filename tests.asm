@@ -482,6 +482,50 @@ _fail_PFIND_FORTH_1:
 _end_PFIND_FORTH_1:
         dw EXIT
 
+_dtest_DFIND_MULTI_TIB:       db '   BL MAX EMIT ',0
+
+_LOOKUP_SHOW:
+        dw DOCOL
+
+        lit __NF_FIRST
+        dw DFIND
+        dw DOTHEX
+        emitchr .
+        dw DOTHEX
+        emitchr .
+        dw DOTHEX
+
+        dw EXIT
+
+
+_test_DFIND_MULTI:
+        test 1 ; expect 0001.0002.{label_BLL}-0001.0003.{label_MAX}-0001.0004.{label_EMIT}-0001.0001.{label_NULL}
+
+        lit 0
+        dw INN
+        dw STORE
+
+        dw TIB
+        dw AT
+
+        lit _dtest_DFIND_MULTI_TIB
+        dw TIB
+        dw STORE
+
+        dw _LOOKUP_SHOW
+        emitchr -
+        dw _LOOKUP_SHOW
+        emitchr -
+        dw _LOOKUP_SHOW
+        emitchr -
+        dw _LOOKUP_SHOW
+
+        ;; restore TIB
+        dw TIB
+        dw STORE
+
+        dw EXIT
+
 ;; --------------------------------------------------------------------------------
 
 _EX1:   dw $1234
