@@ -52,7 +52,6 @@ _CHECK_STACK_OK:
 
 RUNTESTS:
         dw DOCOL
-        dw DECIM
         include "runtests.asm"
         nl
         emitchr D
@@ -76,26 +75,17 @@ READUSERFLAG:
 PABOR:
 START:  dw DOCOL
 
+        dw DECIM
         ;; check if test mode; if not, skip to interactive interpreter
         dw READUSERFLAG
         dw ZBRAN
-        dw $6
+        dw INTERACTIVE - $
         dw RUNTESTS
         dw FIN
 
+INTERACTIVE:
         nl
-        emitchr >
-
-        dw QUERY
-        dw TIB
-        dw AT
-        dw DUPP
-        dw AT
-        dw EMIT
-        dw ONEP
-        dw AT
-        dw EMIT
-
+        dw QUIT
         dw FIN
 
 

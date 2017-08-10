@@ -225,6 +225,15 @@ RPAT:   dw $+2
         jp NEXT
 
 
+;;;  RP!
+L8455:
+        db $83,'RP',$a1
+        dw $0           ; LFA
+RPSTO:  dw $+2
+
+        jp NEXT
+
+
 ;;;  R@
 _NF_RAT:
         db $82,'R',$c0

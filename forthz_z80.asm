@@ -95,6 +95,40 @@ LIT:    dw $+2
         jp NEXT
 
 
+;;;  LITERAL
+;;;     : LITERAL STATE @ 0BRANCH 8 COMPILE LIT , EXIT ;
+_NF_LITER:
+        db $87,'LITERA',$cc
+        dw _LF_LITER
+LITER:  dw DOCOL
+        dw STATE
+        dw AT
+        dw ZBRAN
+        dw _LITER_EXIT - $
+        ;; dw COMP
+        dw LIT
+        dw COMMA
+_LITER_EXIT:
+        dw EXIT
+
+
+;;;  DLITERAL
+;;;     : DLITERAL STATE @ 0BRANCH 8 SWAP LITERAL LITERAL EXIT ;
+_NF_DLITER:
+        db $88,'DLITERA',$cc
+        dw _LF_DLITER
+DLITER: dw DOCOL
+        dw STATE
+        dw AT
+        dw ZBRAN
+        dw _DLITER_EXIT - $
+        dw SWAP
+        dw LITER
+        dw LITER
+_DLITER_EXIT:
+        dw EXIT
+
+
 NEXT:
 ;;; On entry, IY holds address of word
 ;;; Code field pointer is address of code to execute
@@ -358,7 +392,7 @@ EXIT:   dw $+2
 _NF_SPACE:
         db $85,'SPAC',$c5
         dw _LF_SPACE
-SPACE:    dw DOCOL
+SPACE:  dw DOCOL
         dw BLL
 ;        dw XEMIT
         dw EMIT
@@ -418,6 +452,91 @@ QUERY:  dw DOCOL
         dw ZERO
         dw INN
         dw STORE
+        dw EXIT
+
+
+;;;  QUIT
+;;;     : QUIT 0 BLK ! [ RP! CR QUERY INTERPRET STATE @ 0= 0BRANCH LIT 7 ;
+_NF_QUIT:
+        db $84,'QUI',$d4
+        dw _LF_QUIT
+QUIT:   dw DOCOL
+        dw ZERO
+        dw BLK
+        dw STORE
+        ;; dw LBRAC
+_QUIT_LOOP:
+        dw RPSTO
+        dw CRR
+        dw QUERY
+        dw INTE
+        dw STATE
+        dw AT
+        dw ZEQU
+        dw ZBRAN
+        dw _QUIT_END - $
+        dw PDOTQ
+        db 2,'OK'
+        dw BRAN
+        dw _QUIT_LOOP - $
+_QUIT_END:
+        dw EXIT
+
+
+_NF_CRR:
+        db $82,'C',$d2
+        dw _LF_CRR
+CRR:    dw DOCOL
+        dw LIT
+        dw $a
+        dw EMIT
+        dw LIT
+        dw $d
+        dw EMIT
+        dw NEGTWO
+        dw OUT
+        dw PSTOR
+        dw EXIT
+
+
+;;;  INTERPRET
+;;;     : INTERPRET CONTEXT @ @ -FIND 0BRANCH 24 STATE @ < 0BRANCH 8 , BRANCH LIT 4 EXECUTE BRANCH 6 WBFR NUM ?STACK BRANCH -42 EXIT ;
+_NF_INTE:
+        db $89,'INTERPRE',$d4
+        dw _LF_INTE
+INTE:   dw DOCOL
+        ;; dw CONT
+        ;; dw AT
+        ;; dw AT
+_INTE_LOOP:
+        dw LIT
+        dw __NF_FIRST
+        dw DFIND
+
+        dw ZBRAN
+        dw _INTE_TARGET_1 - $
+
+        dw STATE
+        dw AT
+        dw LESS
+        dw ZBRAN
+        dw _INTE_SKIP_COMPILE - $
+        dw COMMA
+        dw BRAN
+        dw _INTE_SKIP_EXEC - $
+_INTE_SKIP_COMPILE:
+        dw EXEC
+_INTE_SKIP_EXEC:
+        dw BRAN
+        dw _INTE_TARGET_2 - $
+_INTE_TARGET_1:
+        dw WBFR
+        ;; dw XNUM
+        dw PNUM
+_INTE_TARGET_2:
+        ;; dw QSTAC
+        dw BRAN
+        dw _INTE_LOOP - $
         dw EXIT
 
 
@@ -690,6 +809,33 @@ NUMBER:	dw DOCOL
 	dw ZERO
 	dw QERR
 	dw EXIT
+
+
+;;;  (NUM)
+;;;     : (NUM) DUP C@ OVER + SWAP NUMBER ROT C@ LIT ?'.'? - 0BRANCH 10 DROP LITERAL BRANCH 4 DLITERAL EXIT ;
+_NF_PNUM:
+        db $85,'(NUM',$a9
+        dw _LF_PNUM
+PNUM:   dw DOCOL
+        dw DUPP
+        dw CAT
+        dw OVER
+        dw PLUS
+        dw SWAP
+        dw NUMBER
+        dw ROT
+        dw CAT
+        dw LIT
+        dw '.'
+        dw SUBB
+        dw ZBRAN
+        dw $a
+        dw DROP
+        dw LITER
+        dw BRAN
+        dw $4
+        dw DLITER
+        dw EXIT
 
 
 ;;;  ?ERROR
