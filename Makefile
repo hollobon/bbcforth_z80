@@ -1,6 +1,6 @@
 .PHONY: test clean
 
-forthz.ROM: forthz_z80.asm word.asm arith.asm stack.asm loop.asm tests.asm.gen forthz_6502.a
+forthz.ROM: forthz_z80.asm word.asm arith.asm stack.asm loop.asm util.asm tests.asm.gen forthz_6502.a
 	sed -n 's/^\_NF_\([A-Z_]\+\):.*$$/_LF_\1: equ 0/p' *.asm | sort | uniq | ./assign_links.py links.asm.gen
 	z80asm --list=$@.LST --label=$@.LABEL $< -o $@
 
