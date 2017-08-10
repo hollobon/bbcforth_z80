@@ -334,6 +334,7 @@ include "word.asm"
 
 include "loop.asm"
 
+include "util.asm"
 
 ;;;  EXIT
 _NF_EXIT:
