@@ -1564,6 +1564,22 @@ _test_SPACES:
 
 ;; --------------------------------------------------------------------------------
 
+_dtest_TOGGLE:   db $59
+
+_test_TOGGLE:
+        test 1 ; expect 7C
+
+        lit _dtest_TOGGLE
+        dw DUPP
+        lit $25
+        dw TOGGL
+        dw AT
+        dw DOTCHEX
+
+        dw EXIT
+
+;; --------------------------------------------------------------------------------
+
 ;; _test_PEXPEC:
 ;;         ;; read line from keyboard
 ;;         lit 20

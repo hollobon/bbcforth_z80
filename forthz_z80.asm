@@ -148,6 +148,19 @@ JPCFA:  ld a, (bc)
         jp (hl)
 
 
+;;;  TOGGLE
+_NF_TOGGL:
+        db $86,'TOGGL',$c5
+        dw _LF_TOGGL
+TOGGL:  dw $+2
+        pop bc
+        pop hl
+        ld a, (hl)
+        xor c
+        ld (hl), a
+        jp NEXT
+
+
 DOCOL:
         ;; push IY onto return stack
         push bc
