@@ -1,4 +1,7 @@
         ;; output byte as hex
+_NF_DOTCHEX:
+        db $84,'.CHE',$d8
+        dw _LF_DOTCHEX
 DOTCHEX:dw $+2
         pop bc
         call _DOTCHEX
@@ -6,7 +9,7 @@ DOTCHEX:dw $+2
 
         ;; output word as hex
 _NF_DOTHEX:
-        db $84,'DOTHE',$d8
+        db $84,'.HE',$d8
         dw _LF_DOTHEX
 DOTHEX: dw $+2
         pop bc
@@ -28,7 +31,7 @@ _DOTCHEX:
         cp 10
         jp p, ALPHA
         or 48
-        jp .OUT
+        jr .OUT
 ALPHA:  add 55
 .OUT:   call OSWRCH
 
@@ -37,7 +40,7 @@ ALPHA:  add 55
         cp 10
         jp p, ALPHA1
         or 48
-        jp OUT1
+        jr OUT1
 ALPHA1: add 55
 OUT1:   call OSWRCH
 
