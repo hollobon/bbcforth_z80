@@ -331,8 +331,9 @@ PETE:   dw DOCOL
 _test_BRANCH:
         test 11 ; expect t
         dw BRAN
-        dw 8
+        dw _TB_TARGET - $
         emitchr f
+_TB_TARGET:
         emitchr t
         dw EXIT
 
@@ -464,19 +465,24 @@ _test_DFIND3:
 _dtest_PFIND_FORTH_1:   db 5,'WIDTH'
 
 _test_PFIND_FORTH_1:
-	test 1 ; expect 0001.0005.{label_WIDTH}
+	test 1 ; expect 0005.{label_WIDTH}
 
         lit _dtest_PFIND_FORTH_1
         lit __NF_FIRST
         dw PFIND
+        dw ZBRAN
+        dw _fail_PFIND_FORTH_1 - $
         dw DOTHEX
         emitchr .
         dw DOTHEX
-        emitchr .
-        dw DOTHEX
+        dw BRAN
+        dw _end_PFIND_FORTH_1 - $
+_fail_PFIND_FORTH_1:
+        emitchr f
+_end_PFIND_FORTH_1:
         dw EXIT
 
-;;; --------------------------------------------------------------------------------
+;; --------------------------------------------------------------------------------
 
 _EX1:   dw $1234
 
