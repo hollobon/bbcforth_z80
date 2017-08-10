@@ -401,20 +401,22 @@ SPACE:  dw DOCOL
 
 ;;;  SPACES
 ;;;     : SPACES 0 MAX ?DUP 0BRANCH 12 0 (DO) SPACE (ULOOP) -4 EXIT ;
-L96B3:
+_NF_SPACS:
         db $86,'SPACE',$d3
-        dw $0           ; LFA
+        dw _LF_SPACS
 SPACS:  dw DOCOL
         dw ZERO
         dw MAX
         dw QDUP
         dw ZBRAN
-        dw $c
+        dw _SPACS_EXIT - $
         dw ZERO
         dw XDO
+_SPACS_LOOP:
         dw SPACE
         dw XPULO
-        dw -$4
+        dw _SPACS_LOOP - $
+_SPACS_EXIT:
         dw EXIT
 
 
