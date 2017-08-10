@@ -98,7 +98,7 @@ _FINLOOP:
 ;;; --------------------------------------------------------------------------------
 
 _test_0:
-        test 0 ; expect 0
+        test 1 ; expect 0
 
         emitchr 0
         exit
@@ -117,7 +117,7 @@ _test_PLUS:
 ;;; --------------------------------------------------------------------------------
 
 _test_SWAP:
-        test 2 ; expect dx
+        test 1 ; expect dx
 
         lit 'd'
         lit 'x'
@@ -129,7 +129,7 @@ _test_SWAP:
 ;;; --------------------------------------------------------------------------------
 
 _test_LESS:
-        test 3 ; expect 1000
+        test 1 ; expect 1000
 
         ;; 2<3 -> true
         lit 2
@@ -168,7 +168,7 @@ _test_LESS:
 ;;; --------------------------------------------------------------------------------
 
 _test_GREAT:
-        test 4 ; expect 010
+        test 1 ; expect 010
 
         ;; 2>3 -> false
         lit 2
@@ -199,7 +199,7 @@ _test_GREAT:
 ;;; --------------------------------------------------------------------------------
 
 _test_ROT:
-        test 5 ; expect cab
+        test 1 ; expect cab
         lit 'c'
         lit 'b'
         lit 'a'
@@ -212,7 +212,7 @@ _test_ROT:
 ;;; --------------------------------------------------------------------------------
 
 _test_DOTCHEX:
-        test 6 ; expect 9C
+        test 1 ; expect 9C
         lit $9C
         dw DOTCHEX
         dw EXIT
@@ -220,7 +220,7 @@ _test_DOTCHEX:
 ;;; --------------------------------------------------------------------------------
 
 _test_DOTHEX:
-        test 7 ; expect BEEF
+        test 1 ; expect BEEF
         lit $BEEF
         dw DOTHEX
         dw EXIT
@@ -234,7 +234,7 @@ CAFE:   dw DOCON
         dw $CAFE
 
 _test_DOCON:
-        test 8 ; expect CAFE
+        test 1 ; expect CAFE
         dw CAFE
         dw DOTHEX
         dw EXIT
@@ -242,7 +242,7 @@ _test_DOCON:
 ;;; --------------------------------------------------------------------------------
 
 _test_OVER:
-        test 9 ; expect lnl
+        test 1 ; expect lnl
         lit 'l'
         lit 'n'
         dw OVER
@@ -254,7 +254,7 @@ _test_OVER:
 ;;; --------------------------------------------------------------------------------
 
 _test_words:
-        test 10 ; expect petepetepete petepetepete
+        test 1 ; expect petepetepete petepetepete
 
         ;; test SPACE and EXIT -
         dw PETE3
@@ -278,7 +278,7 @@ PETE:   dw DOCOL
 ;;; --------------------------------------------------------------------------------
 
 _test_BRANCH:
-        test 11 ; expect t
+        test 1 ; expect t
         dw BRAN
         dw _TB_TARGET - $
         emitchr f
@@ -289,7 +289,7 @@ _TB_TARGET:
 ;;; --------------------------------------------------------------------------------
 
 _test_0BRANCH:
-        test 11 ; expect tftft
+        test 1 ; expect tftft
 
         lit 0
         dw ZBRAN
@@ -338,7 +338,7 @@ _CFAD:  dw $0
         dw $0
 
 _test_PFIND:
-        test 12 ; expect 0001.0005.{label__CFAA}
+        test 1 ; expect 0001.0005.{label__CFAA}
         lit TSTNAME
         lit _WORDA
         dw PFIND
@@ -350,7 +350,7 @@ _test_PFIND:
         dw EXIT
 
 _test_PFIND2:
-        test 13 ; expect 0001.0005.{label__CFAA}
+        test 1 ; expect 0001.0005.{label__CFAA}
         lit TSTNAME
         lit _WORDB
         dw PFIND
@@ -362,7 +362,7 @@ _test_PFIND2:
         dw EXIT
 
 _test_PFIND3:
-        test 14 ; expect 0001.0008.{label__CFAD}
+        test 1 ; expect 0001.0008.{label__CFAD}
         lit TSTNAME2
         lit _WORDD
         dw PFIND
@@ -374,7 +374,7 @@ _test_PFIND3:
         dw EXIT
 
 _test_PFIND_NOTFOUND:
-        test 14 ; expect 0000
+        test 1 ; expect 0000
         lit TSTNAME3
         lit _WORDD
         dw PFIND
