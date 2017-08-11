@@ -1008,6 +1008,30 @@ NULL:   dw DOCOL
         dw EXIT
 
 
+;;;  >VDU
+_NF_TOVDU:
+        db $84,'>VD',$d5
+        dw _LF_TOVDU
+TOVDU:  dw $+2
+        pop hl
+        ld a, l
+        call OSWRCH
+        jp NEXT
+
+
+;;;  MODE
+;;;     : MODE LIT 22 >VDU >VDU EXIT ;
+_NF_MODE:
+        db $84,'MOD',$c5
+        dw _LF_MODE
+MODE:   dw DOCOL
+        dw LIT
+        dw $16
+        dw TOVDU
+        dw TOVDU
+        dw EXIT
+
+
 TOPDP: equ $	; TOP OF DICTIONARY
 
 TOPNFA:  equ 0 ; top non-forth area?
