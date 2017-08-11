@@ -1237,7 +1237,10 @@ _test_TYPE:
 _test_PDOTQ:
         test 1 ; expect this is a test.
         dw PDOTQ
-        db 15,"this is a test."
+        db 14,"this is a test"
+        dw LIT
+        dw '.'
+        dw EMIT
         dw EXIT
 
 ;;; --------------------------------------------------------------------------------
