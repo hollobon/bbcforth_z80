@@ -854,22 +854,58 @@ PNUM:   dw DOCOL
 
 
 ;;;  ?ERROR
+;;; Stack Action; f3n ...!
+;;;         Uses/Leaves: 2 0
+;;; Status:
+;;; Description:     Issues error message number n if the
+;;;         boolean flag f is true. Uses ERROR. The stack is
+;;;         always empty after an error message.
 ;;;     : ?ERROR SWAP 0BRANCH LIT 8 ERROR BRANCH LIT 4 DROP EXIT ;
 L8C21:
         db $86,'?ERRO',$d2
         dw $0           ; LFA
 QERR:   dw DOCOL
+        dw SWAP
+        dw ZBRAN
+        dw $8
+        dw ERROR
+        dw BRAN
+        dw $4
         dw DROP
-        dw DROP
-        ;; dw SWAP
-        ;; dw ZBRAN
-        ;; dw LIT
-        ;; dw $8
-        ;; dw ERROR
-        ;; dw BRAN
-        ;; dw LIT
-        ;; dw $4
-        ;; dw DROP
+        dw EXIT
+
+
+;;;  ERROR
+;;;     : ERROR WARNING @ 0< 0BRANCH 8 ABORT BRANCH 31 WBFR COUNT TYPE (.") 4 ?'  ? '? MESSAGE SP! 2DROP >IN @ BLK @ QUIT EXIT ;
+_NF_ERROR:
+        db $85,'ERRO',$d2
+        dw _LF_ERROR
+ERROR:  dw DOCOL
+        dw WARN
+        dw AT
+        dw ZLESS
+        dw ZBRAN
+        dw $8
+        ;; dw XABOR
+        dw PABOR
+        dw BRAN
+        dw $1f
+        dw WBFR
+        dw COUNT
+        dw TYPE
+        dw PDOTQ
+        db $4
+        db '  ? '
+        ;; dw XMES
+        ;; dw SMSG
+        dw NOOP
+        dw SPSTO
+        dw TDROP
+        dw INN
+        dw AT
+        dw BLK
+        dw AT
+        dw QUIT
         dw EXIT
 
 
@@ -1039,5 +1075,5 @@ TOPNFA:  equ 0 ; top non-forth area?
 include "constants.asm"
 include "user.asm"
 
-;include "messages.asm"
+include "messages.asm"
 include "links.asm.gen"
