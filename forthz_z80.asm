@@ -211,6 +211,33 @@ LFA:    dw DOCOL
         dw EXIT
 
 
+;;;  FILL
+;;;     : FILL OVER 1 < 0BRANCH 10 DROP 2DROP BRANCH 20 SWAP >R OVER C! DUP 1+ R> 1- CMOVE EXIT ;
+_NF_FILL:
+        db $84,'FIL',$cc
+        dw _LF_FILL
+FILL:   dw DOCOL
+        dw OVER
+        dw ONE
+        dw LESS
+        dw ZBRAN
+        dw $a
+        dw DROP
+        dw TDROP
+        dw BRAN
+        dw $14
+        dw SWAP
+        dw TOR
+        dw OVER
+        dw CSTOR
+        dw DUPP
+        dw ONEP
+        dw RFROM
+        dw ONESUB
+        dw CMOVE
+        dw EXIT
+
+
 DOCOL:
         ;; push IY onto return stack
         push bc
@@ -306,6 +333,7 @@ _NF_XEMIT:
 EMIT:   dw $+2
         pop bc
         ld a, c
+        and $7f
         call OSWRCH
         jp NEXT
 

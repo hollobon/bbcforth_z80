@@ -246,3 +246,32 @@ _TRAVLOOP:
         jp p, _TRAVLOOP
         push hl
         jp NEXT
+
+
+;;;  ID.
+;;;     : ID. PAD BL LIT ?'_'? FILL DUP PFA LFA OVER - PAD SWAP CMOVE PAD COUNT LIT 31 AND TYPE SPACE EXIT ;
+_NF_IDDOT:
+        db $83,'ID',$ae
+        dw _LF_IDDOT
+IDDOT:  dw DOCOL
+        dw PAD
+        dw BLL
+        dw LIT
+        dw '_'          ; ???
+        dw FILL
+        dw DUPP
+        dw PFA
+        dw LFA
+        dw OVER
+        dw SUBB
+        dw PAD
+        dw SWAP
+        dw CMOVE
+        dw PAD
+        dw COUNT
+        dw LIT
+        dw $1f
+        dw ANDD
+        dw TYPE
+        dw SPACE
+        dw EXIT
