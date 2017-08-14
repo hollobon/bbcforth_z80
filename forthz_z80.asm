@@ -161,6 +161,56 @@ TOGGL:  dw $+2
         jp NEXT
 
 
+;;;  CFA
+;;;     : CFA 2- EXIT ;
+_NF_CFA:
+        db $83,'CF',$c1
+        dw _LF_CFA
+CFA:    dw DOCOL
+        dw TWOSUB
+        dw EXIT
+
+
+;;;  PFA
+;;;     : PFA 1 TRAVERSE LIT 5 + EXIT ;
+_NF_PFA:
+        db $83,'PF',$c1
+        dw _LF_PFA
+PFA:    dw DOCOL
+        dw ONE
+        dw TRAV
+        dw LIT
+        dw $5
+        dw PLUS
+        dw EXIT
+
+
+;;;  NFA
+;;;     : NFA LIT 5 - -1 TRAVERSE EXIT ;
+_NF_NFA:
+        db $83,'NF',$c1
+        dw _LF_NFA
+NFA:    dw DOCOL
+        dw LIT
+        dw $5
+        dw SUBB
+        dw TRUE
+        dw TRAV
+        dw EXIT
+
+
+;;;  LFA
+;;;     : LFA LIT 4 - EXIT ;
+_NF_LFA:
+        db $83,'LF',$c1
+        dw _LF_LFA
+LFA:    dw DOCOL
+        dw LIT
+        dw $4
+        dw SUBB
+        dw EXIT
+
+
 DOCOL:
         ;; push IY onto return stack
         push bc

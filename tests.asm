@@ -1583,6 +1583,45 @@ _test_TOGGLE:
 
 ;; --------------------------------------------------------------------------------
 
+_dtest_NFA:
+        db $84,'TES',$D4
+_dtest_LFA:
+	dw $924A
+_dtest_CFA:
+        dw $294
+_dtest_PFA:
+        dw $592F
+
+_test_NFA:
+        test 1 ; expect {label__dtest_NFA}
+        lit _dtest_PFA
+        dw NFA
+        dw DOTHEX
+        dw EXIT
+
+_test_PFA:
+        test 1 ; expect {label__dtest_PFA}
+        lit _dtest_NFA
+        dw PFA
+        dw DOTHEX
+        dw EXIT
+
+_test_CFA:
+        test 1 ; expect {label__dtest_CFA}
+        lit _dtest_PFA
+        dw CFA
+        dw DOTHEX
+        dw EXIT
+
+_test_LFA:
+        test 1 ; expect {label__dtest_LFA}
+        lit _dtest_PFA
+        dw LFA
+        dw DOTHEX
+        dw EXIT
+
+;; --------------------------------------------------------------------------------
+
 ;; _test_PEXPEC:
 ;;         ;; read line from keyboard
 ;;         lit 20
