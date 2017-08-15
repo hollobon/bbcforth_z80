@@ -76,6 +76,11 @@ PABOR:
 START:  dw DOCOL
 
         dw DECIM
+        lit __NF_FIRST
+        dw CONT
+        dw AT
+        dw STORE
+
         ;; check if test mode; if not, skip to interactive interpreter
         dw READUSERFLAG
         dw ZBRAN
@@ -474,6 +479,50 @@ _test_DFIND_MULTI:
         dw STORE
 
         dw EXIT
+
+_dtest_FIND_TIB:        db 'FIND',0
+_dtest_FIND_TIB2:       db 'MIND',0
+
+_test_FIND:
+        test 1 ; expect {label_FIND}
+
+        lit 0
+        dw INN
+        dw STORE
+
+        dw TIB
+        dw AT
+
+        lit _dtest_FIND_TIB
+        dw TIB
+        dw STORE
+
+        dw FIND
+        dw DUPP
+        dw ZBRAN, _fail_FIND - $
+        dw DOTHEX
+
+        lit _dtest_FIND_TIB2
+        dw TIB
+        dw STORE
+
+        lit 0
+        dw INN
+        dw STORE
+
+        dw FIND
+        dw ZBRAN, _fail_FIND - $
+        emitchr f
+
+_fail_FIND:
+        dw DROP
+
+        ;;  restore TIB
+        dw TIB
+        dw STORE
+
+        dw EXIT
+
 
 ;; --------------------------------------------------------------------------------
 
@@ -1626,6 +1675,18 @@ _test_IDDOT:
         test 1 ; expect TEST
         lit _dtest_NFA
         dw IDDOT
+        dw EXIT
+
+;; --------------------------------------------------------------------------------
+
+_test_CONTEXT:
+        test 1 ; expect {label___NF_FIRST}
+
+        dw CONT
+        dw AT
+        dw AT
+        dw DOTHEX
+
         dw EXIT
 
 ;; --------------------------------------------------------------------------------

@@ -69,7 +69,7 @@ UAVALUE:
 	dw	0		; Initial warning    -- WARM $E/$F
 	dw	TOPDP		; Initial fence
 	dw	TOPDP		; Initial dp
-	dw	0 ;VL0-REL		; Initial VOC-LINK   -- COLD $14/$15
+	dw	__NF_FIRST      ; Initial VOC-LINK   -- COLD $14/$15
 	dw	1
 
 
@@ -424,20 +424,27 @@ DFIND:  dw	DOCOL
 	dw	PFIND
 	dw	EXIT
 
-;	FIND
 
-;; L90C5:  db	$84,'FIN',$C4
-;; 	dw	$0
-;; FIND:   dw	DOCOL
-;; 	dw	CONT
-;; 	dw	AT
-;; 	dw	AT
-;; 	dw	DFIND
-;; 	dw	ZBRAN,8
-;; 	dw	DROP
-;; 	dw	BRAN,4
-;; 	dw	ZERO
-;; 	dw	EXIT
+
+;;;  FIND
+;;;     : FIND CONTEXT @ @ -FIND 0BRANCH 8 DROP BRANCH 4 0 EXIT ;
+_NF_FIND:
+        db $84,'FIN',$c4
+        dw _LF_FIND
+FIND:   dw DOCOL
+        dw CONT
+        dw AT
+        dw AT
+        dw DFIND
+	dw ZBRAN
+        dw _FIND_ZERO - $
+	dw DROP
+	dw BRAN
+        dw _FIND_EXIT - $
+_FIND_ZERO:
+	dw ZERO
+_FIND_EXIT:
+        dw EXIT
 
 
 _NF_CMOVE:
