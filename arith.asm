@@ -430,3 +430,20 @@ DNEGAT: dw $+2
         push bc
         push hl
         jp NEXT
+
+
+;;;  S->D
+_NF_STOD:
+        db $84,'S->',$c4
+        dw _LF_STOD
+STOD:   dw $+2
+        pop hl
+        ld bc, 0
+        ld a, h
+        and $80
+        jr z, _STOD_POSITIVE
+        dec bc
+_STOD_POSITIVE:
+        push hl
+        push bc
+        jp NEXT

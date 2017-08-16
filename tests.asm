@@ -1679,6 +1679,30 @@ _test_IDDOT:
 
 ;; --------------------------------------------------------------------------------
 
+_test_STOD:
+        test 1 ; expect FFFFFFFF.00000000.00007FFF
+
+        lit $FFFF
+        dw STOD
+        dw DOTHEX
+        dw DOTHEX
+        emitchr .
+
+        lit $0000
+        dw STOD
+        dw DOTHEX
+        dw DOTHEX
+        emitchr .
+
+        lit $7FFF
+        dw STOD
+        dw DOTHEX
+        dw DOTHEX
+
+        dw EXIT
+
+;; --------------------------------------------------------------------------------
+
 _test_CONTEXT:
         test 1 ; expect {label___NF_FIRST}
 
