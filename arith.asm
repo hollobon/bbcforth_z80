@@ -432,6 +432,30 @@ DNEGAT: dw $+2
         jp NEXT
 
 
+;;;  D+-
+;;;     : D+- 0< 0BRANCH 4 DNEGATE EXIT ;
+_NF_DPM:
+        db $83,'D+',$ad
+        dw _LF_DPM
+DPM:    dw DOCOL
+        dw ZLESS
+        dw ZBRAN
+        dw $4
+        dw DNEGAT
+        dw EXIT
+
+
+;;;  DABS
+;;;     : DABS DUP D+- EXIT ;
+_NF_DABS:
+        db $84,'DAB',$d3
+        dw _LF_DABS
+DABS:   dw DOCOL
+        dw DUPP
+        dw DPM
+        dw EXIT
+
+
 ;;;  S->D
 _NF_STOD:
         db $84,'S->',$c4
