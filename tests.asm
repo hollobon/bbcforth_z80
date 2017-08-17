@@ -1775,6 +1775,25 @@ _test_DLESS:
 
 ;; --------------------------------------------------------------------------------
 
+_test_ULESS:
+	test 1 ; expect 0000.0001
+
+        lit $ffff
+        lit $0001
+        dw ULESS
+        dw DOTHEX
+
+        emitchr .
+
+        lit $fffe
+        lit $ffff
+        dw ULESS
+        dw DOTHEX
+
+        dw EXIT
+
+;; --------------------------------------------------------------------------------
+
 _test_CONTEXT:
         test 1 ; expect {label___NF_FIRST}
 

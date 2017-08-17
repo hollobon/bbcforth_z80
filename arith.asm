@@ -470,6 +470,19 @@ _DLESS_POSITIVE:
         jp NEXT
 
 
+;;;  U<
+;;;     : U< 0 SWAP 0 D< EXIT ;
+_NF_ULESS:
+        db $82,'U',$bc
+        dw _LF_ULESS
+ULESS:  dw DOCOL
+        dw ZERO
+        dw SWAP
+        dw ZERO
+        dw DLESS
+        dw EXIT
+
+
 ;;;  D+-
 ;;;     : D+- 0< 0BRANCH 4 DNEGATE EXIT ;
 _NF_DPM:
