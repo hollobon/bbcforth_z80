@@ -1716,6 +1716,65 @@ _test_DABS:
 
 ;; --------------------------------------------------------------------------------
 
+_test_DLESS:
+        test 1 ; expect 0000.0001.0001.0001.0000.0001
+
+        lit $0
+        lit $0
+        lit $0
+        lit $0
+        dw DLESS
+        dw DOTHEX
+
+        emitchr .
+
+        lit $0
+        lit $0
+        lit $0
+        lit $1
+        dw DLESS
+        dw DOTHEX
+
+        emitchr .
+
+        lit $0
+        lit $0
+        lit $1
+        lit $0
+        dw DLESS
+        dw DOTHEX
+
+        emitchr .
+
+        lit $fffe
+        lit $ffff
+        lit $ffff
+        lit $ffff
+        dw DLESS
+        dw DOTHEX
+
+        emitchr .
+
+        lit $ffff
+        lit $ffff
+        lit $fffe
+        lit $ffff
+        dw DLESS
+        dw DOTHEX
+
+	emitchr .
+
+        lit $ffff
+        lit $0000
+        lit $0000
+        lit $0001
+        dw DLESS
+        dw DOTHEX
+
+        dw EXIT
+
+;; --------------------------------------------------------------------------------
+
 _test_CONTEXT:
         test 1 ; expect {label___NF_FIRST}
 

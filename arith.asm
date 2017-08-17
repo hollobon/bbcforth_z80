@@ -432,6 +432,44 @@ DNEGAT: dw $+2
         jp NEXT
 
 
+;;;  D<
+_NF_DLESS:
+        db $82,'D',$bc
+        dw _LF_DLESS
+DLESS:  dw $+2
+        ld ix, 0
+        add ix, sp
+
+        ld bc, 0
+
+	scf
+        ccf
+        ld a, (ix+6)
+        sbc a, (ix+2)
+        ld a, (ix+7)
+        sbc a, (ix+3)
+	ld a, (ix+4)
+        sbc a, (ix+0)
+	ld a, (ix+5)
+        sbc a, (ix+1)
+
+        jp po,	_DLESS_NO_OVERFLOW
+        xor $80
+
+_DLESS_NO_OVERFLOW:                          ;
+	jp p, _DLESS_POSITIVE
+
+        inc c
+_DLESS_POSITIVE:
+        pop hl
+        pop hl
+        pop hl
+        pop hl
+        push bc
+
+        jp NEXT
+
+
 ;;;  D+-
 ;;;     : D+- 0< 0BRANCH 4 DNEGATE EXIT ;
 _NF_DPM:
