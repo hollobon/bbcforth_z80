@@ -22,13 +22,41 @@ _XPULO_NI:
         ld a, (ix+LOOPLIMIT_HIGH)
         sbc a, (ix+LOOPCOUNT_HIGH)
         jp p, _BRAN    ; continue loop
+
         ;; end of loop - pop 2 values from return stack that were put there by (DO)
+_LOOP_DONE:
         ld hl, (RSP)
         ld de, $4
         add hl, de
         ld (RSP), hl
         ;; pop offset and continue
         jp BUMP
+
+
+;;;  (LOOP)
+_NF_XLOOP:
+        db $86,'(LOOP',$a9
+        dw _LF_XLOOP
+XLOOP:  dw $+2
+
+        ld bc, (RSP)
+        ld ix, 0
+        add ix, bc
+        inc (ix+LOOPCOUNT_LOW)
+        jp nz, _XPULO_NI
+        inc (ix+LOOPCOUNT_HIGH)
+        jp po, _XPULO_NI
+        jp _LOOP_DONE
+_XLOOP_NI:
+        ld a, (ix+LOOPLIMIT_LOW)
+        scf
+        sbc a, (ix+LOOPCOUNT_LOW)
+        ld a, (ix+LOOPLIMIT_HIGH)
+        sbc a, (ix+LOOPCOUNT_HIGH)
+        jp po, _XLOOP_NI
+        xor $80
+        jp p, _BRAN    ; continue loop
+        jp _LOOP_DONE
 
 
 ;;;  (DO)
