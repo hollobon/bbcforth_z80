@@ -5,7 +5,7 @@ forthz.ROM: forthz_z80.asm word.asm arith.asm stack.asm loop.asm util.asm tests.
 	z80asm --list=$@.LST --label=$@.LABEL $< -o $@
 
 tests.asm.gen: tests.asm renumber_tests.py
-	./renumber_tests.py $< $<.gen
+	./renumber_tests.py --only "$(ONLY)" $< $<.gen
 
 forthz_6502.a: forthz_6502.asm
 	xa $< -o $@
