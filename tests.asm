@@ -1835,6 +1835,16 @@ _test_CONTEXT:
 
 ;; --------------------------------------------------------------------------------
 
+_test_SMSG:
+        test 1 ; expect Parameter outside valid range
+
+        lit 5
+        dw SMSG
+
+        dw EXIT
+
+;; --------------------------------------------------------------------------------
+
 ;; _test_PEXPEC:
 ;;         ;; read line from keyboard
 ;;         lit 20

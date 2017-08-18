@@ -960,6 +960,41 @@ QERR:   dw DOCOL
         dw EXIT
 
 
+;;;  $MSG
+;;;     : $MSG DUP DUP 0> SWAP LIT 26 < AND 0BRANCH 32 LIT ?LB47E? SWAP 0 (DO) DUP C@ + 1+ (LOOP) -10 COUNT TYPE BRANCH 4 MSG# EXIT ;
+_NF_SMSG:
+        db $84,'$MS',$c7
+        dw _LF_SMSG
+SMSG:      dw DOCOL
+        dw DUPP
+        dw DUPP
+        dw ZGREA
+        dw SWAP
+        dw LIT
+        dw $1a
+        dw LESS
+        dw ANDD
+        dw ZBRAN
+        dw $20
+        dw LIT
+        dw MSG_TABLE
+        dw SWAP
+        dw ZERO
+        dw XDO
+        dw DUPP
+        dw CAT
+        dw PLUS
+        dw ONEP
+        dw XLOOP
+        dw -$a
+        dw COUNT
+        dw TYPE
+        dw BRAN
+        dw $4
+        dw DROP        ;; dw MSGNUM
+        dw EXIT
+
+
 ;;;  ERROR
 ;;;     : ERROR WARNING @ 0< 0BRANCH 8 ABORT BRANCH 31 WBFR COUNT TYPE (.") 4 ?'  ? '? MESSAGE SP! 2DROP >IN @ BLK @ QUIT EXIT ;
 _NF_ERROR:
@@ -982,8 +1017,7 @@ ERROR:  dw DOCOL
         db $4
         db '  ? '
         ;; dw XMES
-        ;; dw SMSG
-        dw NOOP
+        dw SMSG
         dw SPSTO
         dw TDROP
         dw INN
