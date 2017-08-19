@@ -11,7 +11,6 @@ UAREA:  equ $400                ; USER AREA
 WORDBU: equ UAREA+64            ; WORD BUFFER
 TIBB:   equ WORDBU+WBSIZ        ; TERMINAL INPUT BUFFER
 PADD:   equ TIBB+126            ; PAD
-RAM:    equ PADD+80             ; RAM RELOCATION ADDR
 
 EM: equ $7C00                   ; END OF MEMORY+1
 BLKSIZ: equ 1024
@@ -161,6 +160,18 @@ TOGGL:  dw $+2
         jp NEXT
 
 
+;;;  LAST
+;;;     : LAST CURRENT @ @ EXIT ;
+_NF_LAST:
+        db $84,'LAS',$d4
+        dw _LF_LAST
+LAST:   dw DOCOL
+        dw CURR
+        dw AT
+        dw AT
+        dw EXIT
+
+
 ;;;  CFA
 ;;;     : CFA 2- EXIT ;
 _NF_CFA:
@@ -211,6 +222,20 @@ LFA:    dw DOCOL
         dw EXIT
 
 
+;;;  (;CODE)
+;;;     : (;CODE) R> LAST PFA CFA ! EXIT ;
+_NF_PSCOD:
+        db $87,'(       ;CODE',$a9
+        dw _LF_PSCOD
+PSCOD:  dw DOCOL
+        dw RFROM
+        dw LAST
+        dw PFA
+        dw CFA
+        dw STORE
+        dw EXIT
+
+
 ;;;  FILL
 ;;;     : FILL OVER 1 < 0BRANCH 10 DROP 2DROP BRANCH 20 SWAP >R OVER C! DUP 1+ R> 1- CMOVE EXIT ;
 _NF_FILL:
@@ -238,6 +263,83 @@ FILL:   dw DOCOL
         dw EXIT
 
 
+;; (CREATE)
+;;    : (CREATE) FIRST HERE LIT 160 + U< 2 ?ERROR BL WORD DUP C@ DUP 0= LIT 10 ?ERROR OVER CONTEXT @ @ (FIND) 0BRANCH 18 DROP 2+ NFA ID. LIT 4 MESSAGE SPACE WIDTH @ MIN DUP DP C@ + LIT 252 = ALLOT 1+ DUP >R HERE SWAP CMOVE HERE R> ALLOT DUP LIT 128 TOGGLE HERE 1- LIT 128 TOGGLE LAST , CURRENT @ ! LIT ?DOVAR? , EXIT ;
+_NF_PCREAT:
+	db $88,'(CREATE',$a9
+	dw _LF_PCREAT
+PCREAT:	dw DOCOL
+	dw XFIRS
+	dw HERE
+	dw LIT
+	dw $a0
+	dw PLUS
+	dw ULESS
+	dw TWO
+	dw QERR
+	dw BLL
+	dw WORD
+	dw DUPP
+	dw CAT
+	dw DUPP
+	dw ZEQU
+	dw LIT
+	dw $a
+	dw QERR
+	dw OVER
+	dw CONT
+	dw AT
+	dw AT
+	dw PFIND
+	dw ZBRAN
+	dw $12
+	dw DROP
+	dw TWOP
+	dw NFA
+	dw IDDOT
+	dw LIT
+	dw $4
+        dw SMSG  ;; dw XMES
+	dw SPACE
+	dw WIDTH
+	dw AT
+	dw MIN
+	dw DUPP
+	dw DP
+	dw CAT
+	dw PLUS
+	dw LIT
+	dw $fc
+	dw EQUAL
+	dw ALLOT
+	dw ONEP
+	dw DUPP
+	dw TOR
+	dw HERE
+	dw SWAP
+	dw CMOVE
+	dw HERE
+	dw RFROM
+	dw ALLOT
+	dw DUPP
+	dw LIT
+	dw $80
+	dw TOGGL
+	dw HERE
+	dw ONESUB
+	dw LIT
+	dw $80
+	dw TOGGL
+	dw LAST
+	dw COMMA
+	dw CURR
+	dw AT
+	dw STORE
+	dw LIT
+	dw DOVAR
+	dw COMMA
+	dw EXIT
+
 DOCOL:
         ;; push IY onto return stack
         push bc
@@ -262,13 +364,16 @@ DOCOL:
         jp NEXT
 
 
-;	CONSTANT
 
-	db	'CONSTANT'
-;; CONST:  dw	DOCOL
-;; 	dw	CREAT
-;; 	dw	COMMA
-;; 	dw	PSCOD
+;;;  CONSTANT
+;;;     : CONSTANT CREATE , (;CODE) ;
+_NF_CONST:
+        db $88,'CONSTAN',$d4
+        dw _LF_CONST
+CONST:  dw DOCOL
+        dw PCREAT ;; XCREA
+        dw COMMA
+        dw PSCOD
 DOCON:  inc bc                  ; load word from PFA into hl
         ld a, (bc)
         ld l, a
@@ -279,14 +384,14 @@ DOCON:  inc bc                  ; load word from PFA into hl
         jp NEXT
 
 
-;; 	;	USER
-
+;;; USER
+;;;    : USER CONSTANT (;CODE) ;
 _NF_USER:
-        db	$84,'USE',$D2
-	dw	_LF_USER
-;; USER:   dw	DOCOL
-;; 	dw	CONST
-;; 	dw	PSCOD
+        db $84,'USE',$d2
+        dw _LF_USER
+USER:   dw DOCOL
+        dw CONST
+        dw PSCOD
 DOUSE:  inc bc
         ld a, (bc)
         ld c, a
@@ -294,6 +399,22 @@ DOUSE:  inc bc
         ld hl, (UAVALUE)
         add hl, bc
         push hl
+        jp NEXT
+
+
+;;;  VARIABLE
+;;;     : VARIABLE CREATE 0 , (;CODE) ;
+_NF_VAR:
+        db $88,'VARIABL',$c5
+        dw _LF_VAR
+VAR:    dw DOCOL
+        dw PCREAT ;; dw XCREA
+        dw ZERO
+        dw COMMA
+        dw PSCOD
+DOVAR:
+        inc bc
+        push bc
         jp NEXT
 
 
@@ -605,12 +726,10 @@ _NF_INTE:
         db $89,'INTERPRE',$d4
         dw _LF_INTE
 INTE:   dw DOCOL
-        ;; dw CONT
-        ;; dw AT
-        ;; dw AT
 _INTE_LOOP:
-        dw LIT
-        dw __NF_FIRST
+        dw CONT
+        dw AT
+        dw AT
         dw DFIND
 
         dw ZBRAN
@@ -621,6 +740,7 @@ _INTE_LOOP:
         dw LESS
         dw ZBRAN
         dw _INTE_SKIP_COMPILE - $
+
         dw COMMA
         dw BRAN
         dw _INTE_SKIP_EXEC - $

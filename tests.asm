@@ -76,9 +76,23 @@ PABOR:
 START:  dw DOCOL
 
         dw DECIM
+
+        ;; set CONTEXT
+        lit $3F00
+        dw DUPP
+        dw CONT
+        dw STORE
+        dw CURR
+        dw STORE
+
         lit __NF_FIRST
         dw CONT
         dw AT
+        dw STORE
+
+        ;; set DP (data pointer)
+        lit $4500
+        dw DP
         dw STORE
 
         ;; check if test mode; if not, skip to interactive interpreter
@@ -1840,6 +1854,21 @@ _test_SMSG:
 
         lit 5
         dw SMSG
+
+        dw EXIT
+
+;; --------------------------------------------------------------------------------
+
+_dtest_DOVAR_CFA:
+        dw DOVAR
+        dw $1234
+
+_test_DOVAR:
+	test 1 ; expect 1234
+
+        dw _dtest_DOVAR_CFA
+        dw AT
+        dw DOTHEX
 
         dw EXIT
 
