@@ -104,7 +104,7 @@ LITER:  dw DOCOL
         dw AT
         dw ZBRAN
         dw _LITER_EXIT - $
-        ;; dw COMP
+        dw COMP
         dw LIT
         dw COMMA
 _LITER_EXIT:
@@ -169,6 +169,118 @@ LAST:   dw DOCOL
         dw CURR
         dw AT
         dw AT
+        dw EXIT
+
+
+;;;  SMUDGE
+;;;     : SMUDGE LAST LIT 32 TOGGLE EXIT ;
+_NF_SMUDG:
+        db $86,'SMUDG',$c5
+        dw _LF_SMUDG
+SMUDG:  dw DOCOL
+        dw LAST
+        dw LIT
+        dw $20
+        dw TOGGL
+        dw EXIT
+
+
+;;;  ] - force compilation of subsequent input
+;;;     : ] LIT 192 STATE ! EXIT ;
+_NF_RBRAC:
+        db $81,'',$dd
+        dw _LF_RBRAC
+RBRAC:  dw DOCOL
+        dw LIT
+        dw $c0
+        dw STATE
+        dw STORE
+
+        dw EXIT
+
+
+;;;  [
+;;;     : [ 0 STATE ! EXIT ;
+_NF_LBRAC:
+        db $81,'',$db
+        dw _LF_LBRAC
+LBRAC:  dw DOCOL
+        dw ZERO
+        dw STATE
+        dw STORE
+        dw EXIT
+
+
+;;;  ?COMP
+;;;     : ?COMP STATE @ 0= LIT 17 ?ERROR EXIT ;
+_NF_QCOMP:
+        db $85,'?COM',$d0
+        dw _LF_QCOMP
+QCOMP:  dw DOCOL
+        dw STATE
+        dw AT
+        dw ZEQU
+        dw LIT
+        dw $11
+        dw QERR
+        dw EXIT
+
+
+;;;  COMPILE
+;;;     : COMPILE ?COMP R> DUP 2+ >R @ , EXIT ;
+_NF_COMP:
+        db $87,'COMPIL',$c5
+        dw _LF_COMP
+COMP:   dw DOCOL
+        dw QCOMP
+        dw RFROM
+        dw DUPP
+        dw TWOP
+        dw TOR
+        dw AT
+        dw COMMA
+        dw EXIT
+
+
+;;;  !CSP - save stack pointer in CSP variable
+;;;     : !CSP SP@ CSP ! EXIT ;
+_NF_SCSP:
+        db $84,'!CS',$d0
+        dw _LF_SCSP
+SCSP:   dw DOCOL
+        dw SPAT
+        dw CSP
+        dw STORE
+        dw EXIT
+
+
+;;;  ?CSP
+;;;     : ?CSP SP@ CSP @ - LIT 20 ?ERROR EXIT ;
+_NF_QCSP:
+        db $84,'?CS',$d0
+        dw _LF_QCSP
+QCSP:   dw DOCOL
+        dw SPAT
+        dw CSP
+        dw AT
+        dw SUBB
+        dw LIT
+        dw $14
+        dw QERR
+        dw EXIT
+
+
+;;;  ?EXEC - issues error message if not executing
+;;;     : ?EXEC STATE @ LIT 18 ?ERROR EXIT ;
+_NF_QEXEC:
+        db $85,'?EXE',$c3
+        dw _LF_QEXEC
+QEXEC:  dw DOCOL
+        dw STATE
+        dw AT
+        dw LIT
+        dw $12
+        dw QERR
         dw EXIT
 
 
@@ -340,6 +452,24 @@ PCREAT:	dw DOCOL
 	dw COMMA
 	dw EXIT
 
+
+;; ;;;  R:
+;;;     : R: ?EXEC !CSP CURRENT @ CONTEXT ! CREATE ] (;CODE) ;
+_NF_RCOLON:
+        db $82,'R',$ba
+        dw _LF_RCOLON
+RCOLON: dw DOCOL
+        dw QEXEC
+        dw SCSP
+        dw CURR
+        dw AT
+        dw CONT
+        dw STORE
+        ;; dw XCREA
+        dw PCREAT
+        dw RBRAC
+        dw PSCOD
+
 DOCOL:
         ;; push IY onto return stack
         push bc
@@ -363,6 +493,40 @@ DOCOL:
         ld iyh, b
         jp NEXT
 
+
+;;;  :
+;;;     : : R: SMUDGE EXIT ;
+_NF_COLON:
+        db $81,'',$ba
+        dw _LF_COLON
+COLON:  dw DOCOL
+        dw RCOLON
+        dw SMUDG
+        dw EXIT
+
+
+;;;  R;
+;;;     : R; ?CSP COMPILE EXIT [ EXIT ;
+_NF_RSEMI:
+        db $c2,'R',$bb
+        dw _LF_RSEMI
+RSEMI:  dw DOCOL
+        dw QCSP
+        dw COMP
+        dw EXIT
+        dw LBRAC
+        dw EXIT
+
+
+;;;  ;
+;;;     : ; R; SMUDGE EXIT ;
+_NF_SEMIS:
+        db $c1,'',$bb
+        dw _LF_SEMIS
+SEMIS:  dw DOCOL
+        dw RSEMI
+        dw SMUDG
+        dw EXIT
 
 
 ;;;  CONSTANT
@@ -685,7 +849,7 @@ QUIT:   dw DOCOL
         dw ZERO
         dw BLK
         dw STORE
-        ;; dw LBRAC
+        dw LBRAC
 _QUIT_LOOP:
         dw RPSTO
         dw CRR
@@ -1252,32 +1416,32 @@ EXEC:   dw $+2
 ;;; NULL
 ;;;     :  BLK @ 0BRANCH 40 1 BLK +! 0 >IN ! BLK @ B/SCR 1- AND 0= 0BRANCH 8 ?EXEC R> DROP BRANCH 6 R> DROP EXIT ;
 _NF_NULL:
-        db $81,'',$80
+        db $c1,'',$80
         dw _LF_NULL
 NULL:   dw DOCOL
-        ;; dw BLK
-        ;; dw AT
-        ;; dw ZBRAN
-        ;; dw $28
-        ;; dw ONE
-        ;; dw BLK
-        ;; dw PSTOR
-        ;; dw ZERO
-        ;; dw INN
-        ;; dw STORE
-        ;; dw BLK
-        ;; dw AT
-        ;; dw BSCR
-        ;; dw ONESUB
-        ;; dw ANDD
-        ;; dw ZEQU
-        ;; dw ZBRAN
-        ;; dw $8
-        ;; dw QEXEC
-        ;; dw RFROM
-        ;; dw DROP
-        ;; dw BRAN
-        ;; dw $6
+        dw BLK
+        dw AT
+        dw ZBRAN
+        dw $28
+        dw ONE
+        dw BLK
+        dw PSTOR
+        dw ZERO
+        dw INN
+        dw STORE
+        dw BLK
+        dw AT
+        dw BSCR
+        dw ONESUB
+        dw ANDD
+        dw ZEQU
+        dw ZBRAN
+        dw $8
+        dw QEXEC
+        dw RFROM
+        dw DROP
+        dw BRAN
+        dw $6
         dw RFROM
         dw DROP
         dw EXIT
