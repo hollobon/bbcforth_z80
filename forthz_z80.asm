@@ -645,8 +645,8 @@ PFIND:  dw	$+2
         pop hl                  ; pop name address
         push hl
 _CPNAME:ld a, (ix+0)            ; test if lower 6 bit of length byte the same
-        and $3f
         ld e, a                 ; save length in e
+        and $3f
         xor (hl)
         ld d, 0
         jp nz, _FNDEND
