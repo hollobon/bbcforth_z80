@@ -63,7 +63,7 @@ class Word(object):
         if self.cfa == 'DOCOL':
             print(';;    {}'.format(self.definition()))
         print('_NF_{}:'.format(self.code_label))
-        print('\tdb ${:x},\'{}\',${:x}'.format(self.name_length | 0x80, self.name[:-1], ord(self.name[-1]) | 0x80))
+        print('\tdb ${:x},\'{}\',${:x}'.format(self.name_length | 0x80 | (0x40 if 'immediate' in self.flags else 0), self.name[:-1], ord(self.name[-1]) | 0x80))
         print('\tdw _LF_{}'.format(self.code_label))
         if self.cfa == 'DOCOL':
             print('{}:\tdw DOCOL'.format(self.code_label))
@@ -84,8 +84,6 @@ class Word(object):
         elif self.cfa == '*+2':
             print('{}:\tdw $+2'.format(self.code_label))
             print('\n\tjp NEXT')
-
-
 
     def __repr__(self):
         result = 'WORD name: {}, label: {}, code label: {}, lfa: {}, cfa: {}, name len: {}, flags: {}, location: {}:{}'.format(
