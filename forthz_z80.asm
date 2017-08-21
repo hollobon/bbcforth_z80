@@ -1471,6 +1471,70 @@ MODE:   dw DOCOL
         dw EXIT
 
 
+;;;  ?PAIRS
+;;;     : ?PAIRS - LIT 19 ?ERROR EXIT ;
+_NF_QPAIR:
+        db $86,'?PAIR',$d3
+        dw _LF_QPAIR
+QPAIR:  dw DOCOL
+        dw SUBB
+        dw LIT
+        dw $13
+        dw QERR
+        dw EXIT
+
+;;;  IF
+;;;     : IF COMPILE 0BRANCH HERE 0 , 2 EXIT ;
+_NF_IFF:
+        db $c2,'I',$c6
+        dw _LF_IFF
+IFF:    dw DOCOL
+        dw COMP
+        dw ZBRAN
+        dw HERE
+        dw ZERO
+        dw COMMA
+        dw TWO
+        dw EXIT
+
+
+;;;  THEN
+;;;     : THEN ?COMP 2 ?PAIRS HERE OVER - SWAP ! EXIT ;
+_NF_THEN:
+        db $c4,'THE',$ce
+        dw _LF_THEN
+THEN:   dw DOCOL
+        dw QCOMP
+        dw TWO
+        dw QPAIR
+        dw HERE
+        dw OVER
+        dw SUBB
+        dw SWAP
+        dw STORE
+        dw EXIT
+
+
+;;;  ELSE
+;;;     : ELSE 2 ?PAIRS COMPILE BRANCH HERE 0 , SWAP 2 THEN 2 EXIT ;
+_NF_ELSE:
+        db $c4,'ELS',$c5
+        dw _LF_ELSE
+ELSE:   dw DOCOL
+        dw TWO
+        dw QPAIR
+        dw COMP
+        dw BRAN
+        dw HERE
+        dw ZERO
+        dw COMMA
+        dw SWAP
+        dw TWO
+        dw THEN
+        dw TWO
+        dw EXIT
+
+
 TOPDP: equ $	; TOP OF DICTIONARY
 
 TOPNFA:  equ 0 ; top non-forth area?
