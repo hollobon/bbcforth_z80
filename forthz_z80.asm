@@ -202,7 +202,7 @@ RBRAC:  dw DOCOL
 ;;;  [
 ;;;     : [ 0 STATE ! EXIT ;
 _NF_LBRAC:
-        db $81,'',$db
+        db $c1,'',$db
         dw _LF_LBRAC
 LBRAC:  dw DOCOL
         dw ZERO
@@ -583,11 +583,11 @@ DOVAR:
 
 
 ;	BRANCH
-        ;; unconditional branch, next word is IP offset in bytes from word following IP
+;; unconditional branch, next word is IP offset in bytes from word following IP
 _NF_BRAN:
-        db	$86,'BRANC',$C8
-	dw	_LF_BRAN
-BRAN:	dw	$+2
+        db $86,'BRANC',$C8
+	dw _LF_BRAN
+BRAN:	dw $+2
 _BRAN:  ld c, (iy+0)
         ld b, (iy+1)
         add iy, bc
@@ -595,7 +595,7 @@ _BRAN:  ld c, (iy+0)
 
 
 ;	0BRANCH
-        ;; conditional branch, only taken if top of stack is zero
+;; conditional branch, only taken if top of stack is zero
 _NF_ZBRAN:
 	db	$87,'0BRANC',$C8
 	dw	_LF_ZBRAN
