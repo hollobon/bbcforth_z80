@@ -1,5 +1,7 @@
 # Z80 Port of Acornsoft Forth
 
+![](interpret.gif)
+
 This is a largely pointless port of Acornsoft Forth for the BBC Micro to the Z80 second processor.
 
 I have no use for it, but I was interested in Forth, keen to re-learn 6502 and Z80 assembler, and
