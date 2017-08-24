@@ -91,3 +91,112 @@ IDO:    dw $+2
         ld d, (hl)
         push de
         jp NEXT
+
+
+;;;  DO
+;;;     : DO COMPILE (DO) HERE 3 ;
+_NF_DO:
+        db $c2,'D',$cf
+        dw _LF_DO
+DO:     dw DOCOL
+        dw COMP
+        dw XDO
+        dw HERE
+        dw LIT
+        dw $3
+        dw EXIT
+
+
+;;;  LOOP
+;;;     : LOOP 3 ?PAIRS COMPILE (LOOP) BACK ;
+_NF_LOOP:
+        db $c4,'LOO',$d0
+        dw _LF_LOOP
+LOOP:   dw DOCOL
+        dw LIT
+        dw $3
+        dw QPAIR
+        dw COMP
+        dw XLOOP
+        dw BACK
+        dw EXIT
+
+
+;;;  BEGIN
+;;;     : BEGIN ?COMP HERE 1 ;
+_NF_BEGIN:
+        db $c5,'BEGI',$ce
+        dw _LF_BEGIN
+BEGIN:    dw DOCOL
+        dw QCOMP
+        dw HERE
+        dw ONE
+        dw EXIT
+
+
+;;;  UNTIL
+;;;     : UNTIL 1 ?PAIRS COMPILE 0BRANCH BACK ;
+_NF_UNTIL:
+        db $c5,'UNTI',$cc
+        dw _LF_UNTIL
+UNTIL:  dw DOCOL
+        dw ONE
+        dw QPAIR
+        dw COMP
+        dw ZBRAN
+        dw BACK
+        dw EXIT
+
+
+;;;  REPEAT
+;;;     : REPEAT >R >R AGAIN R> R> 2 - THEN ;
+_NF_REPEAT:
+        db $c6,'REPEA',$d4
+        dw _LF_REPEAT
+REPEAT: dw DOCOL
+        dw TOR
+        dw TOR
+        dw AGAIN
+        dw RFROM
+        dw RFROM
+        dw TWO
+        dw SUBB
+        dw THEN
+        dw EXIT
+
+
+;;;  WHILE
+;;;     : WHILE IF 2+ ;
+_NF_WHILE:
+        db $c5,'WHIL',$c5
+        dw _LF_WHILE
+WHILE:  dw DOCOL
+        dw IFF
+        dw TWOP
+        dw EXIT
+
+
+;;;  AGAIN
+;;;     : AGAIN 1 ?PAIRS COMPILE BRANCH BACK ;
+_NF_AGAIN:
+        db $c5,'AGAI',$ce
+        dw _LF_AGAIN
+AGAIN:  dw DOCOL
+        dw ONE
+        dw QPAIR
+        dw COMP
+        dw BRAN
+        dw BACK
+        dw EXIT
+
+
+;;;  BACK
+;;;     : BACK HERE - , ;
+_NF_BACK:
+        db $84,'BAC',$cb
+        dw _LF_BACK
+BACK:   dw DOCOL
+        dw HERE
+        dw SUBB
+        dw COMMA
+        dw EXIT
