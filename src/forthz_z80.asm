@@ -1535,6 +1535,84 @@ ELSE:   dw DOCOL
         dw EXIT
 
 
+;;;  NOT
+;;;     : NOT 0= EXIT ;
+_NF_NOT:
+        db $83,'NO',$d4
+        dw _LF_NOT
+NOT:    dw DOCOL
+        dw ZEQU
+        dw EXIT
+
+
+;;;  ?TAB
+;;;     : ?TAB LIT -97 ?KEY 1 AND EXIT ;
+_NF_QTAB:
+        db $84,'?TA',$c2
+        dw _LF_QTAB
+QTAB:   dw DOCOL
+        dw LIT
+        dw -$61
+        dw QKEY
+        dw ONE
+        dw ANDD
+        dw EXIT
+
+
+;;;  ?KEY
+_NF_QKEY:
+        db $84,'?KE',$d9
+        dw _LF_QKEY
+QKEY:   dw $+2
+
+        pop bc
+
+        ld a, $c
+        ld hl, 1
+        call OSBYTE
+        push hl
+
+        ld a, $b
+        ld hl, 0
+        call OSBYTE
+        push hl
+
+	ld a, $f
+        ld hl, 1
+        call OSBYTE
+
+        ld a, $81
+        ld h, b
+        ld l, c
+        call OSBYTE
+
+        ld b, h
+        ld c, l
+
+        ld a, $b
+        pop hl
+        call OSBYTE
+
+        ld a, $c
+        pop hl
+        call OSBYTE
+
+        push bc
+
+        jp NEXT
+
+
+_NF_PKEY:
+        db $85,'(KEY',$a9
+        dw _LF_PKEY
+PKEY:   dw $+2
+        call OSRDCH
+        ld c, a
+        ld b, 0
+        push bc
+        jp NEXT
+
+
 TOPDP: equ $	; TOP OF DICTIONARY
 
 TOPNFA:  equ 0 ; top non-forth area?

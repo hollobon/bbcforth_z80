@@ -275,3 +275,64 @@ IDDOT:  dw DOCOL
         dw TYPE
         dw SPACE
         dw EXIT
+
+
+;;;  VLIST
+;;;     : VLIST LIT 128 OUT ! CONTEXT @ @ OUT @ C/L > 0BRANCH 10 CR 0 OUT ! DUP ID. SPACE SPACE PFA LFA @ DUP ?TAB 0BRANCH 30 ?TAB NOT 0BRANCH -6 KEY BL = 0BRANCH 8 -1 BRANCH 4 0 AND 0= 0BRANCH -74 DROP EXIT ;
+_NF_VLIST:
+        db $85,'VLIS',$d4
+        dw _LF_VLIST
+VLIST:  dw DOCOL
+        dw LIT
+        dw $80
+        dw OUT
+        dw STORE
+        dw CONT
+        dw AT
+        dw AT
+_VLIST_LOOP:
+        dw OUT
+        dw AT
+        dw CSLL
+        dw GREAT
+        dw ZBRAN
+        dw _VLIST_NO_CR - $
+        dw CRR
+        dw ZERO
+        dw OUT
+        dw STORE
+_VLIST_NO_CR:
+        dw DUPP
+        dw IDDOT
+        dw SPACE
+        dw SPACE
+        dw PFA
+        dw LFA
+        dw AT
+        dw DUPP
+        dw QTAB
+        dw ZBRAN
+        dw _VLIST_NO_TAB - $
+_VLIST_TAB_WAIT:
+        dw QTAB
+        dw NOT
+        dw ZBRAN
+        dw _VLIST_TAB_WAIT - $
+        dw PKEY ;; XKEY
+        dw BLL
+        dw EQUAL
+        dw ZBRAN
+        dw _VLIST_NOT_SPACE - $
+        dw TRUE
+        dw BRAN
+        dw _VLIST_SPACE - $
+_VLIST_NOT_SPACE:
+        dw ZERO
+_VLIST_SPACE:
+        dw ANDD
+_VLIST_NO_TAB:
+        dw ZEQU
+        dw ZBRAN
+        dw _VLIST_LOOP - $
+        dw DROP
+        dw EXIT
