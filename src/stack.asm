@@ -255,3 +255,42 @@ TDROP:  dw DOCOL
         dw DROP
         dw DROP
         dw EXIT
+
+
+;;;  ROLL
+_D_ROLL_TEMP:   dw 0
+
+_NF_ROLL:
+        db $84,'ROL',$cc
+        dw _LF_ROLL
+ROLL:   dw $+2
+        pop bc                  ; get n, multiply by 2 to get offset in bytes
+        sla c
+        sla b
+
+        ld hl, 1                ; get SP
+        add hl, sp
+
+        add hl, bc              ; apply offset
+
+        ld d, (hl)
+        dec hl
+        ld e, (hl)
+
+        push de
+
+        inc hl
+
+        ld d, h
+        ld e, l
+
+        dec hl
+        dec hl
+
+        lddr
+
+        pop de
+        pop bc
+        push de
+
+        jp NEXT

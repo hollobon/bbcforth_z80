@@ -1874,6 +1874,30 @@ _test_DOVAR:
 
 ;; --------------------------------------------------------------------------------
 
+_test_ROLL:
+        test 1 ; expect 000500010002000300040006
+
+        lit 6
+        lit 5
+        lit 4
+        lit 3
+        lit 2
+        lit 1
+
+        lit 4
+        dw ROLL
+
+        dw DOTHEX
+        dw DOTHEX
+        dw DOTHEX
+        dw DOTHEX
+        dw DOTHEX
+        dw DOTHEX
+
+        dw EXIT
+
+;; --------------------------------------------------------------------------------
+
 ;; _test_PEXPEC:
 ;;         ;; read line from keyboard
 ;;         lit 20
