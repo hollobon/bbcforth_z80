@@ -1613,6 +1613,158 @@ PKEY:   dw $+2
         jp NEXT
 
 
+;;;  OS'
+;;;     : OS' 39 STRING ?DUP 0BRANCH 32 PAD 0 OVER ! ($+) 13 SP@ 1 PAD ($+) DROP PAD COUNT >CLI ;
+_NF_OSTIC:
+        db $c3,'OS',$a7
+        dw _LF_OSTIC
+OSTIC:  dw DOCOL
+        dw LIT
+        dw $27
+        dw STRING
+        dw QDUP
+        dw ZBRAN
+        dw $20
+        dw PAD
+        dw ZERO
+        dw OVER
+        dw STORE
+        dw PSA
+        dw LIT
+        dw $d
+        dw SPAT
+        dw ONE
+        dw PAD
+        dw PSA
+        dw DROP
+        dw PAD
+        dw COUNT
+        dw TOCLI
+        dw EXIT
+
+
+;;;  >CLI
+;;;     : >CLI STATE @ 0BRANCH 12 COMPILE (CLI) TEXT, BRANCH 6 DROP OSCLI ;
+_NF_TOCLI:
+        db $c4,'>CL',$c9
+        dw _LF_TOCLI
+TOCLI:  dw DOCOL
+        dw STATE
+        dw AT
+        dw ZBRAN
+        dw $c
+        dw COMP
+        dw PCLI
+        dw TXTCOM
+        dw BRAN
+        dw $6
+        dw DROP
+        dw OSCLI
+        dw EXIT
+
+
+;;;  (CLI)
+;;;     : (CLI) R@ COUNT 1+ R> + >R OSCLI ;
+_NF_PCLI:
+        db $85,'(CLI',$a9
+        dw _LF_PCLI
+PCLI:   dw DOCOL
+        dw RAT
+        dw COUNT
+        dw ONEP
+        dw RFROM
+        dw PLUS
+        dw TOR
+        dw OSCLI
+        dw EXIT
+
+
+;;;  OSCLI
+_NF_OSCLI:
+        db $85,'OSCL',$c9
+        dw _LF_OSCLI
+OSCLI:  dw $+2
+        pop hl
+        ld a, 0
+        call $FFF7 ; OSCLI
+        jp NEXT
+
+
+;;;  TEXT,
+;;;     : TEXT, DUP C, HERE OVER ALLOT SWAP CMOVE ;
+_NF_TXTCOM:
+        db $85,'TEXT',$ac
+        dw _LF_TXTCOM
+TXTCOM:  dw DOCOL
+        dw DUPP
+        dw CCOMM
+        dw HERE
+        dw OVER
+        dw ALLOT
+        dw SWAP
+        dw CMOVE
+        dw EXIT
+
+
+;;;  ($+)
+;;;     : ($+) SWAP >R SWAP OVER COUNT DUP R@ + 5 ROLL C! + R> CMOVE ;
+_NF_PSA:
+        db $84,'($+',$a9
+        dw _LF_PSA
+PSA:    dw DOCOL
+        dw SWAP
+        dw TOR
+        dw SWAP
+        dw OVER
+        dw COUNT
+        dw DUPP
+        dw RAT
+        dw PLUS
+        dw LIT
+        dw $5
+        dw ROLL
+        dw CSTOR
+        dw PLUS
+        dw RFROM
+        dw CMOVE
+        dw EXIT
+
+
+;;;  STRING
+;;;     : STRING -1 >IN +! (WORD) 1- SWAP OVER 0BRANCH 10 1+ SWAP BRANCH 4 DROP ;
+_NF_STRING:
+        db $86,'STRIN',$c7
+        dw _LF_STRING
+STRING: dw DOCOL
+        dw TRUE
+        dw INN
+        dw PSTOR
+        dw PWORD
+        dw ONESUB
+        dw SWAP
+        dw OVER
+        dw ZBRAN
+        dw $a
+        dw ONEP
+        dw SWAP
+        dw BRAN
+        dw $4
+        dw DROP
+        dw EXIT
+
+
+;;;  C,
+;;;     : C, HERE C! 1 ALLOT ;
+_NF_CCOMM:
+        db $82,'C',$ac
+        dw _LF_CCOMM
+CCOMM:  dw DOCOL
+        dw HERE
+        dw CSTOR
+        dw ONE
+        dw ALLOT
+        dw EXIT
+
 TOPDP: equ $	; TOP OF DICTIONARY
 
 TOPNFA:  equ 0 ; top non-forth area?

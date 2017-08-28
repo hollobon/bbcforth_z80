@@ -1898,6 +1898,29 @@ _test_ROLL:
 
 ;; --------------------------------------------------------------------------------
 
+_dtest_PSA:
+        db ' there'
+_dtest_PSA_2:
+        db 5
+        db 'hello'
+        ds 8
+
+_test_PSA:
+        test 1 ; expect 000Bhello there
+        lit _dtest_PSA
+        lit 6
+        lit _dtest_PSA_2
+        dw PSA
+        lit _dtest_PSA_2
+        dw DUPP
+        dw CAT
+        dw DOTHEX
+        dw COUNT
+        dw TYPE
+        dw EXIT
+
+;; --------------------------------------------------------------------------------
+
 ;; _test_PEXPEC:
 ;;         ;; read line from keyboard
 ;;         lit 20
