@@ -11,6 +11,7 @@ forthz_6502.a: forthz_6502.asm
 	xa $< -o $@
 
 test: forthz.ROM
+	cp forthz.ROM ../
 	@echo 'In BeebEm, set RS423 to IP: localhost:25232 then issue *TEST'
 	@echo 'Waiting ...'
 	@./zforthtests.py
