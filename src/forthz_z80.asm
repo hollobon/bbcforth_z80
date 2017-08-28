@@ -1026,9 +1026,9 @@ _NF_CSTOR:
         db $82,'C',$a1
         dw _LF_CSTOR
 CSTOR:  dw $+2
-        pop ix
+        pop hl
         pop bc
-        ld (ix+0), c
+        ld (hl), c
         jp NEXT
 
         include "tests.asm.gen"
