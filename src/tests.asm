@@ -1884,7 +1884,7 @@ _test_ROLL:
         lit 2
         lit 1
 
-        lit 4
+        lit 5
         dw ROLL
 
         dw DOTHEX

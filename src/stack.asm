@@ -265,6 +265,7 @@ _NF_ROLL:
         dw _LF_ROLL
 ROLL:   dw $+2
         pop bc                  ; get n, multiply by 2 to get offset in bytes
+        dec bc
         sla c
         sla b
 
