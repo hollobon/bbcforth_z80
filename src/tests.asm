@@ -1900,12 +1900,24 @@ _test_PSA:
 
 ;; --------------------------------------------------------------------------------
 
-_dtest_INTE:    db '5 10 + .HEX', 0
+_dtest_INTE_1:    db '5 10 + .HEX', 0
 
-_test_INTE:
+_test_INTE_1:
         test 1 ; expect 000F
 
-        lit _dtest_INTE
+        lit _dtest_INTE_1
+        dw SET_TIB
+        dw INTE
+        dw RESET_TIB
+
+        dw EXIT
+
+_dtest_INTE_2:    db ': SAYHI ." Hello there " ; SAYHI ." Xxx " SAYHI ." Yyy"',0
+
+_test_INTE_2:
+        test 1 ; expect Hello there Xxx Hello there Yyy
+
+        lit _dtest_INTE_2
         dw SET_TIB
         dw INTE
         dw RESET_TIB
