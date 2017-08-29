@@ -3,11 +3,12 @@ _NF_OVER:
         db $84,'OVE',$d2
         dw _LF_OVER
 OVER:   dw $+2
-        ld ix, 0
-        add ix, sp
-        ld l, (ix+2)
-        ld h, (ix+3)
-        push hl
+        ld hl, 2
+        add hl, sp
+        ld c, (hl)
+        inc hl
+        ld b, (hl)
+        push bc
         jp NEXT
 
 
@@ -24,14 +25,17 @@ _NF_TDUP:
 	db	$84,'2DU',$D0
 	dw	_LF_TDUP
 TDUP:	dw	$+2
-        ld ix, 0
-	add ix, sp
-        ld l, (ix+0)
-        ld h, (ix+1)
-        ld e, (ix+2)
-        ld d, (ix+3)
+        ld hl, 0
+        add hl, sp
+        ld c, (hl)
+        inc hl
+        ld b, (hl)
+        inc hl
+        ld e, (hl)
+        inc hl
+        ld d, (hl)
         push de
-        push hl
+        push bc
         jp NEXT
 
 
@@ -40,16 +44,25 @@ _NF_SWAP:
         db $84,'SWA',$d0
         dw _LF_SWAP
 SWAP:   dw $+2
-        ld ix, 0
-        add ix, sp
-        ld l, (ix+0)
-        ld h, (ix+1)
-        ld d, (ix+2)
-        ld c, (ix+3)
-        ld (ix+0), d
-        ld (ix+1), c
-        ld (ix+2), l
-        ld (ix+3), h
+        ld hl, 0
+        add hl, sp
+
+        ld c, (hl)
+        inc hl
+        ld b, (hl)
+        inc hl
+        ld e, (hl)
+        inc hl
+        ld d, (hl)
+
+        ld (hl), b
+        dec hl
+        ld (hl), c
+        dec hl
+        ld (hl), d
+        dec hl
+        ld (hl), e
+
         jp NEXT
 
 
@@ -124,17 +137,15 @@ _NF_PICK:
         db $84,'PIC',$cb
         dw _LF_PICK
 PICK:   dw $+2
-        pop bc                  ; get n, multiply by 2 to get offset in bytes
-        sla c
-        sla b
+        pop hl                  ; get n, multiply by 2 to get offset in bytes
+        sla l
+        sla h
 
-        ld ix, 0                ; get SP
-        add ix, sp
+        add hl, sp
 
-        add ix, bc              ; apply offset
-
-        ld c, (ix+0)            ; load word from stack
-        ld b, (ix+1)
+        ld c, (hl)            ; load word from stack
+        inc hl
+        ld b, (hl)
 
         push bc
         jp NEXT
@@ -145,9 +156,9 @@ _NF_SPAT:
         db $83,'SP',$c0
         dw _LF_SPAT
 SPAT:   dw $+2
-        ld ix, 0
-        add ix, sp
-        push ix
+        ld hl, 0
+        add hl, sp
+        push hl
         jp NEXT
 
 
