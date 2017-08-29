@@ -1765,6 +1765,42 @@ CCOMM:  dw DOCOL
         dw ALLOT
         dw EXIT
 
+
+;;;  ."
+;;;     : ." -1 >IN +! 34 (WORD) 1- ?DUP 0BRANCH 32 SWAP 1+ SWAP STATE @ 0BRANCH 12 COMPILE (.") TEXT, BRANCH 4 TYPE BRANCH 4 DROP ;
+_NF_DOTQ:
+        db $c2,'.',$a2
+        dw _LF_DOTQ
+DOTQ:   dw DOCOL
+        dw TRUE
+        dw INN
+        dw PSTOR
+        dw LIT
+        dw $22
+        dw PWORD
+        dw ONESUB
+        dw QDUP
+        dw ZBRAN
+        dw $20
+        dw SWAP
+        dw ONEP
+        dw SWAP
+        dw STATE
+        dw AT
+        dw ZBRAN
+        dw $c
+        dw COMP
+        dw PDOTQ
+        dw TXTCOM
+        dw BRAN
+        dw $4
+        dw TYPE
+        dw BRAN
+        dw $4
+        dw DROP
+        dw EXIT
+
+
 TOPDP: equ $	; TOP OF DICTIONARY
 
 TOPNFA:  equ 0 ; top non-forth area?
