@@ -48,6 +48,7 @@ CHECK_STACK:
         emitchr !
         dw SPSTO
 _CHECK_STACK_OK:
+        dw DECIM
         dw EXIT
 
 RUNTESTS:
