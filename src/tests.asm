@@ -51,6 +51,31 @@ _CHECK_STACK_OK:
         dw DECIM
         dw EXIT
 
+SET_TIB:
+        dw DOCOL
+
+        dw TIB
+        dw AT
+
+        lit 0
+        dw INN
+        dw STORE
+
+        dw SWAP
+        dw TIB
+        dw STORE
+
+        dw EXIT
+
+RESET_TIB:
+        dw DOCOL
+
+        dw TIB
+        dw STORE
+
+        dw EXIT
+
+
 RUNTESTS:
         dw DOCOL
         include "runtests.asm"
@@ -406,16 +431,8 @@ _dtest_DFIND_TIB:       db '   SECOND    '
 _test_DFIND3:
         test 1 ; expect 0001.0006.{label__CFAB}
 
-        lit 0
-        dw INN
-        dw STORE
-
-        dw TIB
-        dw AT
-
         lit _dtest_DFIND_TIB
-        dw TIB
-        dw STORE
+        dw SET_TIB
 
         lit _WORDD
         dw DFIND
@@ -425,9 +442,7 @@ _test_DFIND3:
         emitchr .
         dw DOTHEX
 
-        ;; restore TIB
-        dw TIB
-        dw STORE
+        dw RESET_TIB
 
         dw EXIT
 
@@ -470,16 +485,8 @@ _LOOKUP_SHOW:
 _test_DFIND_MULTI:
         test 1 ; expect 0001.0082.{label_BLL}-0001.0083.{label_MAX}-0001.0084.{label_EMIT}-0001.00C1.{label_NULL}
 
-        lit 0
-        dw INN
-        dw STORE
-
-        dw TIB
-        dw AT
-
         lit _dtest_DFIND_MULTI_TIB
-        dw TIB
-        dw STORE
+        dw SET_TIB
 
         dw _LOOKUP_SHOW
         emitchr -
@@ -489,9 +496,7 @@ _test_DFIND_MULTI:
         emitchr -
         dw _LOOKUP_SHOW
 
-        ;; restore TIB
-        dw TIB
-        dw STORE
+        dw RESET_TIB
 
         dw EXIT
 
@@ -501,16 +506,8 @@ _dtest_FIND_TIB2:       db 'MIND',0
 _test_FIND:
         test 1 ; expect {label_FIND}
 
-        lit 0
-        dw INN
-        dw STORE
-
-        dw TIB
-        dw AT
-
         lit _dtest_FIND_TIB
-        dw TIB
-        dw STORE
+        dw SET_TIB
 
         dw FIND
         dw DUPP
@@ -532,9 +529,7 @@ _test_FIND:
 _fail_FIND:
         dw DROP
 
-        ;;  restore TIB
-        dw TIB
-        dw STORE
+        dw RESET_TIB
 
         dw EXIT
 
@@ -1343,16 +1338,9 @@ _dtest_PWORD_TIB:
 
 _test_PWORD:
         test 1 ; expect 0004.{label__dtest_PWORD_TIB}
-        dw TIB
-        dw AT
-
-        lit 0
-        dw INN
-        dw STORE
 
         lit _dtest_PWORD_TIB
-        dw TIB
-        dw STORE
+        dw SET_TIB
 
         lit 32
         dw PWORD
@@ -1361,8 +1349,7 @@ _test_PWORD:
         emitchr .
         dw DOTHEX
 
-        dw TIB
-        dw STORE
+        dw RESET_TIB
 
         dw EXIT
 
@@ -1578,16 +1565,8 @@ _dtest_WORD_TIB:   db '  Hello World',0
 _test_WORD:
         test 1 ; expect Hello.World.
 
-        dw TIB
-        dw AT
-
-        lit 0
-        dw INN
-        dw STORE
-
         lit _dtest_WORD_TIB
-        dw TIB
-        dw STORE
+        dw SET_TIB
 
         dw BLL
         dw WORD
@@ -1601,8 +1580,7 @@ _test_WORD:
         dw TYPE
         emitchr .
 
-        dw TIB
-        dw STORE
+        dw RESET_TIB
 
         dw EXIT
 
