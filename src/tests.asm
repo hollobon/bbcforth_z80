@@ -433,7 +433,7 @@ _test_DFIND3:
 _dtest_PFIND_FORTH_1:   db 5,'WIDTH'
 
 _test_PFIND_FORTH_1:
-	test 1 ; expect 0005.{label_WIDTH}
+	test 1 ; expect 0085.{label_WIDTH}
 
         lit _dtest_PFIND_FORTH_1
         lit __NF_FIRST
@@ -467,7 +467,7 @@ _LOOKUP_SHOW:
 
 
 _test_DFIND_MULTI:
-        test 1 ; expect 0001.0002.{label_BLL}-0001.0003.{label_MAX}-0001.0004.{label_EMIT}-0001.0001.{label_NULL}
+        test 1 ; expect 0001.0082.{label_BLL}-0001.0083.{label_MAX}-0001.0084.{label_EMIT}-0001.00C1.{label_NULL}
 
         lit 0
         dw INN
