@@ -1900,6 +1900,20 @@ _test_PSA:
 
 ;; --------------------------------------------------------------------------------
 
+_dtest_INTE:    db '5 10 + .HEX', 0
+
+_test_INTE:
+        test 1 ; expect 000F
+
+        lit _dtest_INTE
+        dw SET_TIB
+        dw INTE
+        dw RESET_TIB
+
+        dw EXIT
+
+;; --------------------------------------------------------------------------------
+
 ;; _test_PEXPEC:
 ;;         ;; read line from keyboard
 ;;         lit 20
