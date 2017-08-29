@@ -1926,6 +1926,23 @@ _test_INTE_2:
 
 ;; --------------------------------------------------------------------------------
 
+_dtest_ATEXEC:  dw EMIT
+
+_test_ATEXEC:
+        test 1 ; expect AB
+
+        lit 65
+        lit 66
+        lit _dtest_ATEXEC
+        dw ROT
+        dw OVER
+        dw ATEXEC
+        dw ATEXEC
+
+        dw EXIT
+
+;; --------------------------------------------------------------------------------
+
 ;; _test_PEXPEC:
 ;;         ;; read line from keyboard
 ;;         lit 20

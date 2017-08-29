@@ -1801,6 +1801,31 @@ DOTQ:   dw DOCOL
         dw EXIT
 
 
+;;;  '
+;;;     : ' FIND DUP 0= 0 ?ERROR 2+ LITERAL ;
+_NF_TICK:
+        db $c1,'',$a7
+        dw _LF_TICK
+TICK:   dw DOCOL
+        dw FIND
+        dw DUPP
+        dw ZEQU
+        dw ZERO
+        dw QERR
+        dw TWOP
+        dw LITER
+        dw EXIT
+
+
+;;;  @EXECUTE
+_NF_ATEXEC:
+        db $88,'@EXECUT',$c5
+        dw _LF_ATEXEC
+ATEXEC: dw $+2
+        pop bc
+        jp JPCFA
+
+
 TOPDP: equ $	; TOP OF DICTIONARY
 
 TOPNFA:  equ 0 ; top non-forth area?
