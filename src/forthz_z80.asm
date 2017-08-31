@@ -1826,6 +1826,21 @@ ATEXEC: dw $+2
         jp JPCFA
 
 
+;;;  ESCAPE
+;;;     : ESCAPE SP! CR (.") 6 ?'Escape'? QUIT ;
+_NF_ESCAPE:
+        db $86,'ESCAP',$c5
+        dw _LF_ESCAPE
+ESCAPE: dw DOCOL
+        dw SPSTO
+        dw CRR
+        dw PDOTQ
+        db $6
+        db 'Escape'
+        dw QUIT
+        dw EXIT
+
+
 TOPDP: equ $	; TOP OF DICTIONARY
 
 TOPNFA:  equ 0 ; top non-forth area?
