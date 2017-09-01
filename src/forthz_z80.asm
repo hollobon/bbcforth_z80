@@ -348,6 +348,31 @@ PSCOD:  dw DOCOL
         dw EXIT
 
 
+;;;  DOES>
+;;;     : DOES> COMPILE (;CODE) 32 C, COMPILE ?DODOE? ;
+_NF_DOES:
+        db $c5,'DOES',$be
+        dw _LF_DOES
+DOES:   dw DOCOL
+        dw COMP
+        dw PSCOD
+        dw LIT
+        dw $cd                  ; Z80 call opcode
+        dw CCOMM
+        dw COMP
+        dw DODOE                ; call DODOE
+        dw EXIT
+
+DODOE:
+        ld h, b
+        ld l, c
+        inc hl
+        pop bc
+        dec bc
+        push hl
+        jp DOCOL
+
+
 ;;;  FILL
 ;;;     : FILL OVER 1 < 0BRANCH 10 DROP 2DROP BRANCH 20 SWAP >R OVER C! DUP 1+ R> 1- CMOVE EXIT ;
 _NF_FILL:
