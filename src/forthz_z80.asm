@@ -1822,7 +1822,10 @@ _NF_ATEXEC:
         db $88,'@EXECUT',$c5
         dw _LF_ATEXEC
 ATEXEC: dw $+2
-        pop bc
+        pop hl
+        ld c, (hl)
+        inc hl
+        ld b, (hl)
         jp JPCFA
 
 
