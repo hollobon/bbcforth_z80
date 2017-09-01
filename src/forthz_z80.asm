@@ -1866,7 +1866,65 @@ ESCAPE: dw DOCOL
         db $6
         db 'Escape'
         dw QUIT
+
+
+;;;  EXVEC:
+;;;     : EXVEC: CREATE NOVEC , (;CODE) ;
+_NF_XVEC:
+        db $86,'EXVEC',$ba
+        dw _LF_XVEC
+XVEC:   dw DOCOL
+        ;;        dw XCREA
+        dw PCREAT
+        dw LIT
+        dw NOVEC
+        dw COMMA
+        dw PSCOD
+DOXVEC: call DODOE
+	dw ATEXEC
+	dw EXIT
+
+
+;;;  NOVEC
+;;;     : NOVEC 12 ERROR ;
+_NF_NOVEC:
+        db $85,'NOVE',$c3
+        dw _LF_NOVEC
+NOVEC:  dw DOCOL
+        dw LIT
+        dw $c
+        dw ERROR
         dw EXIT
+
+
+;;;  DOVEC
+;;;     : DOVEC CFA SWAP ! ;
+_NF_DOVEC:
+        db $85,'DOVE',$c3
+        dw _LF_DOVEC
+DOVEC:  dw DOCOL
+        dw CFA
+        dw SWAP
+        dw STORE
+        dw EXIT
+
+
+;;;  ASSIGN
+;;;     : ASSIGN ' ;
+_NF_ASSIGN:
+        db $c6,'ASSIG',$ce
+        dw _LF_ASSIGN
+ASSIGN: dw DOCOL
+        dw TICK
+        dw EXIT
+
+
+;;;  CREATE
+_NF_CREATE:
+        db $86,'CREAT',$c5
+        dw _LF_CREATE
+CREATE: dw DOXVEC
+        dw PCREAT
 
 
 TOPDP: equ $	; TOP OF DICTIONARY
