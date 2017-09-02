@@ -1919,6 +1919,22 @@ ASSIGN: dw DOCOL
         dw EXIT
 
 
+;;;  TO-DO
+;;;     : TO-DO ' STATE @ 0BRANCH 4 COMPILE DOVEC ;
+_NF_TODO:
+        db $c5,'TO-D',$cf
+        dw _LF_TODO
+TODO:      dw DOCOL
+        dw TICK
+        dw STATE
+        dw AT
+        dw ZBRAN
+        dw $4
+        dw COMP
+        dw DOVEC
+        dw EXIT
+
+
 ;;;  CREATE
 _NF_CREATE:
         db $86,'CREAT',$c5
