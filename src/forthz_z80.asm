@@ -436,7 +436,7 @@ PCREAT:	dw DOCOL
 	dw IDDOT
 	dw LIT
 	dw $4
-        dw SMSG  ;; dw XMES
+        dw MES
 	dw SPACE
 	dw WIDTH
 	dw AT
@@ -560,7 +560,7 @@ _NF_CONST:
         db $88,'CONSTAN',$d4
         dw _LF_CONST
 CONST:  dw DOCOL
-        dw PCREAT ;; XCREA
+        dw CREA
         dw COMMA
         dw PSCOD
 DOCON:  inc bc                  ; load word from PFA into hl
@@ -637,10 +637,10 @@ BUMP:   inc iy                  ; skip the offset
 
 
 ;;;  EMIT
-_NF_XEMIT:
-        db $84,'EMI',$d4
-        dw _LF_XEMIT
-EMIT:   dw $+2
+_NF_PEMIT:
+        db $84,'(EMIT',$a9
+        dw _LF_PEMIT
+PEMIT:  dw $+2
         pop bc
         ld a, c
         and $7f
@@ -802,7 +802,6 @@ _NF_SPACE:
         dw _LF_SPACE
 SPACE:  dw DOCOL
         dw BLL
-;        dw XEMIT
         dw EMIT
         dw EXIT
 
@@ -1315,8 +1314,7 @@ ERROR:  dw DOCOL
         dw ZLESS
         dw ZBRAN
         dw $8
-        ;; dw XABOR
-        dw PABOR
+        dw ABOR
         dw BRAN
         dw $1f
         dw WBFR
@@ -1325,8 +1323,7 @@ ERROR:  dw DOCOL
         dw PDOTQ
         db $4
         db '  ? '
-        ;; dw XMES
-        dw SMSG
+        dw MES
         dw SPSTO
         dw TDROP
         dw INN
@@ -1353,7 +1350,6 @@ TYPE:   dw DOCOL
         dw XDO
         dw IDO
         dw CAT
-        ;; dw XEMIT
         dw EMIT
         dw XPULO
         dw -$8
@@ -1935,12 +1931,76 @@ TODO:      dw DOCOL
         dw EXIT
 
 
-;;;  CREATE
-_NF_CREATE:
-        db $86,'CREAT',$c5
-        dw _LF_CREATE
-CREATE: dw DOXVEC
-        dw PCREAT
+;	EMIT
+
+_NF_EMIT:
+        db	$84,'EMI',$D4
+	dw	_LF_EMIT
+EMIT:	dw	DOXVEC
+	dw	PEMIT
+
+
+;	KEY
+
+_NF_KEY:
+        db	$83,'KE',$D9
+	dw	_LF_KEY
+KEY:	dw	DOXVEC
+	dw	PKEY
+
+
+;	CREATE
+
+_NF_CREA:
+        db	$86,'CREAT',$C5
+	dw	_LF_CREA
+CREA:	dw	DOXVEC
+	dw	PCREAT
+
+
+;	NUM
+
+_NF_NUM:
+        db	$83,'NU',$CD
+	dw	_LF_NUM
+NUM:	dw	DOXVEC
+	dw	PNUM
+
+
+;	ABORT
+
+_NF_ABOR:
+        db	$85,'ABOR',$D4
+	dw	_LF_ABOR
+ABOR:	dw	DOXVEC
+	dw	PABOR
+
+
+;	MESSAGE
+
+_NF_MES:
+	db	$87,'MESSAG',$C5
+	dw	_LF_MES
+MES:	dw	DOXVEC
+	dw	SMSG
+
+
+;; ;	R/W
+
+;; _NF_RSW:
+;;         db	$83,'R/',$D7
+;; 	dw	_LF_RSW
+;; RSW:	dw	DOXVEC
+;; 	dw	DRSW
+
+
+;; ;	UPDATE
+
+;; _NF_UPDA:
+;; 	db	$86,'UPDAT',$C5
+;; 	dw	_LF_UPDA
+;; UPDA:	dw	DOXVEC
+;; 	dw	PUPDA
 
 
 TOPDP: equ $	; TOP OF DICTIONARY
