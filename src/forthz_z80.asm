@@ -2003,6 +2003,17 @@ MES:	dw	DOXVEC
 ;; 	dw	PUPDA
 
 
+;;;  ERASE
+;;;     : ERASE 0 FILL ;
+_NF_ERASE:
+        db $85,'ERAS',$c5
+        dw _LF_ERASE
+ERASE:  dw DOCOL
+        dw ZERO
+        dw FILL
+        dw EXIT
+
+
 TOPDP: equ $	; TOP OF DICTIONARY
 
 TOPNFA:  equ 0 ; top non-forth area?
