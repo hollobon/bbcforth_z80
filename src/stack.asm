@@ -306,3 +306,51 @@ ROLL:   dw $+2
         push de
 
         jp NEXT
+
+
+;;;  2SWAP
+_NF_TSWAP:
+        db $85,'2SWA',$d0
+        dw _LF_TSWAP
+TSWAP:  dw $+2
+        ld hl, 0
+        add hl, sp
+        ex de, hl
+        ld hl, 4
+        add hl, sp
+
+        ld b, (hl)
+        ex de, hl
+        ld c, (hl)
+        ld (hl), b
+        inc hl
+        ex de, hl
+        ld (hl), c
+        inc hl
+
+        ld b, (hl)
+        ex de, hl
+        ld c, (hl)
+        ld (hl), b
+        inc hl
+        ex de, hl
+        ld (hl), c
+        inc hl
+
+	ld b, (hl)
+        ex de, hl
+        ld c, (hl)
+        ld (hl), b
+        inc hl
+        ex de, hl
+        ld (hl), c
+        inc hl
+
+	ld b, (hl)
+        ex de, hl
+        ld c, (hl)
+        ld (hl), b
+        ex de, hl
+        ld (hl), c
+
+        jp NEXT

@@ -1943,6 +1943,24 @@ _test_ATEXEC:
 
 ;; --------------------------------------------------------------------------------
 
+_test_TSWAP:
+        test 1 ; expect 0123456789ABCDEF
+
+        lit $4567
+        lit $0123
+        lit $CDEF
+        lit $89AB
+
+        dw TSWAP
+        dw DOTHEX
+        dw DOTHEX
+        dw DOTHEX
+        dw DOTHEX
+
+        dw EXIT
+
+;; --------------------------------------------------------------------------------
+
 ;; _test_PEXPEC:
 ;;         ;; read line from keyboard
 ;;         lit 20
