@@ -354,3 +354,27 @@ TSWAP:  dw $+2
         ld (hl), c
 
         jp NEXT
+
+
+;;;  2OVER
+_NF_TOVER:
+        db $85,'2OVE',$d2
+        dw _LF_TOVER
+TOVER:  dw $+2
+
+        ld hl, -1
+        add hl, sp
+        ex de, hl
+
+        ld hl, 7
+        add hl, sp
+
+        ld bc, 4
+
+        lddr
+
+        ex de, hl
+        inc hl
+        ld sp, hl
+
+        jp NEXT

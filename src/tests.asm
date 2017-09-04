@@ -1961,6 +1961,26 @@ _test_TSWAP:
 
 ;; --------------------------------------------------------------------------------
 
+_test_TOVER:
+        test 1 ; expect 0123456789ABCDEF01234567
+
+        lit $4567
+        lit $0123
+        lit $CDEF
+        lit $89AB
+
+        dw TOVER
+        dw DOTHEX
+        dw DOTHEX
+        dw DOTHEX
+        dw DOTHEX
+        dw DOTHEX
+        dw DOTHEX
+
+        dw EXIT
+
+;; --------------------------------------------------------------------------------
+
 ;; _test_PEXPEC:
 ;;         ;; read line from keyboard
 ;;         lit 20
