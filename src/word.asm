@@ -318,7 +318,7 @@ _VLIST_TAB_WAIT:
         dw NOT
         dw ZBRAN
         dw _VLIST_TAB_WAIT - $
-        dw PKEY ;; XKEY
+        dw KEY
         dw BLL
         dw EQUAL
         dw ZBRAN
