@@ -336,3 +336,44 @@ _VLIST_NO_TAB:
         dw _VLIST_LOOP - $
         dw DROP
         dw EXIT
+
+
+;;;  VOCABULARY
+;;;     : VOCABULARY CREATE $A081 , CURRENT @ CFA , HERE VOC-LINK @ , VOC-LINK ! (;CODE) ;
+_NF_VOC:
+        db $8a,'VOCABULAR',$d9
+        dw _LF_VOC
+VOC:    dw DOCOL
+        dw CREA
+        dw LIT
+        dw $A081
+        dw COMMA
+        dw CURR
+        dw AT
+        dw CFA
+        dw COMMA
+        dw HERE
+        dw VOCL
+        dw AT
+        dw COMMA
+        dw VOCL
+        dw STORE
+        dw PSCOD
+DOVOC:  call DODOE
+	dw TWOP
+	dw CONT
+	dw STORE
+	dw EXIT
+
+
+;;;  DEFINITIONS
+;;;     : DEFINITIONS CONTEXT @ CURRENT ! ;
+_NF_DEFIN:
+        db $8b,'DEFINITION',$d3
+        dw _LF_DEFIN
+DEFIN:  dw DOCOL
+        dw CONT
+        dw AT
+        dw CURR
+        dw STORE
+        dw EXIT

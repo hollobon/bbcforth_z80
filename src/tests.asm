@@ -54,12 +54,12 @@ _CHECK_STACK_OK:
 SET_TIB:
         dw DOCOL
 
-        dw TIB
-        dw AT
-
         lit 0
         dw INN
         dw STORE
+
+        dw TIB
+        dw AT
 
         dw SWAP
         dw TIB
@@ -103,17 +103,10 @@ START:  dw DOCOL
 
         dw DECIM
 
-        ;; set CONTEXT
-        lit $3F00
-        dw DUPP
-        dw CONT
-        dw STORE
-        dw CURR
-        dw STORE
-
-        lit __NF_FIRST
+        dw FORTH
         dw CONT
         dw AT
+        dw CURR
         dw STORE
 
         ;; set DP (data pointer)
@@ -452,7 +445,7 @@ _test_PFIND_FORTH_1:
 	test 1 ; expect 0085.{label_WIDTH}
 
         lit _dtest_PFIND_FORTH_1
-        lit __NF_FIRST
+        lit TOPNFA
         dw PFIND
         dw ZBRAN
         dw _fail_PFIND_FORTH_1 - $
@@ -471,7 +464,7 @@ _dtest_DFIND_MULTI_TIB:       db '   BL MAX EMIT ',0
 _LOOKUP_SHOW:
         dw DOCOL
 
-        lit __NF_FIRST
+        lit TOPNFA
         dw DFIND
         dw DOTHEX
         emitchr .
@@ -1817,7 +1810,7 @@ _test_ULESS:
 ;; --------------------------------------------------------------------------------
 
 _test_CONTEXT:
-        test 1 ; expect {label___NF_FIRST}
+        test 1 ; expect {label_TOPNFA}
 
         dw CONT
         dw AT

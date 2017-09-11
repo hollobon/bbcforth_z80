@@ -68,7 +68,7 @@ UAVALUE:
 	dw	0		; Initial warning    -- WARM $E/$F
 	dw	TOPDP		; Initial fence
 	dw	TOPDP		; Initial dp
-	dw	__NF_FIRST      ; Initial VOC-LINK   -- COLD $14/$15
+	dw	VL0             ; Initial VOC-LINK   -- COLD $14/$15
 	dw	1
 
 
@@ -733,7 +733,6 @@ DFIND:  dw	DOCOL
 	dw	SWAP
 	dw	PFIND
 	dw	EXIT
-
 
 
 ;;;  FIND
@@ -2014,9 +2013,18 @@ ERASE:  dw DOCOL
         dw EXIT
 
 
-TOPDP: equ $	; TOP OF DICTIONARY
+;	FORTH
 
-TOPNFA:  equ 0 ; top non-forth area?
+_NF_FORTH:
+        db $C5,'FORT',$C8
+	dw _LF_FORTH
+FORTH:  dw DOVOC
+	dw $A081
+	dw TOPNFA
+VL0:    dw 0
+
+
+TOPDP: equ $	; TOP OF DICTIONARY
 
 include "constants.asm"
 include "user.asm"

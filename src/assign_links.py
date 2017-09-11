@@ -15,7 +15,7 @@ def set_links():
             if not match:
                 raise Exception('invalid line: {}'.format(line))
             prev_name = '_NF_' + match.groups()[0]
-        out_file.write('__NF_FIRST: equ {}'.format(prev_name))
+        out_file.write('TOPNFA: equ {}'.format(prev_name))
 
 if __name__ == '__main__':
     set_links()
