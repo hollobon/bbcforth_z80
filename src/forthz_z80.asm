@@ -12,7 +12,7 @@ WORDBU: equ UAREA+64            ; WORD BUFFER
 TIBB:   equ WORDBU+WBSIZ        ; TERMINAL INPUT BUFFER
 PADD:   equ TIBB+126            ; PAD
 
-EM: equ $7C00                   ; END OF MEMORY+1
+EM: equ $FC00                   ; END OF MEMORY+1
 BLKSIZ: equ 1024
 HDBT: equ BLKSIZ+4
 NOBUF: equ 2
@@ -50,6 +50,12 @@ L80F0:  cp 'W'
         ;;
 RSP:    dw $c200 ; return stack pointer
 CWMSG:  dm '\r\nCOLD or WARM start (C/W)?',0
+
+ORIG:   equ $		; FORTH ORIGIN
+
+L8102:  jp	COLD+2
+L8105:  jp	WARM+2
+
 COLDST: dw START
 WARMST: dw PABOR
 
@@ -70,7 +76,6 @@ UAVALUE:
 	dw	TOPDP		; Initial dp
 	dw	VL0             ; Initial VOC-LINK   -- COLD $14/$15
 	dw	1
-
 
 WRSTR:  ld a, (hl)
         inc hl
@@ -2024,10 +2029,121 @@ FORTH:  dw DOVOC
 VL0:    dw 0
 
 
-TOPDP: equ $	; TOP OF DICTIONARY
+;;;  +ORIGIN
+;;;     : +ORIGIN ?ORIG? + ;
+_NF_PORIG:
+        db $87,'+ORIGI',$ce
+        dw _LF_PORIG
+PORIG:  dw DOCOL
+        dw LIT
+        dw ORIG
+        dw PLUS
+        dw EXIT
+
+
+;;;  PRUNE
+;;;     : PRUNE VOC-LINK @ DUP 0BRANCH 90 DUP 2- CURRENT ! SWAP DUP 1- >R ?LAST? R@ OVER U< OVER 32768 U< AND 0BRANCH 12 PFA LFA @ BRANCH -28 CURRENT @ ! R> DROP OVER @ SWAP ROT OVER SWAP U< 0BRANCH 8 OVER VOC-LINK ! SWAP BRANCH -92 2DROP FORTH DEFINITIONS ;
+_NF_PRUNE:
+        db $85,'PRUN',$c5
+        dw _LF_PRUNE
+PRUNE:  dw DOCOL
+        dw VOCL
+        dw AT
+        dw DUPP
+        dw ZBRAN
+        dw $5a
+        dw DUPP
+        dw TWOSUB
+        dw CURR
+        dw STORE
+        dw SWAP
+        dw DUPP
+        dw ONESUB
+        dw TOR
+        dw LAST         ; ???
+        dw RAT
+        dw OVER
+        dw ULESS
+        dw OVER
+        dw LIT
+        dw $8000
+        dw ULESS
+        dw ANDD
+        dw ZBRAN
+        dw $c
+        dw PFA
+        dw LFA
+        dw AT
+        dw BRAN
+        dw -$1c
+        dw CURR
+        dw AT
+        dw STORE
+        dw RFROM
+        dw DROP
+        dw OVER
+        dw AT
+        dw SWAP
+        dw ROT
+        dw OVER
+        dw SWAP
+        dw ULESS
+        dw ZBRAN
+        dw $8
+        dw OVER
+        dw VOCL
+        dw STORE
+        dw SWAP
+        dw BRAN
+        dw -$5c
+        dw TDROP
+        dw FORTH
+        dw DEFIN
+        dw EXIT
+
+
+;;;  FORGET
+;;;     : FORGET CURRENT @ @ -FIND 0= 24 ?ERROR DROP 2+ NFA 0 +ORIGIN OVER U< OVER FENCE @ U< OR 21 ?ERROR DUP DP ! PRUNE ;
+_NF_FORG:
+        db $86,'FORGE',$d4
+        dw _LF_FORG
+FORG:   dw DOCOL
+        dw CURR
+        dw AT
+        dw AT
+        dw DFIND
+        dw ZEQU
+        dw LIT
+        dw $18
+        dw QERR
+        dw DROP
+        dw TWOP
+        dw NFA
+        ;; dw ZERO
+        ;; dw PORIG
+        ;; dw OVER
+        ;; dw ULESS
+        ;; dw OVER
+        dw DUPP
+        dw FENCE
+        dw AT
+        dw ULESS
+        ;; dw ORR
+        dw LIT
+        dw $15
+        dw QERR
+        dw DUPP
+        dw DP
+        dw STORE
+        dw PRUNE
+        dw EXIT
+
+
 
 include "constants.asm"
 include "user.asm"
 
 include "messages.asm"
 include "links.asm.gen"
+
+TOPDP: equ $	; TOP OF DICTIONARY

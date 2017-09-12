@@ -110,7 +110,7 @@ START:  dw DOCOL
         dw STORE
 
         ;; set DP (data pointer)
-        lit $4500
+        lit TOPDP
         dw DP
         dw STORE
 
