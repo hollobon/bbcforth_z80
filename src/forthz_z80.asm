@@ -1253,9 +1253,9 @@ PNUM:   dw DOCOL
 ;;;         boolean flag f is true. Uses ERROR. The stack is
 ;;;         always empty after an error message.
 ;;;     : ?ERROR SWAP 0BRANCH LIT 8 ERROR BRANCH LIT 4 DROP EXIT ;
-L8C21:
+_NF_QERR:
         db $86,'?ERRO',$d2
-        dw $0           ; LFA
+        dw _LF_QERR
 QERR:   dw DOCOL
         dw SWAP
         dw ZBRAN
