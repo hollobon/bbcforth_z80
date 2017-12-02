@@ -1,11 +1,11 @@
 .PHONY: test clean forthz.ROM
 
 forthz.ROM:
-	cd src && $(MAKE) $@
+	$(MAKE) -C src $@
 	cp src/$@ .
 
 test:
-	cd src && $(MAKE) $@
+	$(MAKE) -C src $@
 
 clean:
-	cd src && $(MAKE) $@
+	$(MAKE) -C src $@
