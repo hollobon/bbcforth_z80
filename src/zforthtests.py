@@ -61,7 +61,7 @@ class ZForthTestHandler(socketserver.BaseRequestHandler):
             else:
                 if line.startswith(b'DONE'):
                     break
-        print('{} tests, {} failures'.format(count, fail))
+        print('{} tests, {} passed, {} failures'.format(count, count - fail, fail))
         if fail:
             sys.exit(1)
 
