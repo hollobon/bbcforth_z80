@@ -1403,6 +1403,20 @@ DDOT:   dw DOCOL
         dw SPACE
         dw EXIT
 
+
+;;;  .R
+;;;     : .R >R S->D R> D.R ;
+_NF_DOTR:
+        db $82,'.',$d2
+        dw _LF_DOTR
+DOTR:      dw DOCOL
+        dw TOR
+        dw STOD
+        dw RFROM
+        dw DDOTR
+        dw EXIT
+
+
 ;;;  .
 ;;;     : . S->D D. EXIT ;
 _NF_DOT:
@@ -1410,6 +1424,17 @@ _NF_DOT:
         dw _LF_DOT
 DOT:    dw DOCOL
         dw STOD
+        dw DDOT
+        dw EXIT
+
+
+;;;  U.
+;;;     : U. 0 D. ;
+_NF_UDOT:
+        db $82,'U',$ae
+        dw _LF_UDOT
+UDOT:      dw DOCOL
+        dw ZERO
         dw DDOT
         dw EXIT
 
@@ -1424,6 +1449,22 @@ DECDOT: dw DOCOL
         dw AT
         dw SWAP
         dw DECIM
+        dw DOT
+        dw BASE
+        dw STORE
+        dw EXIT
+
+
+;;;  H.
+;;;     : H. BASE @ SWAP HEX . BASE ! ;
+_NF_HDOT:
+        db $82,'H',$ae
+        dw _LF_HDOT
+HDOT:      dw DOCOL
+        dw BASE
+        dw AT
+        dw SWAP
+        dw HEX
         dw DOT
         dw BASE
         dw STORE
