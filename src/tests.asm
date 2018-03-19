@@ -13,23 +13,28 @@ exit:   macro
         dw EXIT
         endm
 
-ok:     macro
-        emitchr O
-        emitchr K
-        endm
+;; ok:     macro
+;;         emitchr O
+;;         emitchr K
+;;         endm
 
 nl:     macro
         emitchr \r
         emitchr \n
         endm
 
-test:   macro number
+EMIT_TEST:
         dw DOCOL
         nl
         emitchr T
         emitchr E
         emitchr S
         emitchr T
+        dw EXIT
+
+test:   macro number
+        dw DOCOL
+        dw EMIT_TEST
         lit number
         lit $20
         dw EMIT
