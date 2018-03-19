@@ -13,11 +13,6 @@ exit:   macro
         dw EXIT
         endm
 
-;; ok:     macro
-;;         emitchr O
-;;         emitchr K
-;;         endm
-
 nl:     macro
         emitchr \r
         emitchr \n
