@@ -25,16 +25,17 @@ EMIT_TEST:
         emitchr E
         emitchr S
         emitchr T
-        dw EXIT
 
-test:   macro number
-        dw DOCOL
-        dw EMIT_TEST
-        lit number
         lit $20
         dw EMIT
         dw DOTHEX
         emitchr :
+        dw EXIT
+
+test:   macro number
+        dw DOCOL
+        lit number
+        dw EMIT_TEST
         endm
 
 CHECK_STACK:
