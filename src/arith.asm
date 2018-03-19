@@ -483,6 +483,81 @@ ULESS:  dw DOCOL
         dw EXIT
 
 
+;;;  U/
+;;; Stack Action: (ud\u1 ... u2\u3)
+;;; Uses/Leaves: 3 2
+;;; Description: Leaves the unsigned remainder u2 and unsigned quotient u3
+;;; from the division of the unsigned double number dividend ud by the
+;;; unsigned divisor u1. No protection is given against arithmetical overflow
+;;; or division by zero.
+_NF_USLAS:
+        db $82,'U',$af
+        dw _LF_USLAS
+USLAS:  dw $+2
+        pop de                  ; divisor
+        pop bc
+        ld a, b
+        pop ix                  ; ACIX = dividend
+
+        call Div32By16
+
+        push hl                 ; remainder
+        push ix                 ; quotient
+
+        jp NEXT
+
+
+;;;  U/MOD
+;;; Stack Action: (ud\u1 ... u2\u3)
+;;; divide unsigned double dividend by unsigned divisor, leaving
+;;; single remainder (u2) and quotient (u3).
+;;; Has divide-by-zero protection
+;;; Other division words use this word and therefore have division
+;;; protection.
+;;;     : U/MOD ?DUP 0BRANCH 8 U/ BRANCH 8 LIT 11 ERROR EXIT ;
+_NF_USMOD:
+        db $85,'U/MO',$c4
+        dw _LF_USMOD
+USMOD:  dw DOCOL
+        dw QDUP
+        dw ZBRAN
+        dw $8
+        dw USLAS
+        dw BRAN
+        dw $8
+        dw LIT
+        dw $b
+        dw ERROR
+        dw EXIT
+
+
+;;;  M/MOD
+;;;     : M/MOD >R 0 R@ U/MOD R> SWAP >R U/MOD R> EXIT ;
+;;; Stack Action: udl u2 ... u33ud4!
+;;;
+;;; Uses/Leaves: 3 3
+;;; Status:
+;;; Description:     Leaves, as the double number ud4 and the
+;;;         single number u3 respectively, the quotient and
+;;;         remainder from the division of the double number
+;;;         dividend ud1 by the single number divisor u2. All are
+;;;         unsigned integers .
+_NF_MSLMOD:
+        db $85,'M/MO',$c4
+        dw _LF_MSLMOD
+MSLMOD: dw DOCOL
+        dw TOR                  ; save divisor
+        dw ZERO                 ; push zero
+        dw RAT                  ; get divisor back
+        dw USMOD
+        dw RFROM
+        dw SWAP
+        dw TOR
+        dw USMOD
+        dw RFROM
+        dw EXIT
+
+
 ;;;  D+-
 ;;;     : D+- 0< 0BRANCH 4 DNEGATE EXIT ;
 _NF_DPM:
@@ -522,3 +597,88 @@ _STOD_POSITIVE:
         push hl
         push bc
         jp NEXT
+
+
+;;; http://wikiti.brandonw.net/index.php?title=Z80_Routines:Math:Division#32.2F16_division
+Div32By16:
+        ;;  IN: ACIX=dividend, DE=divisor
+        ;;  OUT:        ACIX=quotient, DE=divisor, HL=remainder, B=0
+        ld      hl,0
+        ld      b,32
+Div32By16_Loop:
+        add     ix,ix
+        rl      c
+        rla
+        adc     hl,hl
+        jr      c,Div32By16_Overflow
+        sbc     hl,de
+        jr      nc,Div32By16_SetBit
+        add     hl,de
+        djnz    Div32By16_Loop
+        ret
+Div32By16_Overflow:
+        or      a
+        sbc     hl,de
+Div32By16_SetBit:
+        inc ix
+        ;.db     $DD,$2C         ; inc ixl, change to inc ix to avoid undocumented
+        djnz    Div32By16_Loop
+        ret
+
+
+;;;  /
+;;;     : / /MOD SWAP DROP ;
+;;; Stack Action: (n1\n2 ... n3)
+;;; Uses/Leaves: 2 0
+;;; Description: Leaves the value n3 = n1 n2 /.
+_NF_SLASH:
+        db $81,'',$af
+        dw _LF_SLASH
+SLASH:  dw DOCOL
+        dw SLMOD
+        dw SWAP
+        dw DROP
+        dw EXIT
+
+
+;;;  /MOD
+;;;     : /MOD >R S->D R> M/ ;
+_NF_SLMOD:
+        db $84,'/MO',$c4
+        dw _LF_SLMOD
+SLMOD:  dw DOCOL
+        dw TOR
+        dw STOD
+        dw RFROM
+        dw MSLAS
+        dw EXIT
+
+
+;;;  M/
+;;; Stack Action: (ud\n1 ... n2\n3)
+;;;     : M/ OVER >R >R DABS R@ ABS U/MOD R> R@ XOR +- SWAP R> +- SWAP ;
+;;; Description: Leaves, as the single numbers n2 and n3
+;;; respectively, the signed remainder and signed quotient
+;;; from the division of the double number dividend nd by
+;;; the single number divisor nl. The sign of the remainder
+;;; is that of the dividend.
+_NF_MSLAS:
+        db $82,'M',$af
+        dw _LF_MSLAS
+MSLAS:  dw DOCOL
+        dw OVER
+        dw TOR
+        dw TOR
+        dw DABS
+        dw RAT
+        dw ABS
+        dw USMOD
+        dw RFROM
+        dw RAT
+        dw XORR
+        dw PM
+        dw SWAP
+        dw RFROM
+        dw PM
+        dw SWAP
+        dw EXIT

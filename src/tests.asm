@@ -1974,6 +1974,114 @@ _test_TOVER:
 
 ;; --------------------------------------------------------------------------------
 
+_test_USLAS:
+        test 1 ; expect 0001000371FF049E
+
+        lit $0015               ; dividend low-order word
+        lit $0000               ; dividend high-order word
+        lit $0012               ; divisor
+        dw USLAS                ; result is remainder quotient
+        dw DOTHEX
+        dw DOTHEX
+
+        lit $AB63
+        lit $46E7
+        lit $9F3B
+        dw USLAS
+        dw DOTHEX
+        dw DOTHEX
+
+        dw EXIT
+
+;; --------------------------------------------------------------------------------
+
+;; _test_USMOD:
+;;         test 1 ; expect 0001000371FF049E   ? Can't divide by zero
+
+;;         lit $0015               ; dividend low-order word
+;;         lit $0000               ; dividend high-order word
+;;         lit $0012               ; divisor
+;;         dw USMOD                ; result is remainder quotient
+;;         dw DOTHEX
+;;         dw DOTHEX
+
+;;         lit $AB63
+;;         lit $46E7
+;;         lit $9F3B
+;;         dw USMOD
+;;         dw DOTHEX
+;;         dw DOTHEX
+
+;;         lit $FFFF
+;;         lit $FFFF
+;;         lit $0000
+;;         dw USMOD
+;;         dw DOTHEX
+;;         dw DOTHEX
+
+;;         dw EXIT
+
+;; --------------------------------------------------------------------------------
+
+_test_MSLAS:
+        test 1 ; expect 25F8445894D402C8
+
+        lit $5678
+        lit $1234
+        lit $7abc
+        dw MSLAS
+        dw DOTHEX
+        dw DOTHEX
+
+        lit $5678
+        lit $0234
+        lit $fabc
+        dw MSLAS
+        dw DOTHEX
+        dw DOTHEX
+
+        dw EXIT
+
+
+;; --------------------------------------------------------------------------------
+
+_test_SLASH:
+        test 1 ; expect 001C
+
+        lit $76AC
+        lit $042E
+        dw SLASH
+        dw DOTHEX
+
+        dw EXIT
+
+;; --------------------------------------------------------------------------------
+
+_test_DECDOT:
+        test 1 ; expect 4660 -1
+
+        lit $1234
+        dw DECDOT
+
+        lit $FFFF
+        dw DECDOT
+
+        dw EXIT
+;; --------------------------------------------------------------------------------
+
+_test_HEX:
+        test 1 ; expect 31486 7AFE
+
+        lit $7AFE
+        dw DUPP
+        dw DOT
+        dw HEX
+        dw DOT
+
+        dw EXIT
+
+;; --------------------------------------------------------------------------------
+
 ;; _test_PEXPEC:
 ;;         ;; read line from keyboard
 ;;         lit 20

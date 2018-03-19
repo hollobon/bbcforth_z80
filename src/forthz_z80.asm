@@ -1272,6 +1272,179 @@ QERR:   dw DOCOL
         dw EXIT
 
 
+;;;  #
+;;;     : # BASE @ M/MOD ROT LIT 9 OVER < 0BRANCH 8 LIT 7 + LIT ?'0'? + HOLD EXIT ;
+_NF_DIG:
+        db $81,'',$a3
+        dw _LF_DIG
+DIG:        dw DOCOL
+        dw BASE
+        dw AT
+        dw MSLMOD
+        dw ROT
+        dw LIT
+        dw $9
+        dw OVER
+        dw LESS
+        dw ZBRAN
+        dw $8
+        dw LIT
+        dw $7
+        dw PLUS
+        dw LIT
+        dw '0'
+        dw PLUS
+        dw HOLD
+        dw EXIT
+
+
+;;;  #S
+;;;     : #S # 2DUP OR 0= 0BRANCH -10 EXIT ;
+_NF_DIGS:
+        db $82,'#',$d3
+        dw _LF_DIGS
+DIGS:   dw DOCOL
+        dw DIG
+        dw TDUP
+        dw ORR
+        dw ZEQU
+        dw ZBRAN
+        dw -$a
+        dw EXIT
+
+
+;;;  #>
+;;;     : #> 2DROP HLD @ PAD OVER - EXIT ;
+_NF_EDIG:
+        db $82,'#',$be
+        dw _LF_EDIG
+EDIG:   dw DOCOL
+        dw TDROP
+        dw HLD
+        dw AT
+        dw PAD
+        dw OVER
+        dw SUBB
+        dw EXIT
+
+
+;;;  <#
+;;;     : <# PAD HLD ! EXIT ;
+_NF_BDIG:
+        db $82,'<',$a3
+        dw _LF_BDIG
+BDIG:   dw DOCOL
+        dw PAD
+        dw HLD
+        dw STORE
+        dw EXIT
+
+
+;;;  HOLD
+;;;     : HOLD -1 HLD +! HLD @ C! EXIT ;
+_NF_HOLD:
+        db $84,'HOL',$c4
+        dw _LF_HOLD
+HOLD:   dw DOCOL
+        dw TRUE
+        dw HLD
+        dw PSTOR
+        dw HLD
+        dw AT
+        dw CSTOR
+        dw EXIT
+
+
+;;;  SIGN
+;;;     : SIGN ROT 0< 0BRANCH 8 LIT ?'-'? HOLD EXIT ;
+_NF_SIGN:
+        db $84,'SIG',$ce
+        dw _LF_SIGN
+SIGN:   dw DOCOL
+        dw ROT
+        dw ZLESS
+        dw ZBRAN
+        dw $8
+        dw LIT
+        dw '-'
+        dw HOLD
+        dw EXIT
+
+;;;  D.R
+;;;     : D.R >R SWAP OVER DABS <# #S SIGN #> R> OVER - SPACES TYPE EXIT ;
+_NF_DDOTR:
+        db $83,'D.',$d2
+        dw _LF_DDOTR
+DDOTR:  dw DOCOL
+        dw TOR
+        dw SWAP
+        dw OVER
+        dw DABS
+        dw BDIG
+        dw DIGS
+        dw SIGN
+        dw EDIG
+        dw RFROM
+        dw OVER
+        dw SUBB
+        dw SPACS
+        dw TYPE
+        dw EXIT
+
+
+;;;  D.
+;;;     : D. 0 D.R SPACE EXIT ;
+_NF_DDOT:
+        db $82,'D',$ae
+        dw _LF_DDOT
+DDOT:   dw DOCOL
+        dw ZERO
+        dw DDOTR
+        dw SPACE
+        dw EXIT
+
+;;;  .
+;;;     : . S->D D. EXIT ;
+_NF_DOT:
+        db $81,'',$ae
+        dw _LF_DOT
+DOT:    dw DOCOL
+        dw STOD
+        dw DDOT
+        dw EXIT
+
+
+;;;  DEC.
+;;;     : DEC. BASE @ SWAP DECIMAL . BASE ! EXIT ;
+_NF_DECDOT:
+        db $84,'DEC',$ae
+        dw _LF_DECDOT
+DECDOT: dw DOCOL
+        dw BASE
+        dw AT
+        dw SWAP
+        dw DECIM
+        dw DOT
+        dw BASE
+        dw STORE
+        dw EXIT
+
+
+;;;  MSG#
+;;;     : MSG# ?DUP 0BRANCH 13 (.") 6 ?'MSG # '? DEC. EXIT ;
+_NF_MSGNUM:
+        db $84,'MSG',$a3
+        dw _LF_MSGNUM
+MSGNUM: dw DOCOL
+        dw QDUP
+        dw ZBRAN
+        dw $d
+        dw PDOTQ
+        db $6,'MSG # '
+        dw DECDOT
+        dw EXIT
+
+
 ;;;  $MSG
 ;;;     : $MSG DUP DUP 0> SWAP LIT 26 < AND 0BRANCH 32 LIT ?LB47E? SWAP 0 (DO) DUP C@ + 1+ (LOOP) -10 COUNT TYPE BRANCH 4 MSG# EXIT ;
 _NF_SMSG:
