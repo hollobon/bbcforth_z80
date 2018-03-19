@@ -2043,7 +2043,6 @@ _test_MSLAS:
 
         dw EXIT
 
-
 ;; --------------------------------------------------------------------------------
 
 _test_SLASH:
@@ -2117,6 +2116,19 @@ _test_DOTR:
         dw EXIT
 
 ;; --------------------------------------------------------------------------------
+
+_dtest_NUMFORMAT:    db ': .POUNDS DUP ROT ROT DABS <# # # 46 HOLD #S SIGN 96 HOLD #> TYPE SPACE ; -123456. .POUNDS', 0
+
+_test_NUMFORMAT:
+        test 1 ; expect `-1234.56
+
+        lit _dtest_NUMFORMAT
+        dw SET_TIB
+        dw INTE
+        dw RESET_TIB
+
+        dw EXIT
+
 
 ;; _test_PEXPEC:
 ;;         ;; read line from keyboard

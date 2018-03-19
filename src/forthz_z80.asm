@@ -1277,7 +1277,7 @@ QERR:   dw DOCOL
 _NF_DIG:
         db $81,'',$a3
         dw _LF_DIG
-DIG:        dw DOCOL
+DIG:    dw DOCOL
         dw BASE
         dw AT
         dw MSLMOD
