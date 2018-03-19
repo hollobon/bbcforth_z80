@@ -21,10 +21,10 @@ class ZForthTestHandler(socketserver.BaseRequestHandler):
                     labels['label_' + match.groups()[0]] = match.groups()[1].upper()
         with open('expect.txt') as expect_file:
             for line in expect_file:
-                test_number, expected_value = line.strip().split(maxsplit=1)
+                test_number, expected_value = line.strip().split(' ', 1)
                 label, test_number = test_number.split(':')
                 self.expected[int(test_number)] = (label, expected_value.format(**labels))
-                
+
     def lines(self):
         while True:
             data = self.request.recv(1024)
