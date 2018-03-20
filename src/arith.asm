@@ -366,6 +366,35 @@ NOADD:  ex de, hl
         jp NEXT
 
 
+;;;  *
+;;;     : * U* DROP ;
+_NF_STAR:
+        db $81,'',$aa
+        dw _LF_STAR
+STAR:   dw DOCOL
+        dw USTAR
+        dw DROP
+        dw EXIT
+
+
+;;;  M*
+;;;     : M* 2DUP XOR >R ABS SWAP ABS U* R> D+- ;
+_NF_MSTAR:
+        db $82,'M',$aa
+        dw _LF_MSTAR
+MSTAR:  dw DOCOL
+        dw TDUP
+        dw XORR
+        dw TOR
+        dw ABS
+        dw SWAP
+        dw ABS
+        dw USTAR
+        dw RFROM
+        dw DPM
+        dw EXIT
+
+
 ;;;  DECIMAL
 ;;;     : DECIMAL LIT 10 BASE ! EXIT ;
 _NF_DECIM:

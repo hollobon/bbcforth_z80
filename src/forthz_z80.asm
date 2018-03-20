@@ -1370,6 +1370,7 @@ SIGN:   dw DOCOL
         dw HOLD
         dw EXIT
 
+
 ;;;  D.R
 ;;;     : D.R >R SWAP OVER DABS <# #S SIGN #> R> OVER - SPACES TYPE EXIT ;
 _NF_DDOTR:

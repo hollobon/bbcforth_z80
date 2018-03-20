@@ -1180,6 +1180,37 @@ _test_USTAR:
 
 ;;; --------------------------------------------------------------------------------
 
+_test_MSTAR:
+        test 1 ; expect 00000004FFFFFC5800000144
+
+        lit $2
+        dw DUPP
+        dw MSTAR
+        dw DDOTHEX
+        lit $12
+        lit $FFCC
+        dw MSTAR
+        dw DDOTHEX
+
+        lit $FFEE
+        dw DUPP
+        dw MSTAR
+        dw DDOTHEX
+
+        dw EXIT
+
+;;; --------------------------------------------------------------------------------
+
+_test_STAR:
+        test 1 ; expect 0001
+	lit $FFFF
+        lit $FFFF
+        dw STAR
+        dw DOTHEX
+
+        dw EXIT
+
+
 _test_default_BASE:
         test 1 ; expect 000A
 
