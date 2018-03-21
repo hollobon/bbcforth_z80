@@ -1215,10 +1215,11 @@ _test_DO_ULOOP:
         lit 6
         lit 0
         dw XDO
+__test_DO_ULOOP_loop:
         lit 'x'
         dw EMIT
         dw XPULO
-        dw -$8
+        dw __test_DO_ULOOP_loop - $
 
         emitchr y
 
@@ -1261,10 +1262,11 @@ __test_DO_LOOP_loop:
         lit -3
         lit -6
         dw XDO
+__test_DO_LOOP_loop_2:
         dw IDO
         dw DOTHEX
         dw XLOOP
-        dw -$6
+        dw __test_DO_LOOP_loop_2 - $
 
         emitchr #
 
