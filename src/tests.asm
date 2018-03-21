@@ -377,38 +377,32 @@ _CFAD:  dw $0
         dw $0
 
 _test_PFIND:
-        test 1 ; expect 0001.0005.{label__CFAA}
+        test 1 ; expect 00010005{label__CFAA}
         lit TSTNAME
         lit _WORDA
         dw PFIND
         dw DOTHEX
-        emitchr .
         dw DOTHEX
-        emitchr .
         dw DOTHEX
         dw EXIT
 
 _test_PFIND2:
-        test 1 ; expect 0001.0005.{label__CFAA}
+        test 1 ; expect 00010005{label__CFAA}
         lit TSTNAME
         lit _WORDB
         dw PFIND
         dw DOTHEX
-        emitchr .
         dw DOTHEX
-        emitchr .
         dw DOTHEX
         dw EXIT
 
 _test_PFIND3:
-        test 1 ; expect 0001.0008.{label__CFAD}
+        test 1 ; expect 00010008{label__CFAD}
         lit TSTNAME2
         lit _WORDD
         dw PFIND
         dw DOTHEX
-        emitchr .
         dw DOTHEX
-        emitchr .
         dw DOTHEX
         dw EXIT
 
@@ -423,7 +417,7 @@ _test_PFIND_NOTFOUND:
 _dtest_DFIND_TIB:       db '   SECOND    '
 
 _test_DFIND3:
-        test 1 ; expect 0001.0006.{label__CFAB}
+        test 1 ; expect 00010006{label__CFAB}
 
         lit _dtest_DFIND_TIB
         dw SET_TIB
@@ -431,9 +425,7 @@ _test_DFIND3:
         lit _WORDD
         dw DFIND
         dw DOTHEX
-        emitchr .
         dw DOTHEX
-        emitchr .
         dw DOTHEX
 
         dw RESET_TIB
@@ -443,7 +435,7 @@ _test_DFIND3:
 _dtest_PFIND_FORTH_1:   db 5,'WIDTH'
 
 _test_PFIND_FORTH_1:
-	test 1 ; expect 0085.{label_WIDTH}
+	test 1 ; expect 0085{label_WIDTH}
 
         lit _dtest_PFIND_FORTH_1
         lit TOPNFA
@@ -451,7 +443,6 @@ _test_PFIND_FORTH_1:
         dw ZBRAN
         dw _fail_PFIND_FORTH_1 - $
         dw DOTHEX
-        emitchr .
         dw DOTHEX
         dw BRAN
         dw _end_PFIND_FORTH_1 - $
@@ -468,16 +459,14 @@ _LOOKUP_SHOW:
         lit TOPNFA
         dw DFIND
         dw DOTHEX
-        emitchr .
         dw DOTHEX
-        emitchr .
         dw DOTHEX
 
         dw EXIT
 
 
 _test_DFIND_MULTI:
-        test 1 ; expect 0001.0082.{label_BLL}-0001.0083.{label_MAX}-0001.0084.{label_EMIT}-0001.00C1.{label_NULL}
+        test 1 ; expect 00010082{label_BLL}-00010083{label_MAX}-00010084{label_EMIT}-000100C1{label_NULL}
 
         lit _dtest_DFIND_MULTI_TIB
         dw SET_TIB
@@ -533,11 +522,10 @@ _fail_FIND:
 _EX1:   dw $1234
 
 _test_AT_STORE:
-        test 1 ; expect 1234.FADB
+        test 1 ; expect 1234FADB
         lit _EX1
         dw AT
         dw DOTHEX
-        emitchr .
         lit $FADB
         lit _EX1
         dw STORE
@@ -600,10 +588,9 @@ _emit6: dw DOCOL
         dw EXIT
 
 _test_CMOVE:
-        test 1 ; expect xxxxxx.atestx
+        test 1 ; expect xxxxxxatestx
         lit _tcmove_TO
 	dw _emit6
-        emitchr .
         lit _tcmove_FROM
         lit _tcmove_TO
         lit 5
@@ -633,11 +620,10 @@ _d_test_CSTOR:
         dw $0000
 
 _test_CSTOR:
-        test 1 ; expect 0000.00DE
+        test 1 ; expect 000000DE
 	lit _d_test_CSTOR
         dw AT
         dw DOTHEX
-        emitchr .
         lit $BCDE
 	lit _d_test_CSTOR
         dw CSTOR
@@ -664,17 +650,15 @@ _test_PSTORE:
 ;;; --------------------------------------------------------------------------------
 
 _test_ZLESS:
-        test 1 ; expect 0000.0001.0000
+        test 1 ; expect 000000010000
 
         lit $0001
         dw ZLESS
         dw DOTHEX
-        emitchr .
 
         lit $FFFF
         dw ZLESS
         dw DOTHEX
-        emitchr .
 
         lit $0
         dw ZLESS
@@ -685,17 +669,15 @@ _test_ZLESS:
 ;;; --------------------------------------------------------------------------------
 
 _test_NEGAT:
-        test 1 ; expect FFFF.FF00.0001
+        test 1 ; expect FFFFFF000001
 
         lit $1
         dw NEGAT
         dw DOTHEX
-        emitchr .
 
         lit $100
         dw NEGAT
         dw DOTHEX
-        emitchr .
 
         lit $FFFF
         dw NEGAT
@@ -706,12 +688,11 @@ _test_NEGAT:
 ;;; --------------------------------------------------------------------------------
 
 _test_PM:
-        test 1 ; expect 0001.FFFE
+        test 1 ; expect 0001FFFE
         lit $1
         lit $1
         dw PM
         dw DOTHEX
-        emitchr .
 
         lit $2
         lit $FFFF
@@ -723,12 +704,11 @@ _test_PM:
 ;;; --------------------------------------------------------------------------------
 
 _test_MIN:
-        test 1 ; expect 0005.00AA
+        test 1 ; expect 000500AA
         lit 5
         lit 6
         dw MIN
         dw DOTHEX
-        emitchr .
 
         lit $7A00
         lit $00AA
@@ -740,31 +720,26 @@ _test_MIN:
 ;;; --------------------------------------------------------------------------------
 
 _test_ZEQU:
-        test 1 ; expect 0001.0000.0000.0000.0000.0000
+        test 1 ; expect 000100000000000000000000
         lit $0
         dw ZEQU
         dw DOTHEX
-        emitchr .
 
         lit $1
         dw ZEQU
         dw DOTHEX
-        emitchr .
 
         lit $FFFF
         dw ZEQU
         dw DOTHEX
-        emitchr .
 
         lit $0101
         dw ZEQU
         dw DOTHEX
-        emitchr .
 
         lit $00FF
         dw ZEQU
         dw DOTHEX
-        emitchr .
 
         lit $FF00
         dw ZEQU
@@ -795,11 +770,10 @@ STACKHEIGHT:
         dw EXIT
 
 _test_SPAT_SZERO:
-        test 1 ; expect 0000.0006.0000
+        test 1 ; expect 000000060000
 
         ;; check that SP@ - S0 is 0
         dw STACKHEIGHT
-        emitchr .
 
         ;; push 3 things on stack and check stack depth is 6 bytes
         lit 1
@@ -807,7 +781,6 @@ _test_SPAT_SZERO:
         lit 1
 
         dw STACKHEIGHT
-        emitchr .
 
         ;;  check that SP! resets stack
         dw SPSTO
@@ -817,7 +790,7 @@ _test_SPAT_SZERO:
 ;;; --------------------------------------------------------------------------------
 
 _test_PICK:
-        test 1 ; expect BEEF.600D.6006
+        test 1 ; expect BEEF600D6006
         lit $6006
         lit $EEFF
         lit $BEEF
@@ -828,12 +801,10 @@ _test_PICK:
         lit 3
         dw PICK
         dw DOTHEX
-        emitchr .
 
         lit 0
         dw PICK
         dw DOTHEX
-        emitchr .
 
         lit 5
         dw PICK
@@ -847,45 +818,39 @@ _test_PICK:
 ;;; --------------------------------------------------------------------------------
 
 _test_TSTAR:
-        test 1 ; expect 0004.0000.0100.
+        test 1 ; expect 000400000100
 
         lit $2
         dw TSTAR
         dw DOTHEX
-        emitchr .
 
         lit $0
         dw TSTAR
         dw DOTHEX
-        emitchr .
 
         lit $80
         dw TSTAR
         dw DOTHEX
-        emitchr .
 
         dw EXIT
 
 ;;; --------------------------------------------------------------------------------
 
 _test_TSLAS:
-        test 1 ; expect 0001.0000.0080.C001
+        test 1 ; expect 000100000080C001
 
         lit $2
         dw TSLAS
         dw DOTHEX
-        emitchr .
 
         lit $0
         dw TSLAS
         dw DOTHEX
-        emitchr .
 
         ;; check carry crosses from MSB to LSB
         lit $0100
         dw TSLAS
         dw DOTHEX
-        emitchr .
 
         ;; check sign maintained
         lit $8002
@@ -897,22 +862,19 @@ _test_TSLAS:
 ;;; --------------------------------------------------------------------------------
 
 _test_ABS:
-        test 1 ; expect 0000.0001.0001.7FFF
+        test 1 ; expect 0000000100017FFF
 
         lit $0
         dw ABS
         dw DOTHEX
-        emitchr .
 
         lit $1
         dw ABS
         dw DOTHEX
-        emitchr .
 
         lit $FFFF
         dw ABS
         dw DOTHEX
-        emitchr .
 
         lit $8001
         dw ABS
@@ -923,17 +885,15 @@ _test_ABS:
 ;;; --------------------------------------------------------------------------------
 
 _test_ONESUB:
-        test 1 ; expect 0001.FFFF.0000
+        test 1 ; expect 0001FFFF0000
 
         lit $2
         dw ONESUB
         dw DOTHEX
-        emitchr .
 
         lit $0
         dw ONESUB
         dw DOTHEX
-        emitchr .
 
         lit $1
         dw ONESUB
@@ -944,17 +904,15 @@ _test_ONESUB:
 ;;; --------------------------------------------------------------------------------
 
 _test_TWOSUB:
-        test 1 ; expect 0001.FFFE.0000
+        test 1 ; expect 0001FFFE0000
 
         lit $3
         dw TWOSUB
         dw DOTHEX
-        emitchr .
 
         lit $0
         dw TWOSUB
         dw DOTHEX
-        emitchr .
 
         lit $2
         dw TWOSUB
@@ -965,13 +923,12 @@ _test_TWOSUB:
 ;;; --------------------------------------------------------------------------------
 
 _test_ANDD:
-        test 1 ; expect 0000.F005
+        test 1 ; expect 0000F005
 
         lit $FFFF
         lit $0000
         dw ANDD
         dw DOTHEX
-        emitchr .
 
         lit $FEE7
         lit $F005
@@ -983,13 +940,12 @@ _test_ANDD:
 ;;; --------------------------------------------------------------------------------
 
 _test_ORR:
-        test 1 ; expect FFFF.FEE7
+        test 1 ; expect FFFFFEE7
 
         lit $FFFF
         lit $0000
         dw ORR
         dw DOTHEX
-        emitchr .
 
         lit $F005
         lit $4EE2
@@ -1001,13 +957,12 @@ _test_ORR:
 ;;; --------------------------------------------------------------------------------
 
 _test_XORR:
-        test 1 ; expect BB9C.0010
+        test 1 ; expect BB9C0010
 
         lit $F4A8
         lit $4F34
         dw XORR
         dw DOTHEX
-        emitchr .
 
         lit $FF0F
         lit $FF1F
@@ -1019,11 +974,10 @@ _test_XORR:
 ;;; --------------------------------------------------------------------------------
 
 _test_DEPTH:
-        test 1 ; expect 0000.0005.0000
+        test 1 ; expect 000000050000
 
         dw DEPTH
         dw DOTHEX
-        emitchr .
 
         lit $0
         lit $0
@@ -1033,7 +987,6 @@ _test_DEPTH:
 
         dw DEPTH
         dw DOTHEX
-        emitchr .
 
         dw DROP
         dw DROP
@@ -1050,7 +1003,7 @@ _test_DEPTH:
 ;;; --------------------------------------------------------------------------------
 
 _test_DIGIT:
-        test 1 ; expect 0001-0004.0001-000E.0001-0023.0000.0000.0000
+        test 1 ; expect 0001-00040001-000E0001-0023000000000000
 
         lit '4'
         lit 10
@@ -1058,7 +1011,6 @@ _test_DIGIT:
         dw DOTHEX
         emitchr -
         dw DOTHEX
-        emitchr .
 
         lit 'E'
         lit 16
@@ -1066,7 +1018,6 @@ _test_DIGIT:
         dw DOTHEX
         emitchr -
         dw DOTHEX
-        emitchr .
 
         lit 'Z'
         lit 36
@@ -1074,19 +1025,16 @@ _test_DIGIT:
         dw DOTHEX
         emitchr -
         dw DOTHEX
-	emitchr .
 
         lit 'A'
         lit 10
         dw DIGIT
         dw DOTHEX
-        emitchr .
 
         lit ':'
         lit 16
         dw DIGIT
         dw DOTHEX
-	emitchr .
 
         lit 'G'
         lit 16
@@ -1098,7 +1046,7 @@ _test_DIGIT:
 ;;; --------------------------------------------------------------------------------
 
 _test_TOR_RFROM:
-        test 1 ; expect 0002.1234.0000
+        test 1 ; expect 000212340000
 
         dw RPAT
 
@@ -1110,12 +1058,10 @@ _test_TOR_RFROM:
         dw SUBB
         dw DOTHEX
 
-        emitchr .
 
         dw RFROM
         dw DOTHEX
 
-        emitchr .
 
         dw RPAT
         dw SUBB
@@ -1132,7 +1078,7 @@ DDOTHEX:
         dw EXIT
 
 _test_DPLUS:
-        test 1 ; expect 00010000.01000400
+        test 1 ; expect 0001000001000400
 
         lit $1000
         lit $0000
@@ -1141,7 +1087,6 @@ _test_DPLUS:
         dw DPLUS
         dw DDOTHEX
 
-        emitchr .
 
         lit $0280
         lit $0080
@@ -1155,21 +1100,19 @@ _test_DPLUS:
 ;;; --------------------------------------------------------------------------------
 
 _test_USTAR:
-        test 1 ; expect 000003A8.00010000.FFFE0001
+        test 1 ; expect 000003A800010000FFFE0001
 
         lit $12
         lit $34
         dw USTAR
         dw DDOTHEX
 
-        emitchr .
 
         lit $8000
         lit $0002
         dw USTAR
         dw DDOTHEX
 
-        emitchr .
 
         lit $FFFF
         lit $FFFF
@@ -1226,7 +1169,7 @@ _dtest_CONV:  db 10,'1234xxxxxx'
 _dtest_CONV2:  db 6,'53605 '
 
 _test_CONV:
-        test 1 ; expect 000004D2.0000D165
+        test 1 ; expect 000004D20000D165
 
         lit 0
         lit 0
@@ -1235,7 +1178,6 @@ _test_CONV:
         dw DROP
         dw DDOTHEX
 
-        emitchr .
 
         lit 0
         lit 0
@@ -1260,17 +1202,15 @@ _test_USER:
 ;;; --------------------------------------------------------------------------------
 
 _test_DO_ULOOP:
-        test 1 ; expect 0000.0006.xxxxxxy
+        test 1 ; expect 00000006xxxxxxy
 
         lit 6  ; limit
         lit 0  ; initial value
         dw XDO
         dw RFROM
         dw DOTHEX
-        emitchr .
         dw RFROM
         dw DOTHEX
-        emitchr .
 
         lit 6
         lit 0
@@ -1287,16 +1227,16 @@ _test_DO_ULOOP:
 ;;; --------------------------------------------------------------------------------
 
 _test_DO_ULOOP_I:
-        test 1 ; expect 0001.0002.0003.0004.0005.#
+        test 1 ; expect 00010002000300040005#
 
         lit 6
         lit 1
         dw XDO
+__test_DO_ULOOP_I_loop:
         dw IDO
         dw DOTHEX
-        emitchr .
         dw XPULO
-        dw -$C
+        dw __test_DO_ULOOP_I_loop - $
 
         emitchr #
 
@@ -1305,16 +1245,16 @@ _test_DO_ULOOP_I:
 ;;; --------------------------------------------------------------------------------
 
 _test_DO_LOOP:
-        test 1 ; expect FFFD.FFFE.FFFF.0000.0001.0002.#FFFA.FFFB.FFFC.#
+        test 1 ; expect FFFDFFFEFFFF000000010002#FFFAFFFBFFFC#
 
         lit 3
         lit -3
         dw XDO
+__test_DO_LOOP_loop:
         dw IDO
         dw DOTHEX
-        emitchr .
         dw XLOOP
-        dw -$C
+        dw __test_DO_LOOP_loop - $
 
         emitchr #
 
@@ -1323,9 +1263,8 @@ _test_DO_LOOP:
         dw XDO
         dw IDO
         dw DOTHEX
-        emitchr .
         dw XLOOP
-        dw -$C
+        dw -$6
 
         emitchr #
 
@@ -1362,7 +1301,7 @@ _dtest_PWORD_TIB:
         db 'this is a test'
 
 _test_PWORD:
-        test 1 ; expect 0004.{label__dtest_PWORD_TIB}
+        test 1 ; expect 0004{label__dtest_PWORD_TIB}
 
         lit _dtest_PWORD_TIB
         dw SET_TIB
@@ -1371,7 +1310,6 @@ _test_PWORD:
         dw PWORD
 
         dw DOTHEX
-        emitchr .
         dw DOTHEX
 
         dw RESET_TIB
@@ -1412,7 +1350,7 @@ _test_ALLOT:
 ;;; --------------------------------------------------------------------------------
 
 _test_COMMA:
-        test 1 ; expect 0002.BEEF
+        test 1 ; expect 0002BEEF
 
         dw HERE
 
@@ -1424,7 +1362,6 @@ _test_COMMA:
         dw SUBB
         dw DOTHEX
 
-        emitchr .
 
         dw HERE
         dw TWOSUB
@@ -1436,20 +1373,18 @@ _test_COMMA:
 ;;; --------------------------------------------------------------------------------
 
 _test_DNEGAT:
-        test 1 ; expect 00000001.00100001.EB61753C
+        test 1 ; expect 0000000100100001EB61753C
         lit $FFFF
         lit $FFFF
         dw DNEGAT
         dw DDOTHEX
 
-        emitchr .
 
         lit $FFFF
         lit $FFEF
         dw DNEGAT
         dw DDOTHEX
 
-	emitchr .
 
         lit $8AC4
         lit $149E
@@ -1468,19 +1403,17 @@ _dtest_NUMBER_3:
         db 8,'7FEEB1E9'
 
 _test_NUMBER:
-        test 1 ; expect 00075E62.FFFFFB2E.7FEEB1E9
+        test 1 ; expect 00075E62FFFFFB2E7FEEB1E9
 
         lit _dtest_NUMBER
         dw NUMBER
         dw DDOTHEX
 
-        emitchr .
 
         lit _dtest_NUMBER_2
         dw NUMBER
         dw DDOTHEX
 
-        emitchr .
 
         dw HEX
         lit _dtest_NUMBER_3
@@ -1520,14 +1453,13 @@ _test_EXEC:
 ;;; --------------------------------------------------------------------------------
 
 _test_TRAVERSE:
-        test 1 ; expect {label__NF_TRAV}.{label_TRAV}
+        test 1 ; expect {label__NF_TRAV}{label_TRAV}
 
         lit TRAV-3
         lit -1
         dw TRAV
 	dw DOTHEX
 
-        emitchr .
 
         lit _NF_TRAV
         lit 1
@@ -1546,39 +1478,36 @@ _ENCLOSE_TEST:
         lit 'c'
         dw ENCL
         dw DOTHEX
-        emitchr .
         dw DOTHEX
-        emitchr .
         dw DOTHEX
-        emitchr .
         dw DOTHEX
 
         dw EXIT
 
 _dtest_ENCLOSE_1:        db 'ccABCDcc'
 _test_ENCLOSE_1:
-        test 1 ; expect 0007.0006.0002.{label__dtest_ENCLOSE_1}
+        test 1 ; expect 000700060002{label__dtest_ENCLOSE_1}
         lit _dtest_ENCLOSE_1
         dw _ENCLOSE_TEST
         dw EXIT
 
 _dtest_ENCLOSE_2:        db 'ABCDcc'
 _test_ENCLOSE_2:
-        test 1 ; expect 0005.0004.0000.{label__dtest_ENCLOSE_2}
+        test 1 ; expect 000500040000{label__dtest_ENCLOSE_2}
         lit _dtest_ENCLOSE_2
         dw _ENCLOSE_TEST
         dw EXIT
 
 _dtest_ENCLOSE_3:        db 'ABC',0,'c'
 _test_ENCLOSE_3:
-        test 1 ; expect 0003.0003.0000.{label__dtest_ENCLOSE_3}
+        test 1 ; expect 000300030000{label__dtest_ENCLOSE_3}
         lit _dtest_ENCLOSE_3
         dw _ENCLOSE_TEST
         dw EXIT
 
 _dtest_ENCLOSE_4:        db 0,'ccc'
 _test_ENCLOSE_4:
-        test 1 ; expect 0000.0001.0000.{label__dtest_ENCLOSE_4}
+        test 1 ; expect 000000010000{label__dtest_ENCLOSE_4}
         lit _dtest_ENCLOSE_4
         dw _ENCLOSE_TEST
         dw EXIT
@@ -1588,7 +1517,7 @@ _test_ENCLOSE_4:
 _dtest_WORD_TIB:   db '  Hello World',0
 
 _test_WORD:
-        test 1 ; expect Hello.World.
+        test 1 ; expect HelloWorld
 
         lit _dtest_WORD_TIB
         dw SET_TIB
@@ -1597,13 +1526,11 @@ _test_WORD:
         dw WORD
         dw COUNT
         dw TYPE
-        emitchr .
 
         dw BLL
         dw WORD
         dw COUNT
         dw TYPE
-        emitchr .
 
         dw RESET_TIB
 
@@ -1612,17 +1539,14 @@ _test_WORD:
 ;; --------------------------------------------------------------------------------
 
 _test_2DUP:
-        test 1 ; expect 1234.ABCD.1234.ABCD
+        test 1 ; expect 1234ABCD1234ABCD
 
         lit $ABCD
         lit $1234
         dw TDUP
         dw DOTHEX
-        emitchr .
         dw DOTHEX
-        emitchr .
         dw DOTHEX
-        emitchr .
         dw DOTHEX
 
         dw EXIT
@@ -1630,12 +1554,11 @@ _test_2DUP:
 ;; --------------------------------------------------------------------------------
 
 _test_MAX:
-        test 1 ; expect 000A.000A
+        test 1 ; expect 000A000A
         lit 1
         lit 10
         dw MAX
         dw DOTHEX
-        emitchr .
 
         lit 10
         lit 1
@@ -1727,19 +1650,17 @@ _test_IDDOT:
 ;; --------------------------------------------------------------------------------
 
 _test_STOD:
-        test 1 ; expect FFFFFFFF.00000000.00007FFF
+        test 1 ; expect FFFFFFFF0000000000007FFF
 
         lit $FFFF
         dw STOD
         dw DOTHEX
         dw DOTHEX
-        emitchr .
 
         lit $0000
         dw STOD
         dw DOTHEX
         dw DOTHEX
-        emitchr .
 
         lit $7FFF
         dw STOD
@@ -1764,7 +1685,7 @@ _test_DABS:
 ;; --------------------------------------------------------------------------------
 
 _test_DLESS:
-        test 1 ; expect 0000.0001.0001.0001.0000.0001
+        test 1 ; expect 000000010001000100000001
 
         lit $0
         lit $0
@@ -1773,7 +1694,6 @@ _test_DLESS:
         dw DLESS
         dw DOTHEX
 
-        emitchr .
 
         lit $0
         lit $0
@@ -1782,7 +1702,6 @@ _test_DLESS:
         dw DLESS
         dw DOTHEX
 
-        emitchr .
 
         lit $0
         lit $0
@@ -1791,7 +1710,6 @@ _test_DLESS:
         dw DLESS
         dw DOTHEX
 
-        emitchr .
 
         lit $fffe
         lit $ffff
@@ -1800,7 +1718,6 @@ _test_DLESS:
         dw DLESS
         dw DOTHEX
 
-        emitchr .
 
         lit $ffff
         lit $ffff
@@ -1809,7 +1726,6 @@ _test_DLESS:
         dw DLESS
         dw DOTHEX
 
-	emitchr .
 
         lit $ffff
         lit $0000
@@ -1823,14 +1739,13 @@ _test_DLESS:
 ;; --------------------------------------------------------------------------------
 
 _test_ULESS:
-	test 1 ; expect 0000.0001
+	test 1 ; expect 00000001
 
         lit $ffff
         lit $0001
         dw ULESS
         dw DOTHEX
 
-        emitchr .
 
         lit $fffe
         lit $ffff
